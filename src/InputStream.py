@@ -30,3 +30,8 @@ class InputStream(Stream):
             
         except:
             p.eprint("Error occured while reading the frames from source", self.file)
+            
+            
+    def read_all (self):
+        p.check(not(self.infinite), "cannot completly load an infinite stream")
+        return self.read_n_frames(self.wave_parameters[3])
