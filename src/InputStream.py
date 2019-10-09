@@ -18,7 +18,7 @@ class InputStream(s):
     
     #wave parameters: (nchannels, sampwidth, framerate, nframes, 'NONE', 'not compressed')
     def open(self): 
-        super().open(self.reading_mode)
+        super().open(InputStream.reading_mode)
         self.wave_parameters = self.wave_signal.getparams()
         
     def close(self):

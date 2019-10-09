@@ -60,7 +60,7 @@ class Stream(ABC):
         #p.check(mode, lambda x: x == 'rb' or x == 'wb', "specify correct mode to open" )
         try:
             if (self.local):
-                self.wave_signal = wave.open(self.file, mode)
+                self.wave_signal = wave.open(self.file, mode)  #getting rid of expensive try catch 
                 self.launched = True
             
         except: 
