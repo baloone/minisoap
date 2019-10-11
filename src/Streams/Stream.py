@@ -27,7 +27,7 @@
 
 
 import wave
-import Preconditions as p
+from src.Preconditions import Preconditions as p
 from abc import ABC, abstractmethod
  
 
