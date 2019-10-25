@@ -41,10 +41,9 @@ from abc import ABC, abstractmethod
 
 class Stream(ABC): 
     
-    def __init__ (self, file, infinite = False, launch = True, local=True): #nchannels=2, sampwidth=2, framerate=44100, nframes=1024):
+    def __init__ (self, file, infinite = False, launch = True): #nchannels=2, sampwidth=2, framerate=44100, nframes=1024):
         self.file = file
         self.infinite = infinite
-        self.local = local
         #self.input_signal = self.input_signal
         #self.output_signal = output_signal
         #if(output_signal): 
@@ -59,9 +58,8 @@ class Stream(ABC):
         p.check(self.launched, "cannot open already launched stream")
         #p.check(mode, lambda x: x == 'rb' or x == 'wb', "specify correct mode to open" )
         try:
-            if (self.local):
-                self.wave_signal = wave.open(self.file, mode)
-                self.launched = True
+            self.wave_signal = wave.open(self.file, mode)  #getting rid of expensive try catch 
+            self.launched = True
             
         except: 
             p.eprint("IOError occured while opening file %s in %s mode", self.file, mode)
