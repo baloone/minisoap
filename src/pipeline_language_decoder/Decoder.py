@@ -8,24 +8,37 @@ Created on Wed Oct  9 18:30:21 2019
 
 from pipeline_language_decoder.Console import Console
 from pipeline_language_decoder.Processor import Processor
+from libraries.generators import *
+from libraries.operations import *
 from Preconditions import *
+
 
 class Decoder():
         
-    language_op = {
+    language_basic = {
             
         "stop" : self.stop_console,
-        "op" : self.decode_op,        
+        "op" : self.decode_operation,
+        "gen": self.decode_generator
             
     }
     
-    language_action = {
+    language_op = {
             
         "convolute" : ,
-        "generate" : ,
+        "convolute" : ,
+        "convolute" : ,
+        "convolute" : 
             
     }
-
+    
+    
+    language_gen = {
+            
+        "convolute" : ,
+            
+    }
+    
     def __init__(self):
         self.console = None
         self.processor = None
@@ -46,23 +59,34 @@ class Decoder():
             parsed = instruction.split()
             # Parse message
             op = parsed[0]
+            t = parsed[-1]
             
             
             # Get op function
-            operations.language.get()
+            def run_instruction():
+                return Decoder.language.get()(parsed)
         
             # Add op to processor pipeline
-            processor.add_instruction()
-        
-            return language.get(instruction)
-        
+            processor.add_instruction((t, run_instruction))
+            
         except Exception as e:
             print("Error in language command" + e)
             
             
     def decode_operation(self, parsed):
         
-    
+        op = parsed[1]
+        args = parsed[1:-1]
+        
+        return language_op.get(op)(args)
+        
+        
+    def decode_generator(self, parsed):
+        op = parsed[1]
+        args = parsed[1:-1]
+        
+        return language_gen.get(op)(args)
+        
     
     def stop_console(self):
         self.console.end()
