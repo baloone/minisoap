@@ -14,7 +14,11 @@ from Preconditions import *
 
 
 class Decoder():
-        
+
+    ## Example language
+    ## op convolute **targets **args
+    ## gen sine **args
+      
     language_basic = {
             
         "stop" : self.stop_console,
@@ -25,9 +29,10 @@ class Decoder():
     
     language_op = {
             
+        "amplitude" : ,
         "convolute" : ,
-        "convolute" : ,
-        "convolute" : ,
+        "fade_exp" : ,
+        "fade_lin" : ,
         "convolute" : 
             
     }
@@ -35,7 +40,9 @@ class Decoder():
     
     language_gen = {
             
-        "convolute" : ,
+        "sine" : sine,
+        "square" : square,
+        "constant" : constant
             
     }
     
@@ -56,8 +63,10 @@ class Decoder():
     def decode(self, instruction):
         
         try:
-            parsed = instruction.split()
             # Parse message
+            parsed = instruction.split()
+            
+            
             op = parsed[0]
             t = parsed[-1]
             
