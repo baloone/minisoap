@@ -7,7 +7,7 @@ Created on Sat Oct  5 00:49:13 2019
 """
 import wave
 import math as m
-import Preconditions as p
+from src.Preconditions import Preconditions as p
 from Stream import Stream as s
 
 
