@@ -9,8 +9,8 @@ from InputStream import InputStream as Input
 from OutputStream import OutputStream as Output
 
 def IO_Test ():
-    wave1 = Input("samples/sanctuary")
-    wave2 = Output("samples/resultOfSanctuary")
+    wave1 = Input("samples/sanctuary.wav")
+    wave2 = Output("samples/resultOfSanctuary.wav")
     wave2.write(wave1.read_all())
         
     
