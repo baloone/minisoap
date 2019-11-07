@@ -7,24 +7,21 @@ Created on Fri Oct 18 16:18:45 2019
 """
 
 from scipy.io import wavfile
-from src.libraries.generators import *
-from src.libraries.operations import *
+from libraries.generators import *
+from libraries.operations import *
 
-fs, data = wavfile.read('src/libraries/example.wav')
+## READ FILE
+fs, data = wavfile.read('libraries/example.wav')
 plt.plot(data)
 
-
-## Test op
+## GENERATE WAVES
 seq1 = sine(2, 2)
 seq2 = square(2, 2, a=0.8)
-
-
 
 plt.plot(seq1)
 plt.plot(seq2)
 
-plt.plot(fade_exp(seq2, 0.99996))
-plt.plot(fade_exp(seq1, 0.99996))
+plt.plot(fade_exp(seq2, 0.00001))
+plt.plot(fade_exp(seq1, 0.00001))
  
-plt.plot(crossfade_exp(seq1, seq2, 0.99996))
- 
+plt.plot(crossfade_exp(seq1, seq2, 0.00001))
