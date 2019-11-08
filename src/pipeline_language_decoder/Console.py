@@ -13,15 +13,14 @@ from threading import Thread
 class Console():
     
     
-    def __init__(self):
-        self.decoder = None
+    def __init__(self, decoder):
+        self.decoder = decoder
         self.started = False
         self.thread = None
         
-        
-    def add_decoder(self, decoder):
-        self.decoder = decoder
-    
+     
+    #def add_decoder(self, decoder):
+    #    self.decoder = decoder
     
     def start(self):
         self.started = True
@@ -29,11 +28,15 @@ class Console():
         self.thread.start()    
         
     def command(self):
-        check(decoder, isinstance(Decoder))
         while(self.started):
             instruction = input("Write instruction\n")
-            self.decoder.decode(instruction)
             
+            try:
+                self.decoder.transform(Decoder.grammar.parse(instruction))
+            except Exception as e:
+                print("ERROR in instruction")
+                print(e)
+                pass
             
         
     def end(self):
