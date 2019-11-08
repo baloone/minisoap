@@ -27,7 +27,9 @@
 
 
 import wave
-from src.Preconditions import Preconditions as p
+import sys
+sys.path.append('../')
+import Preconditions as p
 from abc import ABC, abstractmethod
  
 
@@ -44,6 +46,8 @@ class Stream(ABC):
     def __init__ (self, file, infinite = False, launch = True): #nchannels=2, sampwidth=2, framerate=44100, nframes=1024):
         self.file = file
         self.infinite = infinite
+        self.launched = launch
+        self.wave_signal = None
         #self.input_signal = self.input_signal
         #self.output_signal = output_signal
         #if(output_signal): 
@@ -55,18 +59,18 @@ class Stream(ABC):
             
     @abstractmethod      
     def open(self, mode):
-        p.check(self.launched, "cannot open already launched stream")
+        p.check(self.launched, details = "cannot open already launched stream")
         #p.check(mode, lambda x: x == 'rb' or x == 'wb', "specify correct mode to open" )
         try:
             self.wave_signal = wave.open(self.file, mode)  #getting rid of expensive try catch 
             self.launched = True
             
         except: 
-            p.eprint("IOError occured while opening file %s in %s mode", self.file, mode)
+            p.eprint("IOError occured while opening file {!r} in {!r} mode".format(self.file, mode))
             
     @abstractmethod        
     def close(self): 
-        p.check(not(self.launched), "cannot close unopened stream")
+        p.check(not(self.launched), details ="cannot close unopened stream")
         self.wave_signal.close()
         
     
