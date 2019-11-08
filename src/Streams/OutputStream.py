@@ -18,7 +18,7 @@ class OutputStream (s):
        
     def __init__ (self, destination, track, launch = True): 
         super().__init__(destination, False, launch)
-        self.wave_signal.setparams((track.get_nchannels, track.get_samplewidth, track.getframerate, track.getnframes, 'NONE', 'NONE'))
+        self.wave_signal.setparams((track.get_nchannels(), track.get_samplewidth(), track.getframerate(), track.getnframes(), 'NONE', 'NONE'))
     
     def open(self): 
         super().open(OutputStream.writting_mode)
@@ -30,11 +30,11 @@ class OutputStream (s):
     def write (self, data):
         p.check(not(self.infinite), details ="cannot completly load an infinite stream")
         try: 
-            return self.wave_signal.writeframesraw(data)
+            return self.wave_signal.writeframesraw(track.get_raw_data())
         except:
             p.eprint("Error occured while writting the frames to destination", self.destination)
             
-    def set_as_stereo(self):
+    def set_as_stereo(self)
         p.check(self.launched, details ="cannot verify if stereo for unopened stream")
         self.wave_signal.setnchannels(2)
     
