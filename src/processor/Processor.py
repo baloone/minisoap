@@ -9,6 +9,7 @@ Created on Fri Nov  8 00:55:09 2019
 import sys
 
 class Processor():
+    
     def __init__(self):
         return
     

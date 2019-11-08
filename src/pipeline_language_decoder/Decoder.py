@@ -1,4 +1,5 @@
 from lark import Lark, Transformer
+from processor.Processor import Processor
 
 class Decoder(Transformer):
     
@@ -20,8 +21,8 @@ class Decoder(Transformer):
     
     """, start = "instruction")
     
-    def __init__(self, p):
-        self.p = p
+    def __init__(self, processor):
+        self.p = processor
     
         self.op_d = {
                 "open" : self.p.openn,
