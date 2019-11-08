@@ -11,34 +11,20 @@ import numpy as np
 class Track ():
     
     
-    header_size = 44
-    int_size = 4
+    wav_header_size = 44
     
-    def byte_int_converter (data):
-        x = len(data)
-        returned = np.zeros(x//4 + 1)
-        i = 0
-        for n in range(0,x,4):
-            if(n <= x - 5):
-                returned[i] = int.from_bytes(data[n:n+3], byteorder='big')
-            else: 
-                returned[i] = int.from_bytes(data[n:x-1-n], byteorder='big')
-            i = i+1    
-        return returned
     
     def __init__ (self, data, nframes, stereo=True, samplewidth=2, framerate= 44100):
         self.size = nframes
-        self.raw_data = data
         print("here")
-        unpacked = self.byte_int_converter(data)
-        self.header = np.array(unpacked[0, 44])
-        self.data = np.array(unpacked[44:])
         if (stereo):
             self.nchannels = 2
         else:
             self.nchannels = 1
         self.samplewidth = samplewidth
         self.framerate = framerate
+        self.header = data[0:self.wav_header_size-1]
+        self.data = self.byte_int_converter(data[self.wav_header_size:])
         
     def get_nchannels(self):
         return self.nchannels
@@ -62,6 +48,21 @@ class Track ():
     def get_framerate(self):
         return self.framerate 
     
+    def byte_int_converter (self, data):
+        returned = np.zeros((self.size,self.nchannels))
+        for i in range(self.size):
+                for k in range(self.nchannels):
+                    returned [i, k] = int.from_bytes(data[i*self.sampewidth+k:i+self.nchannels*self.samplewidth-1:self.nchannels], byteorder='big', signed=False)
+        return returned
+    
+    def int_byte_converter (self, array): 
+        returned = bytearray()
+        for i in range(self.size):
+                if self.nchannels == 2:
+                    first, second = int.to_bytes(array[i, 0], self.samplewidth, 'big'), int.to_bytes(array[i, 1], self.samplewidth, 'big')
+                    
+                    
+
     
     
         
