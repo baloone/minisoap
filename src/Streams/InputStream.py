@@ -5,7 +5,7 @@ Created on Sat Oct  5 00:49:13 2019
 
 @author: nizar
 """
-import wave
+import Track
 import math as m
 import sys
 sys.path.append('../')
@@ -31,7 +31,7 @@ class InputStream(s):
         p.check(self.launched, details ="cannot read unopened stream")
         p.check_in_range(n, endExclusive = self.size()+1)
         try:
-            return self.wave_signal.readframes(n)
+            return Track(self.wave_signal.readframes(n), self.stereo(), self.sample_width(), self.frame_rate(), n)
             
         except:
             p.eprint("Error occured while reading the frames from source", self.file)

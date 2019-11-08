@@ -16,14 +16,9 @@ class OutputStream (s):
     
     writting_mode = 'wb'
        
-    def __init__ (self, destination, launch = True, stereo=True, mono=False, samplewidth=2, framerate= 44100, nframes=1024): 
+    def __init__ (self, destination, track, launch = True): 
         super().__init__(destination, False, launch)
-        self.wave_signal.setparams((2, samplewidth, framerate, nframes, 'NONE', 'NONE'))
-        p.check(stereo != mono, details ="can't be mono and stereo and the same time")
-        if(stereo): 
-            self.set_as_stereo()
-        else: 
-            self.set_as_mono()
+        self.wave_signal.setparams((track.get_nchannels, track.get_samplewidth, track.getframerate, track.getnframes, 'NONE', 'NONE'))
     
     def open(self): 
         super().open(OutputStream.writting_mode)

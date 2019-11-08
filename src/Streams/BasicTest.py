@@ -11,7 +11,9 @@ from OutputStream import OutputStream as Output
 def IO_Test ():
     wave1 = Input("samples/sanctuary.wav")
     wave2 = Output("samples/resultOfSanctuary.wav")
-    wave2.write(wave1.read_all())
+    x = wave1.read_all()
+    print(x)
+    wave2.write(x)
         
     
 if __name__ == "__main__": 

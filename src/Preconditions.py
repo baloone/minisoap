@@ -18,7 +18,8 @@ import sys
 
 
 def check(value, predicate=lambda x: x, details='bad value for this function'):
-    if (not(predicate(value))): raise ValueError(details)
+    if (not(predicate(value))): 
+        raise ValueError(details)
 
 
 
