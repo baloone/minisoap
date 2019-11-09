@@ -30,8 +30,7 @@ class Track ():
         return self.nchannels
     
     def get_raw_data(self):
-        #TODO
-        return self.raw_data
+        return self.header.append(self.int_byte_converter(self.data))
     
     def get_data(self):
         return self.data
@@ -55,11 +54,24 @@ class Track ():
                     returned [i, k] = int.from_bytes(data[i*self.sampewidth+k:i+self.nchannels*self.samplewidth-1:self.nchannels], byteorder='big', signed=False)
         return returned
     
+    #TODO 
     def int_byte_converter (self, array): 
-        returned = bytearray()
-        for i in range(self.size):
-                if self.nchannels == 2:
-                    first, second = int.to_bytes(array[i, 0], self.samplewidth, 'big'), int.to_bytes(array[i, 1], self.samplewidth, 'big')
+        returned = []
+        if self.nchannels == 2:
+            for i in range(self.size):
+                first, second = np.array(int.to_bytes(array[i, 0], self.samplewidth, 'big')), np.array(int.to_bytes(array[i, 1], self.samplewidth, 'big'))
+                np.append(returned, zip(first, second).flatten()) 
+        else: 
+            for i in range(self.size): 
+                 np.append(np.array(int.to_bytes(array[i], self.samplewidth, 'big')))
+        
+        return returned.tobytes()
+    
+    def get_data_slice (self, start_time_in_milliseconds, end_time_in_milliseconds):
+        return self.data[self.framerate*start_time_in_milliseconds:self.framerate*end_time_in_milliseconds]
+                          
+                        
+            
                     
                     
 
