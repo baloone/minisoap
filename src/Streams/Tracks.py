@@ -16,7 +16,7 @@ class Track ():
     
     def __init__ (self, data, nframes, stereo=True, samplewidth=2, framerate= 44100):
         self.size = nframes
-        print("here")
+        print(data[0:100])
         if (stereo):
             self.nchannels = 2
         else:
@@ -30,7 +30,8 @@ class Track ():
         return self.nchannels
     
     def get_raw_data(self):
-        return self.header.append(self.int_byte_converter(self.data))
+        print(self.int_byte_converter(self.data)[44:60])
+        return self.header + self.int_byte_converter(self.data)
     
     def get_data(self):
         return self.data
@@ -48,10 +49,13 @@ class Track ():
         return self.framerate 
     
     def byte_int_converter (self, data):
+        step = self.nchannels
         returned = np.zeros((self.size,self.nchannels))
         for i in range(self.size):
                 for k in range(self.nchannels):
-                    returned [i, k] = int.from_bytes(data[i*self.sampewidth+k:i+self.nchannels*self.samplewidth-1:self.nchannels], byteorder='big', signed=False)
+                    start = i*self.samplewidth+k
+                    end = start+self.nchannels*self.samplewidth
+                    returned [i, k] = int.from_bytes(data[start:end:step], byteorder='big', signed=False)
         return returned
     
     #TODO 
@@ -59,11 +63,13 @@ class Track ():
         returned = []
         if self.nchannels == 2:
             for i in range(self.size):
-                first, second = np.array(int.to_bytes(array[i, 0], self.samplewidth, 'big')), np.array(int.to_bytes(array[i, 1], self.samplewidth, 'big'))
-                np.append(returned, zip(first, second).flatten()) 
+                first, second = np.array(int.to_bytes(int(round(array[i, 0])), self.samplewidth, 'big')), np.array(int.to_bytes(int(round(array[i, 1])), self.samplewidth, 'big'))
+                returned = np.append(returned, np.column_stack((first, second)).flatten()) 
+                if (i == 0): 
+                    print(first, "\n", second)
         else: 
             for i in range(self.size): 
-                 np.append(np.array(int.to_bytes(array[i], self.samplewidth, 'big')))
+                 returned = np.append(np.array(int.to_bytes(int(round(array[i])), self.samplewidth, 'big')))
         
         return returned.tobytes()
     
