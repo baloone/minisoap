@@ -6,6 +6,9 @@ Created on Thu Nov  7 23:47:04 2019
 @author: nizar
 """
 import numpy as np
+import sys
+sys.path.append('../')
+import Preconditions as p
 
 class Track ():
     
@@ -13,15 +16,18 @@ class Track ():
     wav_header_size = 44
  
     
-    def __init__ (self, data, nframes, stereo=True, samplewidth=2, framerate= 44100):
+    def __init__ (self, data, nframes, nchannels, samplewidth=2, framerate= 44100):
         self.size = nframes
-        if (stereo):
-            self.nchannels = 2
-        else:
-            self.nchannels = 1
+        self.nchannels = nchannels
         self.samplewidth = samplewidth
         self.framerate = framerate
-        self.data = self.byte_float_converter(data)
+        if(type(data) == bytes):
+            p.check(nframes*samplewidth*nchannels == len(data))
+            self.data = self.byte_float_converter(data)
+        else: 
+            p.check(data.shape() == (nframes*samplewidth, nchannels))
+            self.data = np.array(data)
+            
         
     def get_nchannels(self):
         return self.nchannels

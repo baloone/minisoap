@@ -30,10 +30,10 @@ class OutputStream (s):
     
     def write (self):
         p.check(not(self.infinite), details ="cannot completly load an infinite stream")
-        #try: 
-        return self.wave_signal.writeframesraw(self.track.get_raw_data())
-        #except:
-           # p.eprint("Error occured while writting the frames to destination", self.destination)
+        try: 
+            return self.wave_signal.writeframesraw(self.track.get_raw_data())
+        except:
+            p.eprint("Error occured while writting the frames to destination", self.destination)
             
     def set_as_stereo(self):
         p.check(self.launched, details ="cannot verify if stereo for unopened stream")

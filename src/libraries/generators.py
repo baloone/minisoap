@@ -6,12 +6,25 @@ Created on Fri Oct 18 14:28:53 2019
 @author: chris
 """
 import numpy as np
-import matplotlib.pyplot as plt
+import sys
+sys.path.append('../')
+from Streams.Tracks import Track
 
-def sine(t, f, fs=44100):
-    samples = np.arange(t*fs)/fs
+
+def sine_time(A, t, f, nchannels = 2, samplewidth = 2, fs=44100):
+    sample = np.arange(t*fs)/fs
+    samples = np.column_stack((sample,sample))
     signal = np.sin(2*np.pi*f*samples)
-    return signal
+    return Track(signal, t*fs)
+    
+def sine_nframes(f,A, ):
+    sample = np.arange(nframes)
+    samples = sample
+    for i in range(1,nchannels): 
+        np.column_stack((samples,sample))
+    signal = np.sin(2*np.pi*f*samples)
+    return Track(signal, nframes, nchannels, samplewidth, framerate)
+    
     
 
 def constant(t, value, fs=44100):
