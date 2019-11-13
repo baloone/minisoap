@@ -18,7 +18,8 @@ class OutputStream (s):
        
     def __init__ (self, destination, track, launch = True): 
         super().__init__(destination, False, launch)
-        self.wave_signal.setparams((track.get_nchannels, track.get_samplewidth, track.getframerate, track.getnframes, 'NONE', 'NONE'))
+        self.wave_signal.setparams((track.get_nchannels(), track.get_samplewidth(), track.get_framerate(), track.get_size(), 'NONE', 'NONE'))
+        self.track = track
     
     def open(self): 
         super().open(OutputStream.writting_mode)
@@ -27,10 +28,10 @@ class OutputStream (s):
         super().close()
        
     
-    def write (self, data):
+    def write (self):
         p.check(not(self.infinite), details ="cannot completly load an infinite stream")
         try: 
-            return self.wave_signal.writeframesraw(data)
+            return self.wave_signal.writeframesraw(self.track.get_raw_data())
         except:
             p.eprint("Error occured while writting the frames to destination", self.destination)
             

@@ -70,7 +70,7 @@ class Stream(ABC):
             
     @abstractmethod        
     def close(self): 
-        p.check(not(self.launched), details ="cannot close unopened stream")
+        p.check(self.launched, details ="cannot close unopened stream")
         self.wave_signal.close()
         
     

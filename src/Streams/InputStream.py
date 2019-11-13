@@ -5,12 +5,12 @@ Created on Sat Oct  5 00:49:13 2019
 
 @author: nizar
 """
-import Track
+from Streams.Tracks import Track
 import math as m
 import sys
 sys.path.append('../')
 import Preconditions as p
-from Stream import Stream as s
+from Streams.Stream import Stream as s
 
 
 class InputStream(s): 
@@ -30,17 +30,18 @@ class InputStream(s):
     def read_n_frames (self, n):
         p.check(self.launched, details ="cannot read unopened stream")
         p.check_in_range(n, endExclusive = self.size()+1)
-        try:
-            return Track(self.wave_signal.readframes(n), self.stereo(), self.sample_width(), self.frame_rate(), n)
-            
-        except:
-            p.eprint("Error occured while reading the frames from source", self.file)
+        #try:
+        return Track(self.wave_signal.readframes(n), n, nchannels = self.nchannels(), samplewidth = self.sample_width(), framerate = self.frame_rate()) 
+        #except:
+            #p.eprint("Error occured while reading the frames from source", self.file)
             
             
     def read_all (self):
         p.check(not(self.infinite), details ="cannot completly load an infinite stream")
         return self.read_n_frames(self.size())
     
+    def nchannels(self):
+        return self.wave_parameters[0]
     
     def stereo(self):
         p.check(self.launched, details ="cannot verify if stereo for unopened stream")

@@ -5,42 +5,51 @@ Created on Fri Oct 11 15:22:14 2019
 
 @author: chris
 """
-
+import sys
+sys.path.append('../')
+from Streams.Tracks import Track
 import numpy as np
 
-def identity(seq):
-    return seq
+def identity(track):
+    return Track(track.get_data(), track.get_size(), track.get_nchannels(), track.get_samplewidth(), track.get_framerate())
 
-def nullify(seq):
-    return 0*seq
-
-
-def amplitude(seq, a):
-    return a*seq
+def nullify(track):
+    return amplitude(track, 0)
 
 
-def convolve(seq1, seq2):
-    return np.convolve(seq1, seq2)
+def amplitude(track, a):
+    return Track(0*track.get_data(), track.get_size(), track.get_nchannels(), track.get_samplewidth(), track.get_framerate())
 
 
-def add(seq1, seq2, a1=0.5, a2=0.5):
-    return a1*seq1 + a2*seq2
+def convolve(track,track2):
+    return Track(np.convolve(track.get_data(), track2.get_data()), track.get_size(), track.get_nchannels(), track.get_samplewidth(), track.get_framerate())
 
 
-def join(seq1, seq2):
-    return np.vstack((seq1, seq2)).T
+def add(track, track2, t, a1=0.5, a2=0.5):
+    extention_frames_b = track2.get_size() - t*track2.get_framerate()
+    extention_frames_f = track.get_size() - t*t*track2.get_framerate()
+    return Track(a1*track.extend_with_zeroes_behind(extention_frames_b) + a2*track2.extend_with_zeroes_front(extention_frames_f), track.get_size(), track.get_nchannels(), track.get_samplewidth(), track.get_framerate())
 
 
-def fade_exp(seq, factor):
-    return np.array([seq[k, ]*np.exp(-factor*(k)) for k in range(np.shape(seq)[0])])
+def mono_to_stereo(track, track2):
+    return Track(np.column_stack((track.get_data(), track2.get_data())), track.get_size(), track.get_nchannels(), track.get_samplewidth(), track.get_framerate())
 
 
+def fade_exp(track, factor, t):
+    d = track.get_data_slice(t, track.get_size()/track.get_framerate())
+    return Track(np.concatenate(track.get_data_slice(0, t), np.array([d[k, ]*np.exp(-factor*(k)) for k in range(np.shape(d)[0])])), track.get_size(), track.get_nchannels(), track.get_samplewidth(), track.get_framerate()) 
+
+
+def fade_inv(track, factor, t):
+    d = track.get_data_slice(0, t)
+    return Track(np.concatenate(track.get_data_slice(0, t), np.array([d[k, ]*np.exp(-factor*(k)) for k in range(np.shape(d)[0])])), track.get_size(), track.get_nchannels(), track.get_samplewidth(), track.get_framerate()) 
+    
 #def fade_lin(seq, speed):
 #    return np.array([(seq[k] - np.sign(seq[k])*speed*k) for k in range(len(seq))])
 
 
-def crossfade_exp(seq1, seq2, factor):
-    return fade_exp(seq1, factor) + np.flip(fade_exp(seq2, factor))
+def crossfade_exp(track1, track2, factor, t):
+    return add(fade_exp(track1, factor), fade_inv(track2, factor), t, a1=1, a2 =1)
 
 
 #def crossfade_lin(seq1, seq2, speed):
