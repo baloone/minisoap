@@ -5,6 +5,7 @@ Created on Thu Nov  7 19:55:58 2019
 
 @author: chris
 """
+
 from pipeline_language_decoder.Decoder import Decoder
 from processor.Processor import Processor
 from pipeline_language_decoder.Console import Console
