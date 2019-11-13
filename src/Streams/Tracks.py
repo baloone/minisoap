@@ -25,7 +25,7 @@ class Track ():
             p.check(nframes*samplewidth*nchannels == len(data))
             self.data = self.byte_float_converter(data)
         else: 
-            p.check(data.shape() == (nframes*samplewidth, nchannels))
+            p.check(data.shape == (nframes, nchannels))
             self.data = np.array(data)
             
         
