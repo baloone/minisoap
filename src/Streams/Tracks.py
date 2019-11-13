@@ -38,9 +38,6 @@ class Track ():
     def get_data(self):
         return self.data
     
-    def get_header(self):
-        return self.header
-    
     def get_size(self):
         return self.size 
     
@@ -75,7 +72,11 @@ class Track ():
         return self.data[self.framerate*start_time_in_milliseconds:self.framerate*end_time_in_milliseconds]
                           
                         
-            
+    def extend_with_zeroes_front (self, n):
+        return np.concatenate((np.zeros((n, self.nchannels)), self.data))
+    
+    def extend_with_zeroes_behind (self, n): 
+        return np.concatenate((self.data, np.zeros((n, self.nchannels))))
                     
                     
 
