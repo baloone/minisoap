@@ -1,42 +1,53 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""
+Created on Fri Nov  8 00:55:09 2019
 
+@author: chris
+"""
 
 import sys
-from processor.ProcessorArch import ProcessorArch
+from abc import ABCMeta, abstractmethod
+
 # Implement all possible operations
 # TODO niz replace args with the arguments that you need to run the function
 
-class Processor(ProcessorArch):
+class ProcessorArch(metaclass=ABCMeta):
     
     def __init__(self):
-        super().__init__()
+        self.stream_in = {}
+        self.stream_out = {}
     
     ################# MAIN OPERATIONS
+    @abstractmethod
     def openn(self, *args):
-        print("OPEN")
-
+        pass
+    
+    @abstractmethod    
     def close(self, *args):
-        print("CLOSE")
-
-
+        pass
+    
+    @abstractmethod
     def stop(self, *args):
-        print("STOP")
-        exit(0)
-
+        exit(0)    
+    
     ################# GENERATOR OPERATIONS
+    @abstractmethod
     def sine(self, *args):
-        print("SINE")
-
+        pass
+    
     ################# OPERATOR ON STREAMS
+    @abstractmethod
     def identity(self, *args):
-        print("IDENTITY")
-
+        pass
+    
+    @abstractmethod
     def crossfade_exp(self, *args):
-        print("CROSSFADE")
-
+        pass
+    
+    @abstractmethod
     def nullify(self, *args):
-        print("NULLIFY")
+        pass
 
 
 

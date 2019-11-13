@@ -17,9 +17,3 @@ decoder = Decoder(processor)
 console = Console(decoder)
 
 console.start()
-
-text = 'sine ["arg1" ,"arg2"]'
-
-Decoder.grammar.parse(text)
-
-decoder.transform(Decoder.grammar.parse(text))
