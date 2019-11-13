@@ -18,7 +18,8 @@ class OutputStream (s):
        
     def __init__ (self, destination, track, launch = True): 
         super().__init__(destination, False, launch)
-        self.wave_signal.setparams((track.get_nchannels(), track.get_samplewidth(), track.get_framerate(), track.get_size(), 'NONE', 'NONE'))
+        if (track is not None):
+            self.wave_signal.setparams((track.get_nchannels(), track.get_samplewidth(), track.get_framerate(), track.get_size(), 'NONE', 'NONE'))
         self.track = track
     
     def open(self): 
@@ -27,7 +28,10 @@ class OutputStream (s):
     def close(self):
         super().close()
        
-    
+    def set_track (self, track): 
+        self.track = track
+        self.wave_signal.setparams((track.get_nchannels(), track.get_samplewidth(), track.get_framerate(), track.get_size(), 'NONE', 'NONE'))
+        
     def write (self):
         p.check(not(self.infinite), details ="cannot completly load an infinite stream")
         try: 

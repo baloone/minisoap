@@ -3,7 +3,11 @@
 
 
 import sys
+sys.path.append('../')
 import queue as Queue
+from Streams.InputStream import InputStream as Input
+import libraries.generators as g
+from Streams.OutputStream import OutputStream as Output
 from processor.ProcessorArch import ProcessorArch
 from Preconditions import *
 # Implement all possible operations
@@ -16,6 +20,7 @@ class Processor():
         
         self.stream_in = {}
         self.stream_out = {}
+        self.av_tracks = {}
     
     
     
@@ -49,14 +54,48 @@ class Processor():
     
     
     ################# MAIN OPERATIONS
-    def openn(self, *args):
+    def openn(self, file_path, file_id, mode):
+        if (mode == "in"):
+            stream = Input(file_path)
+            self.stream_in.update({file_id: stream})
+        elif (mode == "out"):
+            stream = Output(file_path, None)
+            self.stream_out.update({file_id: stream})
         print("OPEN")
+        
+    #def read 
 
-    def close(self, *args):
+    def closin(self, file_id, mode):
+        if (mode == "in"):
+            s = self.stream_in.pop(file_id)
+        elif (mode == "out"):
+            s = self.stream_out.pop(file_id)
+        if (s is not None):
+            s.close()
         print("CLOSE")
+        
+        
+        
+    def read(self, file_id, track_id, t="all"):
+        if(t == "all"):
+            s = self.stream_in.pop(file_id)
+            track = s.read_all()
+            s.close()
+        else: 
+            s = self.stream_in.get(file_id)
+            fs = s.framerate()
+            track = s.read(float(t)*fs)
+        self.av_tracks.update({track_id: track})
+        
+    
+            
+            
+            
+
 
     ################# GENERATOR OPERATIONS
     def sine(self, *args):
+        g.sine_t()
         print("SINE")
     
     def constant(self, *args):
