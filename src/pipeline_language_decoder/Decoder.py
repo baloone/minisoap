@@ -14,16 +14,20 @@ class Decoder(Transformer):
     # TERMINAL: string or a regular expression
     grammar = Lark(r"""
     
-    instruction: op [args]
+    instruction: op args | control_op
     
-    args: "[" [string* ("," string)*] "]"
+    control_op: CONTROL
+    
     op: OP
+    args: "["string* ("," string)*"]"
+    
     string: ESCAPED_STRING
     
-    OP: "stop" 
-      | "open" | "close" 
+    CONTROL: "stop" | "execute" | "reset"
+    
+    OP: "open" | "close" 
       | "sine" | "constant" | "silence"
-      | "fade"
+      | "identity" | "nullify" | "fade"
       | "crossfade" 
     
     
@@ -46,10 +50,15 @@ class Decoder(Transformer):
                 "open" : self.p.openn,
                 "close" : self.p.close,
                 "sine" : self.p.sine,
+                "constant" : self.p.constant,
+                "silence" : self.p.silence,
                 "identity" : self.p.identity,
-                "crossfade_exp" : self.p.crossfade_exp,
+                "fade" : self.p.fade,
+                "crossfade" : self.p.crossfade,
                 "nullify" : self.p.nullify,
-                "stop": self.p.stop
+                "stop": self.p.stop,
+                "execute": self.p.execute,
+                "reset": self.p.reset
         }
         
         self.current_op = None
@@ -67,22 +76,26 @@ class Decoder(Transformer):
     def instruction(self, x):
         return list(x)
     
-    ## op TERMINAL decoder
+    ## op decoder
     #
-    # Calls the processor's corresponding method
+    # Calls the processor's corresponding method for operations
     def op(self, x):
         (x,) = x
-        if(str(x) == "stop"):
-            self.op_d.get(str(x))()
-        else:    
-            self.current_op = self.op_d.get(str(x))
+        self.current_op = self.op_d.get(str(x))
         return str(x)
     
+    ## control_op decoder
+    #
+    # Calls the processor's corresponding method for control operations
+    def control_op(self, x):
+        (x,) = x
+        self.op_d.get(str(x))()
+        
     ## args rule decoder
     #
     # Save the arguments of the instruction
     def args(self, x):
-        self.current_op(tuple(x))
+        self.p.add(self.current_op, tuple(x))
         return tuple(x)
     
     ## string TERMINAL decoder

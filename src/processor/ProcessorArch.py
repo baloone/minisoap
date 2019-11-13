@@ -42,7 +42,7 @@ class ProcessorArch(metaclass=ABCMeta):
         pass
     
     @abstractmethod
-    def crossfade_exp(self, *args):
+    def crossfade(self, *args):
         pass
     
     @abstractmethod
