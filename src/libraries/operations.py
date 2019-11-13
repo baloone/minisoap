@@ -26,7 +26,9 @@ def convolve(track,track2):
 
 
 def add(track, track2, t, a1=0.5, a2=0.5):
-    return Track(a1*track.get_data() + a2*track2.get_data(), track.get_size(), track.get_nchannels(), track.get_samplewidth(), track.get_framerate())
+    extention_frames_b = track2.get_size() - t*track2.get_framerate()
+    extention_frames_f = track.get_size() - t*t*track2.get_framerate()
+    return Track(a1*track.extend_with_zeroes_behind(extention_frames_b) + a2*track2.extend_with_zeroes_front(extention_frames_f), track.get_size(), track.get_nchannels(), track.get_samplewidth(), track.get_framerate())
 
 
 def mono_to_stereo(track, track2):
@@ -47,7 +49,7 @@ def fade_inv(track, factor, t):
 
 
 def crossfade_exp(track1, track2, factor, t):
-    return add(fade_exp(track1, factor), fade_inv(track2, factor), t)
+    return add(fade_exp(track1, factor), fade_inv(track2, factor), t, a1=1, a2 =1)
 
 
 #def crossfade_lin(seq1, seq2, speed):
