@@ -65,7 +65,7 @@ class Processor():
         
     #def read 
 
-    def closin(self, file_id, mode):
+    def close(self, file_id, mode):
         if (mode == "in"):
             s = self.stream_in.pop(file_id)
         elif (mode == "out"):
@@ -94,8 +94,8 @@ class Processor():
 
 
     ################# GENERATOR OPERATIONS
-    def sine(self, *args):
-        g.sine_t()
+    def sine(self, track_id, A, t, ):
+        stream.update({track_id: g.sine_t()})
         print("SINE")
     
     def constant(self, *args):
