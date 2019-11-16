@@ -37,13 +37,13 @@ def mono_to_stereo(track, track2):
 
 def fade_exp(track, factor, t):
     d = track.get_data_slice(t, track.get_size()/track.get_framerate())
-    return Track(np.concatenate(track.get_data_slice(0, t), np.array([d[k, ]*np.exp(-factor*(k)) for k in range(np.shape(d)[0])])), track.get_size(), track.get_nchannels(), track.get_samplewidth(), track.get_framerate()) 
+    return Track(np.concatenate((track.get_data_slice(0, t), np.array([d[k, ]*np.exp(-factor*(k)) for k in range(np.shape(d)[0])]))), track.get_size(), track.get_nchannels(), track.get_samplewidth(), track.get_framerate()) 
 
 
 def fade_inv(track, factor, t):
     d = track.get_data_slice(0, t)
-    return Track(np.concatenate(track.get_data_slice(0, t), np.array([d[k, ]*np.exp(-factor*(k)) for k in range(np.shape(d)[0])])), track.get_size(), track.get_nchannels(), track.get_samplewidth(), track.get_framerate()) 
-    
+    return Track(np.concatenate((d * np.array([d[k, ]*(1-np.exp(-factor*(k))) for k in range(np.shape(d)[0])]), track.get_data_slice(t, track.get_size()/track.get_framerate()))), track.get_size(), track.get_nchannels(), track.get_samplewidth(), track.get_framerate()) 
+
 #def fade_lin(seq, speed):
 #    return np.array([(seq[k] - np.sign(seq[k])*speed*k) for k in range(len(seq))])
 

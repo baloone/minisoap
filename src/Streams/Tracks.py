@@ -13,9 +13,6 @@ import Preconditions as p
 class Track ():
     
     
-    wav_header_size = 44
- 
-    
     def __init__ (self, data, nframes, nchannels, samplewidth=2, framerate= 44100):
         self.size = nframes
         self.nchannels = nchannels
@@ -36,7 +33,7 @@ class Track ():
         return self.float_byte_converter(self.data)
     
     def get_data(self):
-        return self.data
+        return np.array(self.data)
     
     def get_size(self):
         return self.size 
@@ -57,26 +54,26 @@ class Track ():
                 start = i*samp*step+k*samp
                 end = start+ samp
                 returned [i, k] = int.from_bytes(data[start:end], "big")
-        return returned/2**(samp-1) - 1
+        return returned/2**(8*samp-1) - 1
     
     def float_byte_converter (self, array): 
         samp = self.samplewidth
-        interm = (array+1) * 2**(samp-1)
+        interm = (array+1) * 2**(8*samp-1)
         returned = bytes()
         for i in range(self.size):
             for k in range(self.nchannels):
                 returned += int.to_bytes(int(interm[i, k]), samp, 'big') 
         return returned
     
-    def get_data_slice (self, start_time_in_milliseconds, end_time_in_milliseconds):
-        return self.data[self.framerate*start_time_in_milliseconds:self.framerate*end_time_in_milliseconds]
+    def get_data_slice (self, start_time, end_time):
+        return np.array(self.data[int(self.framerate*start_time):int(self.framerate*end_time)])
                           
                         
     def extend_with_zeroes_front (self, n):
-        return np.concatenate((np.zeros((n, self.nchannels)), self.data))
+        return np.concatenate((np.zeros((n, self.nchannels)), np.array(self.data)))
     
     def extend_with_zeroes_behind (self, n): 
-        return np.concatenate((self.data, np.zeros((n, self.nchannels))))
+        return np.concatenate((np.array(self.data), np.zeros((n, self.nchannels))))
                     
                     
 
