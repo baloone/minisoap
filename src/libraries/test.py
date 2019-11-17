@@ -34,7 +34,7 @@ plt.show()
 plt.plot(seq2)
 plt.show()
 
-O = op.add(T, op.nullify(T), 0)
+O = op.add(T, op.nullify(T), T.get_size()*T.framerate())
 
 plt.plot(O.get_data())
 plt.show()

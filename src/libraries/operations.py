@@ -9,6 +9,7 @@ import sys
 sys.path.append('../')
 from Streams.Tracks import Track
 import numpy as np
+import Preconditions as p
 
 def identity(track):
     return Track(track.get_data(), track.get_size(), track.get_nchannels(), track.get_samplewidth(), track.get_framerate())
@@ -22,16 +23,21 @@ def amplitude(track, a):
 
 
 def convolve(track,track2):
+    p.check_same_params(track, track2)
     return Track(np.convolve(track.get_data(), track2.get_data()), track.get_size(), track.get_nchannels(), track.get_samplewidth(), track.get_framerate())
 
 
 def add(track, track2, t, a1=0.5, a2=0.5):
-    extention_frames_b = track2.get_size() - t*track2.get_framerate()
-    extention_frames_f = track.get_size() - t*t*track2.get_framerate()
-    return Track(a1*track.extend_with_zeroes_behind(extention_frames_b) + a2*track2.extend_with_zeroes_front(extention_frames_f), track.get_size(), track.get_nchannels(), track.get_samplewidth(), track.get_framerate())
+    p.check_same_params(track, track2)
+    r = t*track2.get_framerate()
+    extention_frames_b = track2.get_size() - r
+    extention_frames_f = track.get_size() - r
+    return Track(a1*track.extend_with_zeroes_behind(extention_frames_b) + a2*track2.extend_with_zeroes_front(extention_frames_f), extention_frames_b + extention_frames_f + r, track.get_nchannels(), track.get_samplewidth(), track.get_framerate())
 
 
 def mono_to_stereo(track, track2):
+    p.check(track.get_nchannels() == 1 and track2.get_nchannels() == 1, details ="non mono Tracks")
+    p.check_same_params(track, track2)
     return Track(np.column_stack((track.get_data(), track2.get_data())), track.get_size(), track.get_nchannels(), track.get_samplewidth(), track.get_framerate())
 
 
@@ -49,6 +55,7 @@ def fade_inv(track, factor, t):
 
 
 def crossfade_exp(track1, track2, factor, t):
+    p.check_same_params(track1, track2)
     return add(fade_exp(track1, factor), fade_inv(track2, factor), t, a1=1, a2 =1)
 
 
