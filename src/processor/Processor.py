@@ -88,23 +88,21 @@ class Processor():
         self.av_tracks.update({track_id: track})
         
     
-            
-            
-            
-
 
     ################# GENERATOR OPERATIONS
-    def sine(self, track_id, A, t, ):
-        stream.update({track_id: g.sine_t()})
+    def sine(self, track_id, A, t, f, start = 0, nchannels = 2, samplewidth =2, fs = 44100): #last four agrs are optional 
+        self.av_tracks.update({track_id: g.sine_t(A, t, f, start = start, nchannels = nchannels,  samplewidth = samplewidth, fs = fs)})
         print("SINE")
     
-    def constant(self, *args):
+    def constant(self, track_id, t, value, start = 0, nchannels = 2, samplewidth = 2, fs=44100):
+        self.av_tracks.update({track_id: g.constant_t(t, value, start = start, nchannels = nchannels, samplewidth = samplewidth, fs=fs)})
         print("CONSTANT")
     
-    def silence(self, *args):
+    def silence(self, track_id, t, start = 0, nchannels = 2, samplewidth = 2, fs=44100):
+        self.constant(track_id, t, 0, start = start, nchannels = nchannels, samplewidth = samplewidth, fs=fs)
         print("SILENCE")
         
-    ################# OPERATOR ON STREAMS
+    ################# OPERATIONS ON TRACKS
     def identity(self, *args):
         print("IDENTITY")
 

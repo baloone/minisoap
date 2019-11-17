@@ -44,6 +44,9 @@ class Track ():
     def get_framerate(self):
         return self.framerate 
     
+    def get_time(self):
+        return self.framerate*self.size
+    
     def byte_float_converter (self, data): #can't use struct.unpack because of the 24 bit format.
         step = self.nchannels
         size = self.size

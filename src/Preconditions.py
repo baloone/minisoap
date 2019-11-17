@@ -29,6 +29,12 @@ def check(value, predicate=lambda x: x, details='bad value for this function'):
 
 def check_in_range(value, startInclusive=0, endExclusive= m.inf): 
     check(value, lambda x: x >= startInclusive and x < endExclusive)
+    
+    
+
+def check_same_params(track1, track2):
+    get_params = lambda x: (x.get_nchannels(), x.get_samplewidth(), x.get_framerate())
+    check((track1, track2), predicate=lambda x: get_params(x[0]) == get_params(x[1]), details="non compatible Tracks")
 
 # error printing method 
     
