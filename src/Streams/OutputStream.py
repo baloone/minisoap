@@ -31,6 +31,9 @@ class OutputStream (s):
         self.track = track
         self.wave_signal.setparams((track.get_nchannels(), track.get_samplewidth(), track.get_framerate(), track.get_size(), 'NONE', 'NONE'))
         
+    def set_dest (self, dest):
+        self.file = dest
+        
     def write (self):
         p.check(not(self.infinite), details ="cannot completly load an infinite stream")
         try: 
