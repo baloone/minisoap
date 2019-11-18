@@ -11,6 +11,7 @@ import sys
 sys.path.append('../')
 import Preconditions as p
 from Streams.Stream import Stream as s
+import subprocess
 
 
 class InputStream(s): 
@@ -19,12 +20,14 @@ class InputStream(s):
         super().__init__(source, infinite, launch)
     
     #wave parameters: (nchannels, sampwidth, framerate, nframes, 'NONE', 'not compressed')
-    def open(self): 
+    def open(self):
+        self.init_format()
         super().open(InputStream.reading_mode)
         self.wave_parameters = self.wave_signal.getparams()
         
     def close(self):
         super().close()
+        self.end_format()
         
         
     def read_n_frames (self, n):
@@ -76,5 +79,25 @@ class InputStream(s):
         self.wave_signal.set(pos)
     
     
+    ######### Handling file format
     
-            
+    ## Create temporary wav file
+    def init_format(self):
+        if(self.file_format == "mp3"):
+            old_path = self.file[:-3] + self.file_format
+            bashCommand = "mpg123 -w " + self.file + " " + old_path
+            process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+            output, error = process.communicate()
+        
+    
+    ## Remove temporary wav file
+    def end_format(self):
+        if(self.file_format != "wav"):
+            bashCommand = "rm " + self.file
+            process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+            output, error = process.communicate()
+        
+
+
+
+        
