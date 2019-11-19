@@ -18,29 +18,25 @@ import generators as g
 
 ## READ FILE
 
-K = Input("example.wav")
-T = K.read_all()
-plt.plot(T.get_data())
-plt.show()
-K.close()
+#K = Input("example.wav")
+#T = K.read_all()
+#plt.plot(T.get_data())
+#plt.show()
+#K.close()
 
 
 ## GENERATE WAVES
-seq1 = g.sine_t(1, 2, 2).get_data()
-seq2 = g.constant_t(2, 2).get_data()
+seq1 = g.sine_t(1, 10, 440)
+seq2 = g.constant_t(2, 2)
 
-plt.plot(seq1)
-plt.show()
-plt.plot(seq2)
-plt.show()
+O = op.fade_exp(seq1, 0.0001, 1)
 
-O = op.add(T, op.nullify(T), T.get_size()*T.framerate())
-
-plt.plot(O.get_data())
-plt.show()
-w = Output("example_faded.wav", O)
+w = Output("example_sine.wav", seq1)
 w.write()
 w.close()
+z = Output("example_sine_faded.wav", O)
+z.write()
+
 
 #plt.plot(op.fade_exp(seq1, 0.00001))
  
