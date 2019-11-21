@@ -10,8 +10,10 @@ import libraries.generators as g
 from Streams.OutputStream import OutputStream as Output
 from processor.ProcessorArch import ProcessorArch
 from Preconditions import *
-# Implement all possible operations
-# TODO niz replace args with the arguments that you need to run the function
+from Streams.soundCard import *
+import libraries.operations as op
+
+# TODO: Add checks for all values that could be none
 
 class Processor():
     
@@ -21,6 +23,7 @@ class Processor():
         self.stream_in = {}
         self.stream_out = {}
         self.av_tracks = {}
+        
     
     
     
@@ -63,8 +66,7 @@ class Processor():
             self.stream_out.update({file_id: stream})
         print("OPEN")
         
-    #def read 
-
+    
     def close(self, file_id, mode):
         if (mode == "in"):
             s = self.stream_in.pop(file_id)
@@ -87,7 +89,40 @@ class Processor():
             track = s.read(float(t)*fs)
         self.av_tracks.update({track_id: track})
         
-
+    
+    def write(self, file_id, track_id):
+        out = self.stream_out.pop(file_id)
+        track = self.av_tracks.get(track_id)
+        out.set_track(track)
+        out.write()
+    
+    
+    def free(self, track_id):
+        self.pop(track_id)
+    
+    
+    def record(self, nchannels, framerate, device=sd.default.device):
+        sd = InputStream_SoundCard(nchannels, framerate, device=device)
+        self.stream_in.update({"soundcard" : sd})
+        
+        
+    def stop_record(self, track_id, nframes):
+        sd = self.stream_in.pop("soundcard")
+        self.av_tracks.update({track_id : sd.read(nframes)})
+        sd.close()
+        
+        
+    def play(self, track_id, device=sd.default.device):
+        track = self.av_tracks.get(track_id)
+        sd = OutputStream_SoundCard(track, device=device)
+        sd.write()
+        self.stream_out.update({"soundcard" : sd})
+        
+        
+    def stop_play(self):
+        sd = self.stream_in.pop("soundcard")
+        sd.close()
+    
     ################# GENERATOR OPERATIONS
     def sine(self, track_id, A, t, f, start = 0, nchannels = 2, samplewidth =2, fs = 44100): #last four agrs are optional 
         self.av_tracks.update({track_id: g.sine_t(A, t, f, start = start, nchannels = nchannels,  samplewidth = samplewidth, fs = fs)})
@@ -102,22 +137,44 @@ class Processor():
         print("SILENCE")
         
     ################# OPERATIONS ON TRACKS
-    def identity(self, *args):
-        print("IDENTITY")
+    def nullify(self, track_id_in, track_id_out, start=0, end=None):
+        track = self.av_tracks.get(track_id_in)
+        self.av_tracks.update({track_id_out : op.nullify(track, start, end)})
 
-    def nullify(self, *args):
-        print("NULLIFY")
+    def stereo(self, track_id_in1, track_id_in2, track_id_out):
+        track1 = self.av_tracks.get(track_id_in1)
+        track2 = self.av_tracks.get(track_id_in2)
+        self.av_tracks.update({track_id_out : op.mono_to_stereo(track1, track2)})
 
-    def fade(self, *args):
-        print("IDENTITY")
+        
+    def fade(self, track_id_in, track_id_out, factor, t):
+        track = self.av_tracks.get(track_id_in)
+        self.av_tracks.update({track_id_out : op.fade_exp(track, factor, t)})
 
-    def crossfade(self, *args):
-        print("CROSSFADE")
-
-
-
-
-
+    def fadeinv(self, track_id_in, track_id_out, factor, t):
+        track = self.av_tracks.get(track_id_in)
+        self.av_tracks.update({track_id_out : op.fade_inv(track, factor, t)})
 
 
+    def crossfade(self, track_id_in1, track_id_in2, track_id_out, factor, t):
+        track1 = self.av_tracks.get(track_id_in1)
+        track2 = self.av_tracks.get(track_id_in2)
+        self.av_tracks.update({track_id_out : op.crossfade_exp(track1, track2, factor, t)})
+
+
+    def amplitude(self, track_id_in, track_id_out, a):
+        track = self.av_tracks.get(track_id_in)
+        self.av_tracks.update({track_id_out : op.amplitude(track, a)})
+
+
+    def mix(self, track_id_in1, track_id_in2, track_id_out, t, a1=0.5, a2=0.5):
+        track1 = self.av_tracks.get(track_id_in1)
+        track2 = self.av_tracks.get(track_id_in2)
+        self.av_tracks.update({track_id_out : op.add(track1, track2, t, a1, a2)})
+
+
+    def convolve(self, track_id_in1, track_id_in2, track_id_out):
+        track1 = self.av_tracks.get(track_id_in1)
+        track2 = self.av_tracks.get(track_id_in2)
+        self.av_tracks.update({track_id_out : op.convolve(track1, track2)})
 

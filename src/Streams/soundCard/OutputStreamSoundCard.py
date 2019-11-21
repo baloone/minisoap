@@ -14,7 +14,7 @@ from Tracks import Track
 
 class OutputStream_SoundCard(s):
     
-    def __init__ (self, device, track, launch=True):
+    def __init__ (self, track, device=sd.default.device, launch=True):
         super().__init__(device, False, launch)
         self.track = track
         self.stream = sd.OutputStream(samplerate=self.track.get_framerate(), device=device, channels=track.get_nchannels())

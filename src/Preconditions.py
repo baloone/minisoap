@@ -23,6 +23,10 @@ def check(value, predicate=lambda x: x, details='bad value for this function'):
 
 
 
+def check_non_none(value, details):
+    check(value, predicate=lambda x: x is None, details=details)
+
+
 # This method is a special case of check as it checks if a value is in a certain range or not.
 
 

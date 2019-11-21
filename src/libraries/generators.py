@@ -37,6 +37,3 @@ def constant_t(t, value, start = 0, nchannels = 2, samplewidth = 2, fs=44100):
     return constant_n(t*fs, value, start = start*fs, nchannels = nchannels, samplewidth = samplewidth, fs= fs)
     
     
-
-#def square(t, f, a=1, fs=44100):
-    #return a*np.sign(sine(t, f, fs))

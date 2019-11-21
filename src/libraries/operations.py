@@ -11,18 +11,19 @@ from Streams.Tracks import Track
 import numpy as np
 import Preconditions as p
 
-def identity(track):
-    return Track(track.get_data(), track.get_size(), track.get_nchannels(), track.get_samplewidth(), track.get_framerate())
 
-def nullify(track):
-    return amplitude(track, 0)
+def nullify(track, start=0, end=None):
+    if (end is None):
+        return amplitude(track, 0)
+    else:
+        return Track(np.concatenate((track.get_data_slice(0, start), track.get_data_slice(start, end)*0, track.get_data_slice(end, track.get_time()))), track.get_size(), track.get_nchannels(), track.get_samplewidth(), track.get_framerate())
 
 
 def amplitude(track, a):
     return Track(0*track.get_data(), track.get_size(), track.get_nchannels(), track.get_samplewidth(), track.get_framerate())
 
 
-def convolve(track,track2):
+def convolve(track, track2):
     p.check_same_params(track, track2)
     return Track(np.convolve(track.get_data(), track2.get_data()), track.get_size(), track.get_nchannels(), track.get_samplewidth(), track.get_framerate())
 
@@ -50,16 +51,8 @@ def fade_inv(track, factor, t):
     d = track.get_data_slice(0, t)
     return Track(np.concatenate((d * np.array([d[k, ]*(1-2**(-factor*(k))) for k in range(np.shape(d)[0])]), track.get_data_slice(t, track.get_size()/track.get_framerate()))), track.get_size(), track.get_nchannels(), track.get_samplewidth(), track.get_framerate()) 
 
-#def fade_lin(seq, speed):
-#    return np.array([(seq[k] - np.sign(seq[k])*speed*k) for k in range(len(seq))])
-
 
 def crossfade_exp(track1, track2, factor, t):
     p.check_same_params(track1, track2)
     return add(fade_exp(track1, factor), fade_inv(track2, factor), t, a1=1, a2 =1)
-
-
-#def crossfade_lin(seq1, seq2, speed):
-#    return fade_lin(seq1, speed) + np.flip(fade_lin(seq2, -speed))
-
 
