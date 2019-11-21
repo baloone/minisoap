@@ -30,6 +30,7 @@ seq1 = g.sine_t(1, 10, 440)
 seq2 = g.constant_t(2, 2)
 
 
+
 O = op.fade_exp(seq1, 0.0001, 1)
 
 
