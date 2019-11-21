@@ -10,6 +10,8 @@ import sys
 sys.path.append('../')
 import Preconditions as p
 from Streams.Stream import Stream as s
+import subprocess
+
 
 class OutputStream (s): 
     
@@ -21,11 +23,12 @@ class OutputStream (s):
             self.wave_signal.setparams((track.get_nchannels(), track.get_samplewidth(), track.get_framerate(), track.get_size(), 'NONE', 'NONE'))
         self.track = track
     
-    def open(self): 
+    def open(self):
         super().open(OutputStream.writting_mode)
     
     def close(self):
         super().close()
+        self.handle_format()
        
     def set_track (self, track): 
         self.track = track
@@ -60,3 +63,23 @@ class OutputStream (s):
     def set_size (self, n): 
         p.check(self.launched, details ="cannot return size of unopened stream")
         self.wave_signal.setnframes(n)
+        
+        
+    def handle_format(self):
+        
+        if(self.file_format == "mp3"):
+            old_path = self.file[:-3] + self.file_format
+            bashCommand = "ffmpeg -nostats -loglevel 0 -i " + self.file + " " + old_path 
+            process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+            output, error = process.communicate()
+        
+        if(self.file_format != "wav"):
+            bashCommand = "rm " + self.file
+            process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+            output, error = process.communicate()
+        
+
+
+        
+        
+    
