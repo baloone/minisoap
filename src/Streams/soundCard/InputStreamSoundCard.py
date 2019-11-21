@@ -23,6 +23,7 @@ class InputStream_SoundCard (s):
         
         
     def open (self):
+        self.launched = True
         self.stream.start()
         self.samplewidth = self.stream.samplesize
         
@@ -30,10 +31,14 @@ class InputStream_SoundCard (s):
         self.stream.stop()
         
     def read(self, n):
+        p.check(n <= self.time() and self.launched)
         return Track(self.stream.read(n)[0], n, self.nchannels, self.samplewidth, self.framerate)
     
     def read_available(self, n):
         return Track(self.stream.read_available(n)[0], n, self.nchannels, self.samplewidth, self.framerate)
+    
+    def time (self):
+        return self.stream.time
         
         
             
