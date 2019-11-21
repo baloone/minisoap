@@ -48,7 +48,7 @@ class Stream(ABC):
         self.wave_signal = None
         
         self.file = file
-        self.file_format = file[-3:-1]
+        self.file_format = file[-3:]
         self.file = file[:-3] + "wav"
         
         #self.input_signal = self.input_signal

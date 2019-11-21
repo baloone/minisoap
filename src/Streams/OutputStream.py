@@ -69,7 +69,7 @@ class OutputStream (s):
         
         if(self.file_format == "mp3"):
             old_path = self.file[:-3] + self.file_format
-            bashCommand = "mpg123 -w " + old_path + " " + self.file
+            bashCommand = "ffmpeg -nostats -loglevel 0 -i " + self.file + " " + old_path 
             process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
             output, error = process.communicate()
         

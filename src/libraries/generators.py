@@ -19,6 +19,7 @@ def sine_n(A, n, f, start = 0, nchannels = 2, samplewidth = 2, fs=44100):
     signal = A*np.sin(2*np.pi*f*samples)
     return Track(signal, n, nchannels, samplewidth, fs)
     
+
 def sine_t(A, t, f, start = 0, nchannels = 2, samplewidth = 2, fs=44100):
     return sine_n(A, t*fs, f, start = start*fs, nchannels = nchannels, samplewidth = samplewidth, fs= fs)
     

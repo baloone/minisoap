@@ -5,7 +5,7 @@ Created on Sat Oct  5 00:49:13 2019
 
 @author: nizar
 """
-from Streams.Tracks import Track
+from Tracks import Track
 import math as m
 import sys
 sys.path.append('../')
@@ -83,9 +83,10 @@ class InputStream(s):
     
     ## Create temporary wav file
     def init_format(self):
+        
         if(self.file_format == "mp3"):
             old_path = self.file[:-3] + self.file_format
-            bashCommand = "mpg123 -w " + self.file + " " + old_path
+            bashCommand = "ffmpeg -nostats -loglevel 0 -i " + old_path + " " + self.file
             process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
             output, error = process.communicate()
         

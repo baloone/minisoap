@@ -25,7 +25,7 @@ class Decoder(Transformer):
     
     CONTROL: "stop" | "execute" | "reset"
     
-    OP: "open" | "close" 
+    OP: "open" | "close" | "read" | "write" 
       | "sine" | "constant" | "silence"
       | "identity" | "nullify" | "fade"
       | "crossfade" 
@@ -49,6 +49,8 @@ class Decoder(Transformer):
         self.op_d = {
                 "open" : self.p.openn,
                 "close" : self.p.close,
+                "read" : self.p.read,
+                "write" : self.p.write,
                 "sine" : self.p.sine,
                 "constant" : self.p.constant,
                 "silence" : self.p.silence,

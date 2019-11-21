@@ -87,7 +87,6 @@ class Processor():
             track = s.read(float(t)*fs)
         self.av_tracks.update({track_id: track})
         
-    
 
     ################# GENERATOR OPERATIONS
     def sine(self, track_id, A, t, f, start = 0, nchannels = 2, samplewidth =2, fs = 44100): #last four agrs are optional 
