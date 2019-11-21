@@ -39,7 +39,7 @@ def add(track, track2, t, a1=0.5, a2=0.5):
 def mono_to_stereo(track, track2):
     p.check(track.get_nchannels() == 1 and track2.get_nchannels() == 1, details ="non mono Tracks")
     p.check_same_params(track, track2)
-    return Track(np.column_stack((track.get_data(), track2.get_data())), track.get_size(), track.get_nchannels(), track.get_samplewidth(), track.get_framerate())
+    return Track(np.column_stack((track.get_data(), track2.get_data())), track.get_size(), 2, track.get_samplewidth(), track.get_framerate())
 
 
 def fade_exp(track, factor, t):

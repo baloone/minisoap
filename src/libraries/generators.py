@@ -16,7 +16,7 @@ def sine_n(A, n, f, start = 0, nchannels = 2, samplewidth = 2, fs=44100):
     samples = frame_slice
     for i in range(1,nchannels): 
         samples = np.column_stack((samples,frame_slice))
-    signal = A*np.sin(2*np.pi*f*samples)
+    signal = A*np.sin(2*np.pi*f*samples).reshape(n, nchannels)
     return Track(signal, n, nchannels, samplewidth, fs)
     
 
@@ -31,6 +31,7 @@ def constant_n(n, value, start = 0, nchannels = 2, samplewidth=2, fs=44100):
     for i in range(1,nchannels): 
         samples = np.column_stack((samples,frame_slice))
     signal = 0*samples + value
+    signal.reshape(n, nchannels)
     return Track(signal, n, nchannels, samplewidth, fs)
 
 def constant_t(t, value, start = 0, nchannels = 2, samplewidth = 2, fs=44100):

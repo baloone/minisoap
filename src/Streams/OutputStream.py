@@ -28,16 +28,13 @@ class OutputStream (s):
     def close(self):
         super().close()
         self.handle_format()
-       
-    def set_dest (self, dest):
-        self.file = dest
         
     def write (self):
         p.check(not(self.infinite), details ="cannot completly load an infinite stream")
         try: 
             return self.wave_signal.writeframesraw(self.track.get_raw_data())
         except:
-            p.eprint("Error occured while writting the frames to destination", self.destination)
+            p.eprint("Error occured while writting the frames to destination", self.file)
             
     def set_as_stereo(self):
         p.check(self.launched, details ="cannot verify if stereo for unopened stream")
