@@ -9,7 +9,7 @@ import sys
 import sounddevice as sd #low level library for soundcard(hardware) use
 sys.path.append('../../')
 import Preconditions as p
-import Stream as s
+import Streams as s
 from Tracks import Track 
 
 class OutputStream_SoundCard(s):

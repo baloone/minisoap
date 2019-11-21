@@ -19,19 +19,24 @@ class Decoder(Transformer):
     control_op: CONTROL
     
     op: OP
-    args: "["string* ("," string)*"]"
+    args: "["arg* ("," arg)*"]"
     
+    arg: string | floating | integer 
     string: ESCAPED_STRING
+    integer: SIGNED_NUMBER
+    floating: SIGNED_FLOAT
     
-    CONTROL: "stop" | "execute" | "reset"
+    CONTROL: "stop" | "execute" | "reset" | "tracks" | "streams" | "show"
     
-    OP: "open" | "close" | "read" | "write" 
+    OP: "open" | "close" | "read" | "write" | "free" | "record" | "stop_record" | "play" | "stop_play" 
       | "sine" | "constant" | "silence"
-      | "identity" | "nullify" | "fade"
-      | "crossfade" 
+      | "nullify" | "fade" | "fadeinv" | "amplitude"
+      | "crossfade" | "stereo" | "mix"
     
     
     %import common.ESCAPED_STRING
+    %import common.SIGNED_FLOAT
+    %import common.SIGNED_NUMBER
     %import common.WS
     %ignore WS
     
@@ -51,16 +56,32 @@ class Decoder(Transformer):
                 "close" : self.p.close,
                 "read" : self.p.read,
                 "write" : self.p.write,
+                "free" : self.p.free,
+                "record" : self.p.record,
+                "stop_record" : self.p.stop_record,
+                "play" : self.p.play,
+                "stop_play" : self.p.stop_play,
+                
                 "sine" : self.p.sine,
                 "constant" : self.p.constant,
                 "silence" : self.p.silence,
-                "identity" : self.p.identity,
-                "fade" : self.p.fade,
-                "crossfade" : self.p.crossfade,
+                
                 "nullify" : self.p.nullify,
+                "fade" : self.p.fade,
+                "fadeinv" : self.p.fadeinv,
+                "amplitude" : self.p.amplitude,
+                
+                "crossfade" : self.p.crossfade,
+                "stereo" : self.p.stereo,
+                "mix" : self.p.mix,
+                
+                
                 "stop": self.p.stop,
                 "execute": self.p.execute,
-                "reset": self.p.reset
+                "reset": self.p.reset,
+                "tracks" : self.p.tracks,
+                "streams": self.p.streams,
+                "show" : self.p.show
         }
         
         self.current_op = None
@@ -100,12 +121,29 @@ class Decoder(Transformer):
         self.p.add(self.current_op, tuple(x))
         return tuple(x)
     
+    
+    ## arg rule decoder
+    #
+    # Save the arguments of the instruction
+    def arg(self, x):
+        (x,) = x
+        return x
+    
     ## string TERMINAL decoder
     def string(self, s):
         (s,) = s
         return s[1:-1]
     
-
+    ## int TERMINAL decoder
+    def integer(self, s):
+        (s,) = s
+        return int(s)
+    
+    ## floats TERMINAL decoder
+    def floating(self, s):
+        (s,) = s
+        return float(s)
+    
 
 
 

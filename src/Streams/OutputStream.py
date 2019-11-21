@@ -19,8 +19,7 @@ class OutputStream (s):
        
     def __init__ (self, destination, track, launch = True): 
         super().__init__(destination, False, launch)
-        if (track is not None):
-            self.wave_signal.setparams((track.get_nchannels(), track.get_samplewidth(), track.get_framerate(), track.get_size(), 'NONE', 'NONE'))
+        self.wave_signal.setparams((track.get_nchannels(), track.get_samplewidth(), track.get_framerate(), track.get_size(), 'NONE', 'NONE'))
         self.track = track
     
     def open(self):
@@ -30,10 +29,6 @@ class OutputStream (s):
         super().close()
         self.handle_format()
        
-    def set_track (self, track): 
-        self.track = track
-        self.wave_signal.setparams((track.get_nchannels(), track.get_samplewidth(), track.get_framerate(), track.get_size(), 'NONE', 'NONE'))
-        
     def set_dest (self, dest):
         self.file = dest
         

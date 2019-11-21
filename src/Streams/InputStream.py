@@ -5,7 +5,7 @@ Created on Sat Oct  5 00:49:13 2019
 
 @author: nizar
 """
-from Tracks import Track
+from Streams.Tracks import Track
 import math as m
 import sys
 sys.path.append('../')

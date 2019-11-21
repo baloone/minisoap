@@ -12,8 +12,12 @@ from processor.ProcessorArch import ProcessorArch
 from Preconditions import *
 from Streams.soundCard import *
 import libraries.operations as op
+import sounddevice as sd
+from Streams.soundCard.InputStreamSoundCard import InputStream_SoundCard
+from Streams.soundCard.OutputStreamSoundCard import OutputStream_SoundCard
 
 # TODO: Add checks for all values that could be none
+# ADD print functions
 
 class Processor():
     
@@ -39,39 +43,43 @@ class Processor():
             while not self.pipeline.empty():
                 op, args = self.pipeline.get()
                 try:
-                    op(args)
-                    #print(str(op) + str(args))
+                    op(*args)
                 except Exception as e:
-                    print("Error in instruction " + str(op) + "args")
+                    print("Error in instruction " + str(op) + " " + str(args))
+                    print(e)
             
             
     def reset(self):
         self.pipeline = Queue.Queue()
+        self.pipeline_print = Queue.Queue()
     
     
     def stop(self):
         print("STOP")
         exit(0)
 
+    def tracks(self):
+        print(self.av_tracks)
+        
+    def streams(self):
+        print(self.stream_in)
+        
+    def show(self):
+        for q_item in self.pipeline.queue:
+            print(q_item[0].__name__ + str(q_item[1]))
+            
     ###################################################### OPERATIONS
     
     
     ################# MAIN OPERATIONS
-    def openn(self, file_path, file_id, mode):
-        if (mode == "in"):
-            stream = Input(file_path)
-            self.stream_in.update({file_id: stream})
-        elif (mode == "out"):
-            stream = Output(file_path, None)
-            self.stream_out.update({file_id: stream})
+    def openn(self, file_path, file_id):
+        stream = Input(file_path)
+        self.stream_in.update({file_id: stream})
         print("OPEN")
         
     
-    def close(self, file_id, mode):
-        if (mode == "in"):
-            s = self.stream_in.pop(file_id)
-        elif (mode == "out"):
-            s = self.stream_out.pop(file_id)
+    def close(self, file_id):
+        s = self.stream_in.pop(file_id)
         if (s is not None):
             s.close()
         print("CLOSE")
@@ -85,16 +93,15 @@ class Processor():
             s.close()
         else: 
             s = self.stream_in.get(file_id)
-            fs = s.framerate()
-            track = s.read(float(t)*fs)
+            fs = s.frame_rate()
+            track = s.read_n_frames(int(float(t)*fs))
         self.av_tracks.update({track_id: track})
         
     
-    def write(self, file_id, track_id):
-        out = self.stream_out.pop(file_id)
+    def write(self, file_path, track_id):
         track = self.av_tracks.get(track_id)
-        out.set_track(track)
-        out.write()
+        stream = Output(file_path, track)
+        stream.write()
     
     
     def free(self, track_id):
@@ -141,10 +148,6 @@ class Processor():
         track = self.av_tracks.get(track_id_in)
         self.av_tracks.update({track_id_out : op.nullify(track, start, end)})
 
-    def stereo(self, track_id_in1, track_id_in2, track_id_out):
-        track1 = self.av_tracks.get(track_id_in1)
-        track2 = self.av_tracks.get(track_id_in2)
-        self.av_tracks.update({track_id_out : op.mono_to_stereo(track1, track2)})
 
         
     def fade(self, track_id_in, track_id_out, factor, t):
@@ -155,6 +158,16 @@ class Processor():
         track = self.av_tracks.get(track_id_in)
         self.av_tracks.update({track_id_out : op.fade_inv(track, factor, t)})
 
+    def amplitude(self, track_id_in, track_id_out, a):
+        track = self.av_tracks.get(track_id_in)
+        self.av_tracks.update({track_id_out : op.amplitude(track, a)})
+
+
+    def stereo(self, track_id_in1, track_id_in2, track_id_out):
+        track1 = self.av_tracks.get(track_id_in1)
+        track2 = self.av_tracks.get(track_id_in2)
+        self.av_tracks.update({track_id_out : op.mono_to_stereo(track1, track2)})
+
 
     def crossfade(self, track_id_in1, track_id_in2, track_id_out, factor, t):
         track1 = self.av_tracks.get(track_id_in1)
@@ -162,9 +175,6 @@ class Processor():
         self.av_tracks.update({track_id_out : op.crossfade_exp(track1, track2, factor, t)})
 
 
-    def amplitude(self, track_id_in, track_id_out, a):
-        track = self.av_tracks.get(track_id_in)
-        self.av_tracks.update({track_id_out : op.amplitude(track, a)})
 
 
     def mix(self, track_id_in1, track_id_in2, track_id_out, t, a1=0.5, a2=0.5):

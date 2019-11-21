@@ -65,8 +65,10 @@ class Stream(ABC):
         p.check(self.launched, details = "cannot open already launched stream")
         #p.check(mode, lambda x: x == 'rb' or x == 'wb', "specify correct mode to open" )
         try:
+            
             self.wave_signal = wave.open(self.file, mode)  #getting rid of expensive try catch 
             self.launched = True
+            
             
         except: 
             p.eprint("IOError occured while opening file {!r} in {!r} mode".format(self.file, mode))
