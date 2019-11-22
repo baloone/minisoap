@@ -1,7 +1,7 @@
 # Commands dictionary
 
 ## Control Commands
-* execute : Execute commands in pipeline
+* *execute* : Execute commands in pipeline
 * reset : Reset pipeline
 * stop : Stop program
 * show : Show pipeline content
