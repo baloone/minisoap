@@ -6,8 +6,6 @@ Created on Fri Oct 11 14:16:04 2019
 @author: nizar
 """
 
-import sys
-sys.path.append('../')
 import Preconditions as p
 from Streams.Stream import Stream as s
 import subprocess

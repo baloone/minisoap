@@ -5,8 +5,6 @@ Created on Fri Oct 11 15:22:14 2019
 
 @author: chris
 """
-import sys
-sys.path.append('../')
 from Streams.Tracks import Track
 import numpy as np
 import Preconditions as p

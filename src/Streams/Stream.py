@@ -27,8 +27,6 @@
 
 
 import wave
-import sys
-sys.path.append('../')
 import Preconditions as p
 from abc import ABC, abstractmethod
 

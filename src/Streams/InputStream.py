@@ -7,8 +7,6 @@ Created on Sat Oct  5 00:49:13 2019
 """
 from Streams.Tracks import Track
 import math as m
-import sys
-sys.path.append('../')
 import Preconditions as p
 from Streams.Stream import Stream as s
 import subprocess

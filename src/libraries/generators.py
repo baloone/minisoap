@@ -6,8 +6,6 @@ Created on Fri Oct 18 14:28:53 2019
 @author: chris
 """
 import numpy as np
-import sys
-sys.path.append('../')
 from Streams.Tracks import Track
 
 

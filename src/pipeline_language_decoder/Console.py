@@ -31,4 +31,5 @@ class Console():
                 self.decoder.transform(Decoder.grammar.parse(instruction))
             except Exception as e:
                 print("ERROR in instruction")
+                #print(e)
                 pass

@@ -3,7 +3,6 @@
 
 
 import sys
-sys.path.append('../')
 import queue as Queue
 from Streams.InputStream import InputStream as Input
 import libraries.generators as g
@@ -69,11 +68,11 @@ class Processor():
         for q_item in self.pipeline.queue:
             print(q_item[0].__name__ + str(q_item[1]))
             
-    def helpp():
-        bashCommand = "cat help.txt" 
-        process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
-        output, error = process.communicate()
-            
+    def helpp(self):
+        print("######################################## HELP ########################################")
+        with open('help.txt', 'r') as fin:
+            print(fin.read())
+           
     ###################################################### OPERATIONS
     
     

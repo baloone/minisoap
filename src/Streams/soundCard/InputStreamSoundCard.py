@@ -9,10 +9,10 @@ import sys
 import sounddevice as sd #low level library for soundcard(hardware) use
 sys.path.append('../../')
 import Preconditions as p
-import Streams as s
-from Tracks import Track 
+from Streams.Stream import Stream
+from Streams.Tracks import Track 
 
-class InputStream_SoundCard (s):
+class InputStream_SoundCard (Stream):
     
     def __init__ (self, nchannels, framerate, dtype=sd.default.dtype, device= sd.default.device, infinite= True, launch = True):
         self.framerate = framerate
