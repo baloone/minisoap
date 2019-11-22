@@ -15,6 +15,7 @@ import libraries.operations as op
 import sounddevice as sd
 from Streams.soundCard.InputStreamSoundCard import InputStream_SoundCard
 from Streams.soundCard.OutputStreamSoundCard import OutputStream_SoundCard
+import subprocess
 
 # TODO: Add checks for all values that could be none
 # ADD print functions
@@ -67,6 +68,11 @@ class Processor():
     def show(self):
         for q_item in self.pipeline.queue:
             print(q_item[0].__name__ + str(q_item[1]))
+            
+    def helpp():
+        bashCommand = "cat help.txt" 
+        process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+        output, error = process.communicate()
             
     ###################################################### OPERATIONS
     

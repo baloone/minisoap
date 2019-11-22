@@ -7,6 +7,7 @@
 * **show** : Show pipeline content
 * **streams** : Show open streams
 * **tracks** : Show available tracks
+* **help** : Print command sheet
 
 ## Operation commands
 
@@ -35,7 +36,7 @@
 * **crossfade** *[track_id_in1, track_id_in2, track_id_out, factor, t]* : Crossfade *track_id_in1* and *track_id_in2* with factor *factor* starting from *t*, and stores it in *track_id_out*
 * **stereo** *[track_id_in1, track_id_in2, track_id_out]* : Join *track_id_in1* and *track_id_in2* in stereo and stores it in *track_id_out* (must have the same format)
 * **mix** *[track_id_in1, track_id_in2, track_id_out, a1=0.5, a2=0.5]* : Mix *track_id_in1* with amplitude *a1* and *track_id_in2* with amplitude *a2* and stores it in *track_id_out*
-* **mix** *[track_id_in1, track_id_in2, track_id_out]* : Convolve *track_id_in1* and *track_id_in2* and stores it in *track_id_out*
+* **convolve** *[track_id_in1, track_id_in2, track_id_out]* : Convolve *track_id_in1* and *track_id_in2* and stores it in *track_id_out*
 
 
 

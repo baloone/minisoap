@@ -26,7 +26,7 @@ class Decoder(Transformer):
     integer: SIGNED_NUMBER
     floating: SIGNED_FLOAT
     
-    CONTROL: "stop" | "execute" | "reset" | "tracks" | "streams" | "show"
+    CONTROL: "stop" | "execute" | "reset" | "tracks" | "streams" | "show" | "help"
     
     OP: "open" | "close" | "read" | "write" | "free" | "record" | "stop_record" | "play" | "stop_play" 
       | "sine" | "constant" | "silence"
@@ -81,7 +81,8 @@ class Decoder(Transformer):
                 "reset": self.p.reset,
                 "tracks" : self.p.tracks,
                 "streams": self.p.streams,
-                "show" : self.p.show
+                "show" : self.p.show,
+                "help" : self.p.helpp
         }
         
         self.current_op = None
