@@ -1,6 +1,6 @@
 
 
-# # Preconditions module
+## Preconditions module
 # 
 # This module should contain all of the checking function that raise certain exceptions or errors. It will help modularise the code and make it cleaner all sort of checks can be added here.
 
@@ -14,9 +14,6 @@ import sys
 
 # The method check verifies if the value satisfies a certain predicate if not it raises a ValueError with details as specification of why value was wrong. 
 
-
-
-
 def check(value, predicate=lambda x: x, details='bad value for this function'):
     if (not(predicate(value))): 
         raise ValueError(details)
@@ -24,7 +21,11 @@ def check(value, predicate=lambda x: x, details='bad value for this function'):
 
 
 def check_non_none(value, details):
-    check(value, predicate=lambda x: x is None, details=details)
+    check(value, predicate=lambda x: x is not None, details=details)
+
+
+def check_instance(value, instance_type, details):
+    check(value, predicate=lambda x: isinstance(x, instance_type), details=details)
 
 
 # This method is a special case of check as it checks if a value is in a certain range or not.

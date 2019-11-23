@@ -1,6 +1,6 @@
 from lark import Lark, Transformer
 from processor.Processor import Processor
-
+import Preconditions as p
 ## Decoder
 #
 # This object is the decoder of the Minisoap that will translate user's instructions into processor commands
@@ -49,6 +49,8 @@ class Decoder(Transformer):
     #  @param self Object's pointer
     #  @param processor Minisoap's processor pointer
     def __init__(self, processor):
+        
+        p.check_instance(processor, Processor, details="Processor given not instance of processor")
         self.p = processor
     
         self.op_d = {
@@ -97,10 +99,16 @@ class Decoder(Transformer):
     #  Tuple storing current instruction's args
     
     ## Instruction rule decoder
+    #
+    #  @param self Object's pointer
+    #  @param x The Token
     def instruction(self, x):
         return list(x)
     
     ## op decoder
+    #
+    #  @param self Object's pointer
+    #  @param x The Token
     #
     # Calls the processor's corresponding method for operations
     def op(self, x):
@@ -110,12 +118,18 @@ class Decoder(Transformer):
     
     ## control_op decoder
     #
+    #  @param self Object's pointer
+    #  @param x The Token
+    #
     # Calls the processor's corresponding method for control operations
     def control_op(self, x):
         (x,) = x
         self.op_d.get(str(x))()
         
     ## args rule decoder
+    #
+    #  @param self Object's pointer
+    #  @param x The Token
     #
     # Save the arguments of the instruction
     def args(self, x):
@@ -125,22 +139,32 @@ class Decoder(Transformer):
     
     ## arg rule decoder
     #
-    # Save the arguments of the instruction
+    #  @param self Object's pointer
+    #  @param x The Token
     def arg(self, x):
         (x,) = x
         return x
     
     ## string TERMINAL decoder
+    #
+    #  @param self Object's pointer
+    #  @param s The Token
     def string(self, s):
         (s,) = s
         return s[1:-1]
     
     ## int TERMINAL decoder
+    #
+    #  @param self Object's pointer
+    #  @param s The Token
     def integer(self, s):
         (s,) = s
         return int(s)
     
     ## floats TERMINAL decoder
+    #
+    #  @param self Object's pointer
+    #  @param s The Token
     def floating(self, s):
         (s,) = s
         return float(s)
