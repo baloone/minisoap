@@ -10,7 +10,6 @@ import Preconditions as p
 
 class Track ():
     
-    
     def __init__ (self, data, nframes, nchannels, samplewidth=2, framerate= 44100):
         self.size = nframes
         self.nchannels = nchannels

@@ -244,7 +244,7 @@ class Processor():
     def constant(self, track_id, t, value, start = 0, nchannels = 2, samplewidth = 2, fs=44100):
         self.av_tracks.update({track_id: g.constant_t(t, value, start = start, nchannels = nchannels, samplewidth = samplewidth, fs=fs)})
         
-    ## Generate constant wave
+    ## Generate silent wave
     #
     #  @param self Object's pointer
     #  @param track_id Id of the track
