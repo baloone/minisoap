@@ -1,6 +1,7 @@
-## Generator module
+## @defgroup generators Generator module
 # 
 # This module should contain all track generators
+# @{
 
 import numpy as np
 from Streams.Tracks import Track
@@ -72,8 +73,7 @@ def constant_t(t, value, start = 0, nchannels = 2, samplewidth = 2, fs=44100):
     
 
 
-
-
+# @}
 
 
 

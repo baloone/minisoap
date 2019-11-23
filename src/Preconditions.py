@@ -1,6 +1,7 @@
-## Preconditions module
+## @defgroup preconditions Preconditions module
 # 
 # This module should contain all of the checking function that raise certain exceptions or errors. It will help modularise the code and make it cleaner all sort of checks can be added here.
+# @{
 
 # Include necessary imports here
 import math as m
@@ -67,3 +68,5 @@ def check_same_params(track1, track2):
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 
+
+# @}

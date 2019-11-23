@@ -1,6 +1,7 @@
-## Operations module
+## @defgroup operations Operations module
 # 
 # This module should contain all operations available on tracks
+# @{
 
 from Streams.Tracks import Track
 import numpy as np
@@ -96,3 +97,6 @@ def crossfade_exp(track1, track2, factor, t):
     p.check_same_params(track1, track2)
     return add(fade_exp(track1, factor), fade_inv(track2, factor), t, a1=1, a2 =1)
 
+
+
+#@}
