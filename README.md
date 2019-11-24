@@ -27,6 +27,7 @@ python src/Minisoap.py
 * stop : Stop program
 * show : Show pipeline content
 * streams : Show open streams
+* playlists : Show created playlists
 * tracks : Show available tracks
 * help : Print Command sheet
 
@@ -42,6 +43,9 @@ python src/Minisoap.py
 * stop_record [track_id, nframes] : Stop recording from sound card and store *nframes* frames in *track_id*
 * play [track_id] : Start playing *track_id* from sound card
 * stop_play [] : Stop playing from sound card
+* playlist [dir_path, playlist_id] : Creates a playlist with all wav files in *dir_path* and stores it in *playlist_id*
+* shuffle_playlist [playlist_id] : Randomly shuffles the playlist in *playlist_id*
+* playlist_to_track [playlist_id, track_id] : Converts the playlist in *playlist_id* into a track in *track_id*
 
 ### Generators
 * sine [track_id, A, t, f, start=0, nchannels=2, samplewidth=2, fs=44100] : Generate a sine wave with amplitude *A*, of length *t* in seconds and of frequency *f* and stores it in *track_id*
