@@ -13,6 +13,8 @@ from Streams.soundCard.OutputStreamSoundCard import OutputStream_SoundCard
 import Preconditions as p
 import os
 
+project_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 ## Processor
 #
 # This object is the processor of the Minisoap that will execute commands
@@ -109,7 +111,7 @@ class Processor():
     #
     #  @param self Object's pointer
     def helpp(self):
-        helpfile = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "help.txt")
+        helpfile = os.path.join(project_directory, "src", "help.txt")
         
         print("######################################## HELP ########################################")
         with open(helpfile, 'r') as fin:
@@ -126,9 +128,14 @@ class Processor():
     #  @param file_path Input Stream file path
     #  @param file_id Id with which the input stream will be stored
     def openn(self, file_path, file_id):
-        stream = Input(file_path)
-        self.stream_in.update({file_id: stream})
-        
+        path = os.sep.join(os.sep.join(file_path.split('/')).split('\\'))
+        path = path if len (path) > 1 and (path[0] == '/' or path[0] == '.' or path[1] == ':') else os.path.join(project_directory, path)
+        try:
+            stream = Input(path)
+            self.stream_in.update({file_id: stream})
+        except:
+            raise Exception ("Cannot open file \""+path+"\"")
+
     ## Close input stream
     #
     #  @param self Object's pointer
@@ -164,6 +171,7 @@ class Processor():
     #  @param file_path path of the output file
     #  @param track_id Id of the track to be written
     def write(self, file_path, track_id):
+        print ("file_path")
         track = self.av_tracks.get(track_id)
         p.check_non_none(track, details="Invalid track ID")
         stream = Output(file_path, track)
