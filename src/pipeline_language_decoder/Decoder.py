@@ -26,12 +26,12 @@ class Decoder(Transformer):
     integer: SIGNED_NUMBER
     floating: SIGNED_FLOAT
     
-    CONTROL: "stop" | "execute" | "reset" | "tracks" | "streams" | "show" | "help"
+    CONTROL: "stop" | "execute" | "reset" | "tracks" | "streams" | "show" | "help" | "playlists"
     
-    OP: "open" | "close" | "read" | "write" | "free" | "record" | "stop_record" | "play" | "stop_play" 
+    OP: "open" | "close" | "read" | "write" | "free" | "record" | "stop_record" | "stop_play" 
       | "sine" | "constant" | "silence"
       | "nullify" | "fade" | "fadeinv" | "amplitude"
-      | "crossfade" | "stereo" | "mix"
+      | "crossfade" | "stereo" | "mix" | "playlist_to_track" | "playlist" | "shuffle_playlist" | "play"
     
     
     %import common.ESCAPED_STRING
@@ -63,6 +63,9 @@ class Decoder(Transformer):
                 "stop_record" : self.p.stop_record,
                 "play" : self.p.play,
                 "stop_play" : self.p.stop_play,
+                "playlist" : self.p.playlist,
+                "shuffle_playlist" : self.p.shuffle_playlist,
+                "playlist_to_track" : self.p.playlist_to_track,
                 
                 "sine" : self.p.sine,
                 "constant" : self.p.constant,
@@ -83,6 +86,7 @@ class Decoder(Transformer):
                 "reset": self.p.reset,
                 "tracks" : self.p.tracks,
                 "streams": self.p.streams,
+                "playlists": self.p.playlists,
                 "show" : self.p.show,
                 "help" : self.p.helpp
         }
