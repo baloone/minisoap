@@ -11,6 +11,7 @@ import sounddevice as sd
 from Streams.soundCard.InputStreamSoundCard import InputStream_SoundCard
 from Streams.soundCard.OutputStreamSoundCard import OutputStream_SoundCard
 import Preconditions as p
+import os
 
 ## Processor
 #
@@ -108,8 +109,10 @@ class Processor():
     #
     #  @param self Object's pointer
     def helpp(self):
+        helpfile = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "help.txt")
+        
         print("######################################## HELP ########################################")
-        with open('help.txt', 'r') as fin:
+        with open(helpfile, 'r') as fin:
             print(fin.read())
            
     ###################################################### OPERATIONS
