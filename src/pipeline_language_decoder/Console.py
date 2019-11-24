@@ -16,7 +16,13 @@ class Console():
     def __init__(self, decoder):
         p.check_instance(decoder, Decoder, details="Decoder given not instance of decoder")
         self.decoder = decoder
-            
+
+    def run_instruction(self, instruction):
+        try:
+            self.decoder.transform(Decoder.grammar.parse(instruction))
+        except Exception as e:
+            print("ERROR in instruction")
+            print(e)       
     ## @var decoder
     #  Minisoap's decoder pointer
     
@@ -27,12 +33,7 @@ class Console():
         #signal(SIGINT, self.quit)
         while(True):
             try:
-                instruction = input("> ")
-                try:
-                    self.decoder.transform(Decoder.grammar.parse(instruction))
-                except Exception as e:
-                    print("ERROR in instruction")
-                    print(e)
+                self.run_instruction(input("> "))
             except KeyboardInterrupt:
                 print ("Exiting.")
                 sys.exit()
