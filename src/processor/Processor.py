@@ -155,13 +155,9 @@ class Processor():
     def read(self, file_id, track_id, t="all"):
         if(t == "all"):
             s = self.stream_in.pop(file_id)
-            print ("a")
             p.check_non_none(s, details="Invalid stream ID")
-            print ("b")
             track = s.read_all()
-            print ("c")
             s.close()
-            print ("d")
         else: 
             s = self.stream_in.get(file_id)
             p.check_non_none(s, details="Invalid stream ID")
