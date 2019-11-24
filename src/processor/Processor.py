@@ -175,7 +175,6 @@ class Processor():
     #  @param file_path path of the output file
     #  @param track_id Id of the track to be written
     def write(self, file_path, track_id):
-        print ("file_path")
         track = self.av_tracks.get(track_id)
         p.check_non_none(track, details="Invalid track ID")
         stream = Output(file_path, track)
