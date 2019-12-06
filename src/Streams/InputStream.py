@@ -29,16 +29,16 @@ class InputStream(s):
         
     def read_n_frames (self, n):
         p.check(self.launched, details ="cannot read unopened stream")
-        p.check_in_range(n, endExclusive = self.size()+1)
+        p.check_in_range(n, endExclusive = self.get_size()+1)
         #try:
-        return Track(self.wave_signal.readframes(n), n, nchannels = self.nchannels(), samplewidth = self.sample_width(), framerate = self.frame_rate()) 
+        return Track(self.wave_signal.readframes(n), n, nchannels = self.get_nchannels(), samplewidth = self.get_samplewidth(), framerate = self.get_framerate()) 
         #except:
             #p.eprint("Error occured while reading the frames from source", self.file)
             
             
     def read_all (self):
         p.check(not(self.infinite), details ="cannot completly load an infinite stream")
-        return self.read_n_frames(self.size())
+        return self.read_n_frames(self.get_size())
     
     def get_nchannels(self):
         return self.wave_parameters[0]
@@ -72,7 +72,7 @@ class InputStream(s):
     
     def set_reading_pos (self, pos): 
         p.check(self.launched, details ="cannot modify pointer of unopened stream")
-        p.check_in_range(pos, endExclusive=self.size())
+        p.check_in_range(pos, endExclusive=self.get_size())
         self.wave_signal.set(pos)
     
     

@@ -249,7 +249,10 @@ class Processor():
     def play(self, track_id, device=sd.default.device):
         track = self.av_tracks.get(track_id)
         p.check_non_none(track, details="Invalid track ID")
+        print("tst")
+
         sd = OutputStream_SoundCard(track, device=device)
+        print('tst2')
         sd.write()
         self.stream_out.update({"soundcard" : sd})
         
