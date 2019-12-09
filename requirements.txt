@@ -6,3 +6,6 @@ colorama==0.4.3
 
 # allowes us to read mp3 files
 audioread==2.1.8
+
+# allowes us to read ogg files
+PyOgg==0.6.11a1

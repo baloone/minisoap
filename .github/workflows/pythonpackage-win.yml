@@ -1,4 +1,4 @@
-name: Python package
+name: Python package Windows
 
 on: [push]
 
@@ -19,6 +19,9 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
+        curl "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" --output nuget.exe
+        .\nuget.exe install chocolatey 
+        choco install ffmpeg
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Lint with flake8
