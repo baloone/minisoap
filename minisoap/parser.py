@@ -112,16 +112,20 @@ def parse_expr(t):
         return parse_expr(t[d:cur-1]),cur
     def get_number(t, i):
         cur = i
-        if not t[cur] in n: return None
-        a = float(t[cur])
-        while cur < len(t)-1 and t[cur+1] in n:
+        comma = False
+        if not t[cur] in n and not t[cur] == '.': return None
+        a = t[cur]
+        while cur < len(t)-1 and (t[cur+1] in n or t[cur+1] == '.'):
+            if t[cur+1] == '.':
+                if comma: 
+                    raise LineParsingError("Not a number", cur)
+                else:
+                    comma = True
             cur+=1
-            a*=10
-            a+=float(t[cur])
+            a+=t[cur]
         cur+=1
         if cur < len(t) and not t[cur] in wh : raise LineParsingError('Expected whitespace after number', cur)
-        print(cur)
-        return Number(a), cur
+        return Number(float(a)), cur
     cur = 0
     funcs = [get_string, get_variable_name, get_parenthesis, get_number]
     pile = []
