@@ -1,10 +1,17 @@
 import sys
-from minisoap.console import Console
-from minisoap.parser import parse_line, LineParsingError
+from minisoap import Console
+from minisoap import parse_line, LineParsingError
+
+logo ="""                                                                                                                                
+╔╦╗ ╦ ╔╗╔ ╦ ╔═╗ ╔═╗ ╔═╗ ╔═╗
+║║║ ║ ║║║ ║ ╚═╗ ║ ║ ╠═╣ ╠═╝  0.1a
+╩ ╩ ╩ ╝╚╝ ╩ ╚═╝ ╚═╝ ╩ ╩ ╩  
+"""
+
 
 if __name__ == "__main__":
     console = Console()
-    console.log("""Minisoap 0.1a\n> """, end="")
+    console.log(logo, "\n> ", end="")
     while True:
         c = console.input()
         if c != None:
