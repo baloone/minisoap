@@ -48,28 +48,26 @@ wn = w + n
 wh = [' ', '\t']
 
 def parse_line(t):
-    try:
-        cur = 0
-        while t[cur] in wh:
+    arr = t.split('"')
+    for i in range (0, len(arr), 2):
+        if "=" in arr[i]: break
+    else:
+        return Sequence(parse_expr(t))
+
+    cur = 0
+    while t[cur] in wh:
             cur+=1
-        if t[cur] == '"' or t[cur] in n:
-            return Sequence(parse_expr(t[cur:]))
-        elif t[cur] in w:
-            vn = ''
-            while True:
-                vn += t[cur]
-                cur += 1
-                if not t[cur] in wn:
-                    break
-            while t[cur] in wh:
-                cur+=1
-            if t[cur] == '=':
-                return Sequence(VariableName(vn), parse_expr(t[cur+1:]))
-            else: 
-                raise LineParsingError('Unexpected "'+t[cur]+'" character, expected "="', cur)
-        else: raise LineParsingError('Unexpected "'+t[cur]+'"', cur)
-    except IndexError:
-        raise LineParsingError('Unexpected end of line', cur)
+    if t[cur] in w:
+        vn = ''
+        while True:
+            vn += t[cur]
+            cur += 1
+            if not cur < len(t) or not t[cur] in wn:
+                break            
+        while cur < len(t) and t[cur] in wh:
+            cur+=1
+        if cur < len(t) and t[cur] == '=':
+            return Sequence(VariableName(vn), parse_expr(t[cur+1:]))
 
 
 def parse_expr(t):
@@ -87,15 +85,13 @@ def parse_expr(t):
             cur+=1
             s+=t[cur]
         cur+=2
-        print(s, t[cur:])
-
         if cur < len(t) and not t[cur] in wh : raise LineParsingError('Expected whitespace after string', cur)
         return String(s),cur
     def get_variable_name(t, i):
         cur = i
         if not t[cur] in w : return None
         vn = t[cur]
-        while t[cur+1] in wn and cur < len(t)-1 :
+        while cur < len(t)-1 and t[cur+1] in wn :
             cur+=1
             vn+=t[cur]
         cur+=1
@@ -114,16 +110,18 @@ def parse_expr(t):
             raise LineParsingError('Parenthesis not closed', cur)
         cur+=2
         return parse_expr(t[d:cur-1]),cur
-    def get_number(t, cur):
-        if t[cur] in n: return None
+    def get_number(t, i):
+        cur = i
+        if not t[cur] in n: return None
         a = float(t[cur])
-        while t[cur+1] in n:
+        while cur < len(t)-1 and t[cur+1] in n:
             cur+=1
             a*=10
             a+=float(t[cur])
         cur+=1
         if cur < len(t) and not t[cur] in wh : raise LineParsingError('Expected whitespace after number', cur)
-        return Number(a)
+        print(cur)
+        return Number(a), cur
     cur = 0
     funcs = [get_string, get_variable_name, get_parenthesis, get_number]
     pile = []
@@ -142,4 +140,6 @@ def parse_expr(t):
         raise LineParsingError('Calling a non callable')
     if len(pile) < 1:
         return None
+    if len(pile) == 1:
+        return pile[0]
     return Expr(pile[0], *pile[1:])
