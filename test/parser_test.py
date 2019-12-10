@@ -27,4 +27,4 @@ def test_eq():
     assert parse_line('a=54').__str__() == Sequence(VariableName("a"), Number(54)).__str__()
 
 def test_complex():
-    assert parse_line('a\'= print (sum 5 8) 4').__str__() == Sequence(VariableName("a'"), Expr(VariableName('print'), Expr(VariableName('sum'), Number(5), Number(8)), Number(4))).__str__()
+    assert parse_line('a\'=     \t     print       (sum          5 8) 4').__str__() == Sequence(VariableName("a'"), Expr(VariableName('print'), Expr(VariableName('sum'), Number(5), Number(8)), Number(4))).__str__()

@@ -11,21 +11,36 @@ class Console:
         self.hist_up = []
         self.hist_down = []
     def log(self, *args, end='\n'):
+        """
+        Equivalent to print
+        """
         print(*args, end=end)
 
     def info(self, *args):
+        """
+        Prints infos
+        """
         print(Back.BLUE + Fore.WHITE + 'INFO:' + Back.RESET + Fore.RESET, end=' ')
         self.log(*args)
 
     def warn(self, *args):
+        """
+        Prints warnings
+        """
         print(Back.YELLOW + Fore.BLACK + 'WARNING:' + Back.RESET + Fore.RESET, end=' ')
         self.log(*args)
 
     def error(self, *args):
+        """
+        Prints errors
+        """
         print(Back.RED + Fore.WHITE + 'ERROR:' + Back.RESET + Fore.RESET, end=' ')
         self.log(*args)
     
     def input(self):
+        """
+        Non blocking input listener
+        """
         puts = lambda x : print(x, end='')
         if os.name=='nt':
             import msvcrt
