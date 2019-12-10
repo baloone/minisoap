@@ -21,7 +21,7 @@ class Expr:
         self.val = val
         self.args = args
     def __str__(self):
-        s = '['+', '.join(map(lambda x: x.__str__(), self.args))+']'
+        s = ', '.join(map(lambda x: x.__str__(), self.args))
         return 'Expr('+self.val.__str__()+', '+s+')'
         
 class String(Expr):
@@ -32,9 +32,9 @@ class String(Expr):
 
 class Number(Expr):
     def __init__(self, val):
-        self.val = val
+        self.val = float(val)
     def __str__(self):
-        return 'Numer('+str(self.val)+')'
+        return 'Number('+str(self.val)+')'
 
 class VariableName(Expr):
     def __init__(self, val):

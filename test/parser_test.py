@@ -4,7 +4,7 @@ def test_string():
     assert parse_line('""').__str__() == Sequence(String("")).__str__()
 
 def test_number_1():
-    assert parse_line('65').__str__() == Sequence(Number(65.0)).__str__()
+    assert parse_line('65').__str__() == Sequence(Number(65)).__str__()
 
 def test_number_2():
     assert parse_line('65.7').__str__() == Sequence(Number(65.7)).__str__()
@@ -17,3 +17,14 @@ def test_variable():
 
 def test_parenthesis():
     assert parse_line('(a)').__str__() == Sequence(VariableName("a")).__str__()
+
+def test_func_call():
+    print(parse_line('print 0 1 abc').__str__())
+    assert parse_line('print 0 1 abc').__str__() == \
+        Sequence(Expr(VariableName('print'), Number(0), Number(1), VariableName('abc'))).__str__()
+
+def test_eq():
+    assert parse_line('a=54').__str__() == Sequence(VariableName("a"), Number(54)).__str__()
+
+def test_complex():
+    assert parse_line('a\'= print (sum 5 8) 4').__str__() == Sequence(VariableName("a'"), Expr(VariableName('print'), Expr(VariableName('sum'), Number(5), Number(8)), Number(4))).__str__()
