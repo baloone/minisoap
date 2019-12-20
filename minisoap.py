@@ -1,6 +1,5 @@
 import sys
-from minisoap import Console
-from minisoap import parse_line, LineParsingError
+from minisoap import Console, parse_line, LineParsingError, InterpreterError, Interpreter
 
 logo ="""                                                                                                                                
 ╔╦╗ ╦ ╔╗╔ ╦ ╔═╗ ╔═╗ ╔═╗ ╔═╗
@@ -11,12 +10,18 @@ logo ="""
 
 if __name__ == "__main__":
     console = Console()
+    interpreter = Interpreter()
     console.log(logo, "\n> ", end="")
     while True:
         c = console.input()
         if c != None:
             try:
-                console.info(parse_line(c))
+                try:
+                    res = interpreter.run(parse_line(c))
+                    if res != None:
+                        console.info(res) 
+                except InterpreterError as e:
+                    console.error(e)
             except LineParsingError as e:
                 console.error(e)
 
