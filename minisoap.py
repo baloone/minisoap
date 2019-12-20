@@ -22,7 +22,10 @@ if __name__ == "__main__":
                         console.info(res) 
                 except InterpreterError as e:
                     console.error(e)
+                except Exception as e:
+                    console.error(e)
             except LineParsingError as e:
                 console.error(e)
 
             console.log("> ", end="")
+        interpreter.step()
