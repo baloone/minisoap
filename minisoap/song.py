@@ -11,5 +11,5 @@ class Song(Stream):
         with audioread.audio_open(filename) as f:
             self.f = f
     def __str__(self):
-        return 'Song('+self.path+')'
+        return 'Song('+self.path.__str__()+')'
 
