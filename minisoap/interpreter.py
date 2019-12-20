@@ -16,8 +16,7 @@ class Interpreter:
             self.variables[seq.variable_name.val] = self.run_expr(seq.expr)
             return 'Variable ' + seq.variable_name.val + ' defined'
         else:
-            self.run_expr(seq.expr)
-            return None
+            return 'Value : ' + self.run_expr(seq.expr).__str__()
     def run_expr(self, expr):
         if isinstance(expr, String) or isinstance(expr, Number):
             return expr.val
