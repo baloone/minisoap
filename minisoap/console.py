@@ -1,7 +1,22 @@
 from colorama import init, Cursor, Fore, Back, Style
 import os, sys
-from minisoap.kb import KBHit
 
+
+def getch():
+    if os.name == 'nt':
+        import msvcrt
+        return ord(msvcrt.getch()) 
+    else:
+        return ord(str.encode(sys.stdin.read(1)))
+
+def kbhit():
+    if os.name == 'nt':
+        import msvcrt
+        return msvcrt.kbhit()
+    else:
+        from select import select
+        dr,dw,de = select([sys.stdin], [], [], 0)
+        return dr != []
 
 
 class Console:
@@ -11,7 +26,6 @@ class Console:
         self.line = ''
         self.hist_up = []
         self.hist_down = []
-        self.kb = KBHit()
     def log(self, *args, end='\n'):
         """
         Equivalent to sys.stdout.write
@@ -58,8 +72,8 @@ class Console:
             self.line = self.line[:self.cursor_pos-1] + self.line[self.cursor_pos:]
             self.cursor_pos-=1
             if self.cursor_pos < 0: self.cursor_pos = 0
-        if self.kb.kbhit():
-            c = self.kb.getch()
+        if kbhit():
+            c = getch()
             if c == ret : 
                 self.hist_up.append(self.line)
                 self.line = ''
@@ -69,8 +83,8 @@ class Console:
             elif c == backspace:
                 backspace_f()
             elif c == mod:
-                if not os.name == 'nt': self.kb.getch()
-                c = self.kb.getch()
+                if not os.name == 'nt': getch()
+                c = getch()
                 K = ord(b'K') if os.name == 'nt' else 68
                 M = ord(b'M') if os.name == 'nt' else 67
                 H = ord(b'H') if os.name == 'nt' else 65
