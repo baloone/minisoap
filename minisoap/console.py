@@ -115,6 +115,7 @@ class Console:
                     self.cursor_pos=0
 
                 elif c == S and self.cursor_pos < len(self.line): #suppr
+                    if os.name != 'nt': getch()
                     self.cursor_pos+=1
                     puts(Cursor.FORWARD())
                     backspace_f()
