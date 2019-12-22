@@ -66,7 +66,7 @@ class Console:
         """
         ret = ord(b'\r') if os.name == "nt" else 10
         backspace = ord(b'\x08') if os.name == "nt" else 127
-        mod = ord(b'\xe0') if os.name == "nt" else 27
+        mod = [0,ord(b'\xe0')] if os.name == "nt" else [27]
         puts = lambda x : self.log(x, end='')
         def backspace_f():
             puts(Cursor.BACK()+self.line[self.cursor_pos:]+' '+Cursor.BACK(len(self.line)-self.cursor_pos+1))
@@ -83,7 +83,7 @@ class Console:
                 return self.hist_up[-1]
             elif c == backspace:
                 backspace_f()
-            elif c == mod:
+            elif c in mod:
                 if not os.name == 'nt': getch()
                 c = getch()
                 K = ord(b'K') if os.name == 'nt' else 68
