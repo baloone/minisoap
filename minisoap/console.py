@@ -1,3 +1,4 @@
+# pylint: disable=F0401
 from colorama import init, Cursor, Fore, Back, Style
 import os, sys
 
@@ -121,9 +122,10 @@ class Console:
                     backspace_f()
             else:
                 c = chr(c)
-                puts(c+self.line[self.cursor_pos:]+Cursor.BACK(len(self.line)-self.cursor_pos)+(Cursor.FORWARD() if os.name != "nt" else ''))
                 self.line = self.line[:self.cursor_pos] + c + self.line[self.cursor_pos:]
+                puts(Cursor.BACK(self.cursor_pos+1)+Cursor.FORWARD()+self.line+Cursor.BACK(len(self.line)-self.cursor_pos)+Cursor.FORWARD())
                 self.cursor_pos+=1
+
 
         
     
