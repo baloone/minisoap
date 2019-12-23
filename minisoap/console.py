@@ -68,10 +68,10 @@ class Console:
         backspace = ord(b'\x08') if os.name == "nt" else 127
         mod = [0,ord(b'\xe0')] if os.name == "nt" else [27]
         puts = lambda x : self.log(x, end='')
-        def backspace_f():
-            puts(Cursor.BACK()+self.line[self.cursor_pos:]+' '+Cursor.BACK(len(self.line)-self.cursor_pos+1))
+        def backspace_f(n=1):
+            puts(Cursor.BACK(n)+self.line[self.cursor_pos:]+' '*n+Cursor.BACK(len(self.line)-self.cursor_pos+n))
             self.line = self.line[:self.cursor_pos-1] + self.line[self.cursor_pos:]
-            self.cursor_pos-=1
+            self.cursor_pos-=n
             if self.cursor_pos < 0: self.cursor_pos = 0
         if kbhit():
             c = getch()
@@ -100,20 +100,18 @@ class Console:
                     puts(Cursor.FORWARD())
 
                 elif c == H and len(self.hist_up) > 0: # up arrow
-                    puts(Cursor.BACK(self.cursor_pos) + ' '*len(self.line) + Cursor.BACK(len(self.line)))
+                    puts(Cursor.BACK(len(self.line[:self.cursor_pos]))+' '*len(self.line)+Cursor.BACK(len(self.line)))
                     self.hist_down.append(self.line)
                     self.line = self.hist_up.pop()
                     self.log(self.line, end='')
-                    puts(Cursor.BACK(len(self.line)))
-                    self.cursor_pos=0
+                    self.cursor_pos=len(self.line)
 
                 elif c == P and len(self.hist_down) > 0: # down arrow
-                    puts(Cursor.BACK(self.cursor_pos) + ' '*len(self.line) + Cursor.BACK(len(self.line)))
+                    puts(Cursor.BACK(len(self.line[:self.cursor_pos]))+' '*len(self.line)+Cursor.BACK(len(self.line)))
                     self.hist_up.append(self.line)
                     self.line = self.hist_down.pop()
                     self.log(self.line, end='')
-                    puts(Cursor.BACK(len(self.line)))
-                    self.cursor_pos=0
+                    self.cursor_pos=len(self.line)
 
                 elif c == S and self.cursor_pos < len(self.line): #suppr
                     if os.name != 'nt': getch()
@@ -123,8 +121,9 @@ class Console:
             else:
                 c = chr(c)
                 self.line = self.line[:self.cursor_pos] + c + self.line[self.cursor_pos:]
-                puts(Cursor.BACK(self.cursor_pos+1)+Cursor.FORWARD()+self.line+Cursor.BACK(len(self.line)-self.cursor_pos)+Cursor.FORWARD())
+                puts(self.line[self.cursor_pos:] + Cursor.BACK(len(self.line[self.cursor_pos:]))+Cursor.FORWARD())
                 self.cursor_pos+=1
+        return None
 
 
         
