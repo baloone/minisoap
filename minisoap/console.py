@@ -1,3 +1,20 @@
+# Copyright (C) 2019 Mohamed H
+# 
+# This file is part of Minisoap.
+# 
+# Minisoap is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# Minisoap is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with Minisoap.  If not, see <http://www.gnu.org/licenses/>.
+
 # pylint: disable=F0401
 from colorama import init, Cursor, Fore, Back, Style
 import os, sys
@@ -8,7 +25,8 @@ def getch():
         import msvcrt
         return ord(msvcrt.getch()) 
     else:
-        return ord(str.encode(sys.stdin.read(1)))
+        s = str.encode(sys.stdin.read(1))
+        return ord(s) if len(s) > 0 else None
 
 def kbhit():
     if os.name == 'nt':
@@ -75,6 +93,7 @@ class Console:
             if self.cursor_pos < 0: self.cursor_pos = 0
         if kbhit():
             c = getch()
+            if c == None: return
             if c == ret : 
                 self.hist_up.append(self.line)
                 self.line = ''

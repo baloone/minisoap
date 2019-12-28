@@ -1,14 +1,32 @@
+# Copyright (C) 2019 Mohamed H
+# 
+# This file is part of Minisoap.
+# 
+# Minisoap is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# Minisoap is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with Minisoap.  If not, see <http://www.gnu.org/licenses/>.
+
 from .song import Song
+from .clock import Clock
 
 class Builtins:
     '''
     Write all builtins functions here
     '''
     def __init__(self):
-        self.steps = [] # list of the functions that should be launched at every step
+        self.clock = Clock()
     def tst(self, *args):
         print('hey', *args)
     def open(self, filepath):
         return Song(filepath)
-    def write(self):
+    def write(self, ist, ost):
         pass

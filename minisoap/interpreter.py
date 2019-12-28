@@ -1,3 +1,20 @@
+# Copyright (C) 2019 Mohamed H
+# 
+# This file is part of Minisoap.
+# 
+# Minisoap is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# Minisoap is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with Minisoap.  If not, see <http://www.gnu.org/licenses/>.
+
 from .parser import Sequence, Expr, String, Number, VariableName
 from .builtins import Builtins
 class InterpreterError(Exception):
@@ -9,7 +26,7 @@ class Interpreter:
         self.builtins_names = [f for f in dir(Builtins) if callable(getattr(Builtins, f)) and not f.startswith("__")]
         self.variables = {}
     def step(self):
-        map(lambda f: f(), self.builtins.steps)
+        self.builtins.clock.step()
     def run(self, seq):
         if seq.type == 'assign':
             if seq.variable_name.val in self.builtins_names: raise InterpreterError('Variable name not allowed')
