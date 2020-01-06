@@ -16,7 +16,9 @@
 # along with Minisoap.  If not, see <http://www.gnu.org/licenses/>.
 
 from .song import Song
+from .stream import Stream
 from .clock import Clock
+from .player import Player
 
 class Builtins:
     '''
@@ -28,5 +30,17 @@ class Builtins:
         print('hey', *args)
     def open(self, filepath):
         return Song(filepath)
-    def write(self, ist, ost):
-        pass
+    def play(self, stream_or_player):
+        if not isinstance(stream_or_player, (Stream, Player)): raise TypeError('Expected stream or player')
+        if isinstance(stream_or_player, Stream):
+            stream = stream_or_player
+            pl = Player(stream)
+            pl.start()
+        else: 
+            pl = stream_or_player
+            pl.play()
+        return pl
+    def pause(self, player):
+        player.pause()
+    def stop(self, player):
+        player.stop()

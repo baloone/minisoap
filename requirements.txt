@@ -4,5 +4,8 @@ pytest==5.3.1
 # allowes us to print colored strings (and allows ansi sequences on win)
 colorama==0.4.3
 
-# allowes us to read mp3 files
-audioread==2.1.8
+# for array computing
+numpy==1.18.0
+
+# play and record audio 
+SoundCard==0.3.3

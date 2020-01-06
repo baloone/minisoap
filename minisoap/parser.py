@@ -65,11 +65,13 @@ wn = w + n
 wh = [' ', '\t']
 
 def parse_line(t):
+    if t[:2] == '//': return None
     arr = t.split('"')
     for i in range (0, len(arr), 2):
         if "=" in arr[i]: break
     else:
-        return Sequence(parse_expr(t))
+        e = parse_expr(t)
+        return Sequence(e) if e != None else None
 
     cur = 0
     while t[cur] in wh:

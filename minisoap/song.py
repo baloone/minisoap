@@ -17,17 +17,28 @@
 
 from .stream import Stream
 from pathlib import Path
-from audioread.ffdec import FFmpegAudioFile
-import os
+import os, numpy, subprocess
 
 class Song(Stream):
-    def __init__(self, filename, chunk = 4096):
-        self.chunk = chunk
+    def __init__(self, filename, chunk = 4096, samplerate = 44100, channels=2):
+        Stream.__init__(self, chunk, samplerate, channels)
         exts = ["wav", "mp3", "flac", "aac", "m4a", "ogg"]
         if not filename.split('.')[-1] in exts : raise Exception("Extension not supported")
         self.path = Path(filename).absolute()
         if not os.path.exists(self.path): raise Exception("File not found")
-        self.f = FFmpegAudioFile(self.path, chunk)
+        p = subprocess.Popen(["ffmpeg", "-i", filename, "-f", "f32le", "-acodec", "pcm_f32le",
+                           "-ac", str(channels), "-ar", str(samplerate), "-"],
+                          stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        self._pcmbuf = p.stdout
+
     def __str__(self):
         return 'Song('+self.path.__str__()+')'
+    def __iter__(self):
+        return self
+    def __next__(self):
+        a = self._pcmbuf.read(self.chunk*4*self.channels)
+        if not len(a): raise StopIteration
+        return numpy.frombuffer(a, dtype=numpy.float32).reshape((-1,2))
+        
+
 

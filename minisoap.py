@@ -17,6 +17,7 @@
 
 import sys, os
 from minisoap import Console, parse_line, LineParsingError, InterpreterError, Interpreter
+from pathlib import Path
 
 logo ="""                                                                                                                                
 ╔╦╗ ╦ ╔╗╔ ╦ ╔═╗ ╔═╗ ╔═╗ ╔═╗
@@ -25,13 +26,17 @@ logo ="""
 """
 
 
-def main():
+def main(lines):
     console = Console()
     interpreter = Interpreter()
+    lines.reverse()
+
     console.log(logo, "\n> ", end="")
     while True:
-        c = console.input()
+        b = len(lines) > 0
+        c = lines.pop() if b else console.input()
         if c != None:
+            if b : console.log("> "+c+'\n', end="")
             try:
                 try:
                     res = interpreter.run(parse_line(c))
@@ -44,21 +49,29 @@ def main():
             except LineParsingError as e:
                 console.error(e)
 
-            console.log("> ", end="")
+            if not b : console.log("> ", end="")
         interpreter.step()
 
 
 if __name__ == "__main__":
+    lines = []
+    if len(sys.argv) > 1:
+        p = Path(sys.argv[1])
+        if p.exists():
+            with open(p, 'r') as f:
+                for line in f.readlines():
+                    lines.append(line.replace('\n', ''))
+                f.close()
     if os.name != "nt":
         import termios, tty
         st = termios.tcgetattr(sys.stdin)
         try:
             tty.setcbreak(sys.stdin.fileno())
-            main()
+            main(lines)
         except KeyboardInterrupt:
             termios.tcsetattr(sys.stdin, termios.TCSADRAIN, st)
     else: 
         try:
-            main()
+            main(lines)
         except KeyboardInterrupt:
             pass

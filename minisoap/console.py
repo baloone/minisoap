@@ -82,8 +82,8 @@ class Console:
         """
         Non blocking input listener
         """
-        ret = ord(b'\r') if os.name == "nt" else 10
-        backspace = ord(b'\x08') if os.name == "nt" else 127
+        ret = ord(b'\r') if os.name == "nt" else [10,13]
+        backspace = ord(b'\x08') if os.name == "nt" else [127]
         mod = [0,ord(b'\xe0')] if os.name == "nt" else [27]
         puts = lambda x : self.log(x, end='')
         def backspace_f(n=1):
@@ -94,13 +94,13 @@ class Console:
         if kbhit():
             c = getch()
             if c == None: return
-            if c == ret : 
+            if c in ret : 
                 self.hist_up.append(self.line)
                 self.line = ''
                 self.cursor_pos = 0
                 puts('\n')
                 return self.hist_up[-1]
-            elif c == backspace:
+            elif c in backspace:
                 backspace_f()
             elif c in mod:
                 if not os.name == 'nt': getch()

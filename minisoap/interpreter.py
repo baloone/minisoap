@@ -28,6 +28,7 @@ class Interpreter:
     def step(self):
         self.builtins.clock.step()
     def run(self, seq):
+        if seq == None: return
         if seq.type == 'assign':
             if seq.variable_name.val in self.builtins_names: raise InterpreterError('Variable name not allowed')
             if seq.variable_name.val in self.variables: raise InterpreterError('Variable already defined')
@@ -45,5 +46,5 @@ class Interpreter:
             if not isinstance(expr.val, VariableName): raise InterpreterError('Cannot call a non callable')
             if not expr.val.val in self.builtins_names: raise InterpreterError('Unknown callable')
             return getattr(Builtins, expr.val.val)(self.builtins, *map(self.run_expr, expr.args))
-        else: raise InterpreterError('Unrecognized expression')
+        else: pass
 

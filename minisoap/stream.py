@@ -16,11 +16,11 @@
 # along with Minisoap.  If not, see <http://www.gnu.org/licenses/>.
 
 class Stream:
-    def __init__(self, chunk = 4096):
+    def __init__(self, chunk = 4096, samplerate = 44100, channels=2):
         self.chunk = chunk
-    def next_buf(self):
-        """
-        Should return a self.chunk bytes buffer or None
-        """
-        return None
-
+        self.samplerate = samplerate
+        self.channels = channels
+    def __iter__(self):
+        return self
+    def __next__(self):
+        raise StopIteration
