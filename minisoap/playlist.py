@@ -29,7 +29,12 @@ class Playlist(Stream):
         if not self.path.exists(): raise Exception("Directory not found")
         if not self.path.is_dir(): raise Exception("Not a directory")
     def shuffle(self):
-        pass
+        self.songs = np.random.shuffle(self.songs)
+        if hasattr(self, '_index'):
+            self._index = 0
+            self._current = iter(Song(self.songs[self._index]))
+            self._next = iter(Song(self.songs[(self._index+1)%len(self.songs)]))
+
     def __iter__(self):
         for i in self.path.iterdir():
             if i.suffix[1:] in extensions: self.songs.append(i)
