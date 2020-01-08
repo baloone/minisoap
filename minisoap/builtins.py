@@ -29,10 +29,13 @@ class Builtins:
     '''
     def __init__(self):
         self.clock = Clock()
+    
     def log(self, *args):
         print(*args)
+    
     def open(self, filepath):
         return Song(filepath)
+    
     def play(self, stream_or_player):
         if not isinstance(stream_or_player, (Stream, Player)):
             raise TypeError('Expected stream or player')
@@ -44,21 +47,27 @@ class Builtins:
             pl = stream_or_player
             pl.play()
         return pl
+    
     def pause(self, player):
         player.pause()
+    
     def stop(self, player):
         player.stop()
+    
     def all_mics(self):
         from soundcard import all_microphones
         return [Microphone(mic) for mic in all_microphones()]
+    
     def get(self, i, array):
         try:
             return array[int(i)]
         except:
             return None
+    
     def silence(self, *args):
         return Silence(*args)
 
+    
     def sine(self, *args):
         return Sine(*args)
 
