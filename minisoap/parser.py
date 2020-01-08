@@ -72,16 +72,16 @@ wh = [' ', '\t']
 def parse_line(line):
     l = line[:(line.index('//'))] if '//' in line else line
     cur = 0
-    while l[cur] in wh:
+    while cur < len(l) and l[cur] in wh:
         cur+=1
-        if cur >= len(l):
-            return None
+    if cur >= len(l):
+        return None
     if l[cur] in w:
         name = ''
-        while l[cur] in wn and cur < len(l)-1:
+        while cur < len(l)-1 and l[cur] in wn:
             name += l[cur]
             cur+=1
-        while l[cur] in wh and cur < len(l)-1:
+        while cur < len(l)-1 and l[cur] in wh:
             cur+=1
         if l[cur] == "=":
             return Sequence(VariableName(name), parse_expr(l[cur+1:]))
@@ -91,7 +91,6 @@ def parse_line(line):
                     break
             else:
                 return Help(name)
-        
     e = parse_expr(l)
     return Sequence(e) if e != None else None
 

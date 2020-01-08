@@ -31,3 +31,12 @@ def test_complex():
 
 def test_helper():
     assert parse_line('open ?').__str__() == Help('open').__str__()
+
+def test_void():
+    assert parse_line('') == None
+
+def test_comment1():
+    assert parse_line('//lives') == None
+
+def test_comment2():
+    assert parse_line('a=5//lives').__str__() == Sequence(VariableName("a"), Number(5)).__str__()
