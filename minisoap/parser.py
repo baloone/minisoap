@@ -33,6 +33,11 @@ class Sequence:
     def __str__(self):
         return 'Sequence('+self.variable_name.__str__()+', '+self.expr.__str__()+')'
 
+class Help(Sequence):
+    def __init__(self, name):
+        self.name = name
+    def __str__(self):
+        return 'Help('+self.name+')'
 class Expr:
     def __init__(self, val, *args):
         self.val = val
@@ -64,29 +69,32 @@ n = [chr(i) for i in range(48, 58)]
 wn = w + n
 wh = [' ', '\t']
 
-def parse_line(t):
-    if t[:2] == '//': return None
-    arr = t.split('"')
-    for i in range (0, len(arr), 2):
-        if "=" in arr[i]: break
-    else:
-        e = parse_expr(t)
-        return Sequence(e) if e != None else None
-
+def parse_line(line):
+    l = line[:(line.index('//'))] if '//' in line else line
     cur = 0
-    while t[cur] in wh:
+    while l[cur] in wh:
+        cur+=1
+        if cur >= len(l):
+            return None
+    if l[cur] in w:
+        name = ''
+        while l[cur] in wn and cur < len(l)-1:
+            name += l[cur]
             cur+=1
-    if t[cur] in w:
-        vn = ''
-        while True:
-            vn += t[cur]
-            cur += 1
-            if not cur < len(t) or not t[cur] in wn:
-                break            
-        while cur < len(t) and t[cur] in wh:
+        while l[cur] in wh and cur < len(l)-1:
             cur+=1
-        if cur < len(t) and t[cur] == '=':
-            return Sequence(VariableName(vn), parse_expr(t[cur+1:]))
+        if l[cur] == "=":
+            return Sequence(VariableName(name), parse_expr(l[cur+1:]))
+        elif l[cur] == "?":
+            for i in l[cur+1:]:
+                if not i in wh:
+                    break
+            else:
+                return Help(name)
+        
+    e = parse_expr(l)
+    return Sequence(e) if e != None else None
+
 
 
 def parse_expr(t):

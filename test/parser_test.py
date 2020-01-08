@@ -1,4 +1,4 @@
-from minisoap import parse_line, Sequence, Expr, Number, String, VariableName
+from minisoap.parser import parse_line, Sequence, Expr, Number, String, VariableName, Help
 
 def test_string():
     assert parse_line('""').__str__() == Sequence(String("")).__str__()
@@ -28,3 +28,6 @@ def test_eq():
 
 def test_complex():
     assert parse_line('a\'=     \t     print       (sum          5 8) 4').__str__() == Sequence(VariableName("a'"), Expr(VariableName('print'), Expr(VariableName('sum'), Number(5), Number(8)), Number(4))).__str__()
+
+def test_helper():
+    assert parse_line('open ?').__str__() == Help('open').__str__()
