@@ -17,10 +17,15 @@
 
 class Stream:
     def __init__(self, chunk = 4096, samplerate = 44100, channels=2):
-        self.chunk = chunk
-        self.samplerate = samplerate
-        self.channels = channels
+        self.chunk = chunk if chunk != None else 4096
+        self.samplerate = samplerate if samplerate != None else 44100
+        self.channels = channels if channels != None else 2
+        self.duration = float('inf')
+        self._t = 0.0
     def __iter__(self):
         return self
     def __next__(self):
         raise StopIteration
+    def update_t(self, chunk=None):
+        c = self.chunk if chunk==None else chunk
+        self._t += float(c)/self.samplerate

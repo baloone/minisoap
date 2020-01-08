@@ -45,6 +45,6 @@ class Interpreter:
         elif isinstance(expr, Expr):
             if not isinstance(expr.val, VariableName): raise InterpreterError('Cannot call a non callable')
             if not expr.val.val in self.builtins_names: raise InterpreterError('Unknown callable')
-            return getattr(Builtins, expr.val.val)(self.builtins, *map(self.run_expr, expr.args))
+            return getattr(Builtins, expr.val.val)(self.builtins, *map(self.run_expr, filter(lambda x:x!=None, expr.args)))
         else: pass
 

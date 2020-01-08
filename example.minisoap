@@ -16,5 +16,10 @@
 // along with Minisoap.  If not, see <http://www.gnu.org/licenses/>.
 
 jingle = open "./songs/jingles/Squares.mp3"
+mics = all_mics ()
+mic = get 0 mics
 
-player = play jingle
+jingles = playlist "./songs/jingles/"
+player = play jingles
+
+

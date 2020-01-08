@@ -121,8 +121,12 @@ def parse_expr(t):
         if t[cur] != '(': return None
         _t = ''
         d = cur+1
+        p = 0
         try:
-            while t[cur+1] != ')':
+            while t[cur+1] != ')' or p:
+                if t[cur+1] == '(': p+=1
+                if t[cur+1] == ')': p-=1
+                if p < 0: raise LineParsingError('Unexpected parenthesis', cur)
                 cur+=1
                 _t+=t[cur]
         except IndexError:

@@ -16,6 +16,37 @@
 # along with Minisoap.  If not, see <http://www.gnu.org/licenses/>.
 
 from .stream import Stream
+from .song import Song, extensions
+from pathlib import Path
+import numpy as np
 
 class Playlist(Stream):
-    pass
+    def __init__(self, dir_path, chunk = None, samplerate = None, channels=None):
+        super(Playlist, self).__init__(chunk, samplerate, channels)
+        self.path = Path(dir_path).absolute()
+        self.songs = []
+        self.loop = True
+        if not self.path.exists(): raise Exception("Directory not found")
+        if not self.path.is_dir(): raise Exception("Not a directory")
+    def shuffle(self):
+        pass
+    def __iter__(self):
+        for i in self.path.iterdir():
+            if i.suffix[1:] in extensions: self.songs.append(i)
+        if self.songs == []: return self
+        self._index = 0
+        self._current = iter(Song(self.songs[self._index]))
+        self._next = iter(Song(self.songs[(self._index+1)%len(self.songs)]))
+        return self
+    def __next__(self):
+        if self.songs == []: raise StopIteration
+        try:
+            return next(self._current)
+        except:
+            self._index += 1
+            if self._index >= len(self.songs):
+                if self.loop: self._index = 0
+                else: raise StopIteration
+            self._current = iter(Song(self.songs[self._index]))
+            self._next = iter(Song(self.songs[(self._index+1)%len(self.songs)]))
+            return next(self._current)
