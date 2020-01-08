@@ -39,7 +39,7 @@ class Song(Stream):
     def __next__(self):
         a = self._pcmbuf.read(self.chunk*4*self.channels)
         if not len(a): raise StopIteration
-        return numpy.frombuffer(a, dtype=numpy.float32).reshape((-1,2))
+        return numpy.frombuffer(a, dtype=numpy.float32).reshape((-1,self.channels))
         
 
 
