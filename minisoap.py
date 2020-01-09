@@ -15,9 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with Minisoap.  If not, see <http://www.gnu.org/licenses/>.
 
-import sys, os
-from minisoap import Console, parse_line, LineParsingError, InterpreterError, Interpreter
+import sys, os, signal, threading
+from minisoap import Console, parse_line, LineParsingError, InterpreterError, Interpreter, KillableThread
 from pathlib import Path
+if os.name != "nt":
+    import termios, tty
 
 logo ="""                                                                                                                                
 ╔╦╗ ╦ ╔╗╔ ╦ ╔═╗ ╔═╗ ╔═╗ ╔═╗
@@ -51,10 +53,17 @@ def main(lines):
 
             if not b : console.log("> ", end="")
         interpreter.step()
-
+st = None
+def ctrlc(sig, frame):
+    print ('\nExiting...')
+    [thread.kill() for thread in threading.enumerate()[1:] if isinstance(thread, KillableThread)]
+    if os.name != "nt":
+        termios.tcsetattr(sys.stdin, termios.TCSADRAIN, st)
+    sys.exit(1)
 
 if __name__ == "__main__":
     lines = []
+    signal.signal(signal.SIGINT, ctrlc)
     if len(sys.argv) > 1:
         p = Path(sys.argv[1])
         if p.exists():
@@ -63,13 +72,10 @@ if __name__ == "__main__":
                     lines.append(line.replace('\n', ''))
                 f.close()
     if os.name != "nt":
-        import termios, tty
         st = termios.tcgetattr(sys.stdin)
-        try:
-            tty.setcbreak(sys.stdin.fileno())
-            main(lines)
-        except KeyboardInterrupt:
-            termios.tcsetattr(sys.stdin, termios.TCSADRAIN, st)
+        tty.setcbreak(sys.stdin.fileno())
+        main(lines)
+            
     else: 
         try:
             main(lines)

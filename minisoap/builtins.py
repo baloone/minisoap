@@ -79,14 +79,6 @@ class Builtins:
         """
         player.pause()
     
-    def stop(self, player):
-        """!
-        Stop a player
-        
-        @param player The player
-        """
-        player.stop()
-    
     def all_mics(self):
         """!
         Transform all microphones to streams
