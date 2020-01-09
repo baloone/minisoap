@@ -70,6 +70,7 @@ class Sine(Generator):
     def __init__(self, freq=440, amplitude=1, duration=None, chunk = None, samplerate = None, channels=None):
         self._freq = freq
         self._amplitude = amplitude
+        self._i = 0
         Generator.__init__(self, duration, chunk, samplerate, channels)
     
     ## @var _freq
@@ -83,7 +84,8 @@ class Sine(Generator):
     # @param The size of the wave
     def _gen(self, size):
         dt = float(self.chunk)/self.samplerate
-        t = np.array([[self._t+i*dt]*self.channels for i in range(size)])
+        t = np.array([[i*dt]*self.channels for i in range(self._i,self._i+size)])
+        self._i+=size
         return np.sin(2*np.pi*t*self._freq) * self._amplitude
         
 
