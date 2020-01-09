@@ -1,5 +1,8 @@
-from minisoap import Interpreter, parse_line
+from minisoap import Interpreter, Parser
 # TODO add more tests
+p = Parser()
+
+parse_line = p.parse_line
 
 def test_variable_assign():
     interpreter = Interpreter()

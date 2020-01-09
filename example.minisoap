@@ -18,7 +18,11 @@
 jingle = open "./songs/jingles/Squares.mp3"
 mics = all_mics ()
 mic = get 0 mics
-
+transition = {
+    0s: 1;
+    .5s: 0;
+    724ms: 0.1;
+}
 jingles = playlist "./songs/jingles/"
 player = play jingles
 

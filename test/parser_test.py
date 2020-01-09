@@ -1,4 +1,7 @@
-from minisoap.parser import parse_line, Sequence, Expr, Number, String, VariableName, Help
+from minisoap.parser import Parser, Sequence, Expr, Number, String, VariableName, Help
+p = Parser()
+
+parse_line = p.parse_line
 
 def test_string():
     assert parse_line('""').__str__() == Sequence(String("")).__str__()

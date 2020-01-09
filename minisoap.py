@@ -16,7 +16,7 @@
 # along with Minisoap.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys, os, signal, threading
-from minisoap import Console, parse_line, LineParsingError, InterpreterError, Interpreter, KillableThread
+from minisoap import Console, Parser, LineParsingError, InterpreterError, Interpreter, KillableThread, ContinueParsing
 from pathlib import Path
 if os.name != "nt":
     import termios, tty
@@ -31,27 +31,31 @@ logo ="""
 def main(lines):
     console = Console()
     interpreter = Interpreter()
+    parser = Parser()
     lines.reverse()
-
+    cp = None
     console.log(logo, "\n> ", end="")
+    bg = lambda cp: "> " if cp == None else ".. "
     while True:
         b = len(lines) > 0
         c = lines.pop() if b else console.input()
         if c != None:
-            if b : console.log("> "+c+'\n', end="")
+            if b : console.log(bg(cp)+c+'\n', end="")
             try:
                 try:
-                    res = interpreter.run(parse_line(c))
+                    res = interpreter.run(parser.parse_line(c,cp))
+                    cp = None
                     if res != None:
                         console.info(res) 
-                except InterpreterError as e:
-                    console.error(e)
+                except ContinueParsing as e:
+                    cp = e
                 except Exception as e:
                     console.error(e)
+                    cp = None
             except LineParsingError as e:
                 console.error(e)
 
-            if not b : console.log("> ", end="")
+            if not b : console.log(bg(cp), end="")
         interpreter.step()
 st = None
 def ctrlc(sig, frame):
