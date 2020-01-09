@@ -99,6 +99,7 @@ class Builtins:
         """!
         Get element from array
         
+        @param i Index of element
         @param array The array
         """
         try:
