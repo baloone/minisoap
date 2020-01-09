@@ -64,15 +64,15 @@ class Console:
     ## Prints in stdout
     #
     # @param *args arguments to print
-    def log(self, *args, end='\n'):
+    def log(self, *args, end='\n', prefix='', join=' '):
         """
         Equivalent to sys.stdout.write
         """
         if len(args) > 0:
-            sys.stdout.write(args[0].__str__())
-            for arg in args[1:]:
-                sys.stdout.write(' ')
-                sys.stdout.write(arg.__str__())
+            for i in range(len(args)):
+                arg = args[i].__str__()
+                if i > 0 : sys.stdout.write(join)
+                sys.stdout.write(prefix+arg.replace('\n', '\n'+prefix))
             sys.stdout.write(end)
             sys.stdout.flush()
 
@@ -83,8 +83,7 @@ class Console:
         """
         Prints infos
         """
-        sys.stdout.write(Back.BLUE + Fore.WHITE + 'INFO:' + Back.RESET + Fore.RESET + ' ')
-        self.log(*args)
+        self.log(*args, prefix=Back.BLUE + Fore.WHITE + 'INFO:' + Back.RESET + Fore.RESET + ' ')
 
     ## Prints warning (in yellow)
     #
@@ -93,8 +92,7 @@ class Console:
         """
         Prints warnings
         """
-        sys.stdout.write(Back.YELLOW + Fore.BLACK + 'WARNING:' + Back.RESET + Fore.RESET + ' ')
-        self.log(*args)
+        self.log(*args, prefix=Back.YELLOW + Fore.BLACK + 'WARNING:' + Back.RESET + Fore.RESET + ' ')
 
     ## Prints an error (in red)
     #
@@ -103,8 +101,7 @@ class Console:
         """
         Prints errors
         """
-        sys.stdout.write(Back.RED + Fore.WHITE + 'ERROR:' + Back.RESET + Fore.RESET + ' ')
-        self.log(*args)
+        self.log(*args, prefix=Back.RED + Fore.WHITE + 'ERROR:' + Back.RESET + Fore.RESET + ' ')
     
     ## Input function, listens to user's input
     #
