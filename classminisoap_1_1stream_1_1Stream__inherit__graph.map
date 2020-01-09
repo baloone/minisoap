@@ -1,0 +1,8 @@
+<map id="minisoap.stream.Stream" name="minisoap.stream.Stream">
+<area shape="rect" id="node2" href="$classminisoap_1_1generators_1_1Generator.html" title="Generator class. " alt="" coords="225,31,425,57"/>
+<area shape="rect" id="node5" href="$classminisoap_1_1microphone_1_1Microphone.html" title="minisoap.microphone.Microphone" alt="" coords="217,81,433,108"/>
+<area shape="rect" id="node6" href="$classminisoap_1_1playlist_1_1Playlist.html" title="Playlist class. " alt="" coords="242,132,409,159"/>
+<area shape="rect" id="node7" href="$classminisoap_1_1song_1_1Song.html" title="Song class. " alt="" coords="255,183,395,209"/>
+<area shape="rect" id="node3" href="$classminisoap_1_1generators_1_1Silence.html" title="Silent wave generator. " alt="" coords="481,5,668,32"/>
+<area shape="rect" id="node4" href="$classminisoap_1_1generators_1_1Sine.html" title="Sine wave generator. " alt="" coords="490,56,659,83"/>
+</map>
