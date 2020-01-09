@@ -16,6 +16,7 @@
 # along with Minisoap.  If not, see <http://www.gnu.org/licenses/>.
 
 from .song import Song
+from .writer import Writer
 from .stream import Stream
 from .clock import Clock
 from .player import Player
@@ -51,6 +52,17 @@ class Builtins:
         @param filepath The path to the song
         """
         return Song(filepath)
+    
+    def write(self, stream, output_path):
+        """!
+        Writes a stream to a file
+        
+        @param stream The stream
+        @param output_path The path to the output
+        """
+        w = Writer(stream, output_path)
+        w.run()
+        return w
     
     
     def play(self, stream_or_player):
