@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Minisoap.  If not, see <http://www.gnu.org/licenses/>.
 
-from .parser import Sequence, Expr, String, Number, VariableName
+from .parser import Sequence, Help, Expr, String, Number, VariableName
 from .builtins import Builtins
 class InterpreterError(Exception):
     pass
@@ -29,7 +29,9 @@ class Interpreter:
         self.builtins.clock.step()
     def run(self, seq):
         if seq == None: return
-        if seq.type == 'assign':
+        if isinstance(seq, Help):
+            print(getattr(Builtins, seq.name).__doc__[1::])
+        elif seq.type == 'assign':
             if seq.variable_name.val in self.builtins_names: raise InterpreterError('Variable name not allowed')
             if seq.variable_name.val in self.variables: raise InterpreterError('Variable already defined')
             self.variables[seq.variable_name.val] = self.run_expr(seq.expr)

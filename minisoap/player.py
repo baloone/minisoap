@@ -21,6 +21,9 @@ import soundcard as sc
 import time
 from .microphone import Microphone
 
+## Player class
+#
+# A stream player
 class Player(Thread):
     def __init__(self, stream):
         if not isinstance(stream, Stream): raise TypeError
@@ -31,6 +34,24 @@ class Player(Thread):
         self.sp = sc.default_speaker()
         self._stop = False
         self._ended = False
+            
+    ## @var stream
+    # Stream to be played
+    
+    ## @var _play
+    # Boolean indicating if playing
+    
+    ## @var sp
+    # Spreakers (default value of soundcard library)
+    
+    ## @var stop
+    # Boolean indicating if the player is stopped
+    
+    ## @var ended
+    # Boolean indicating if stream ended
+    
+    ## Run the player
+    #
     def run(self):
         # this is improvised because of a bug in the library
         if(self.is_mic):
@@ -51,11 +72,17 @@ class Player(Thread):
                     sp.play(block)
         self._ended = True
 
+    ## Pause the player
+    #
     def pause(self):
         self._play = False
-
+    
+    ## Play the player
+    #
     def play(self):
         self._play = True
-
+    
+    ## Stop the player
+    #
     def stop(self):
         self._stop = True

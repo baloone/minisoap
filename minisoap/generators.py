@@ -18,16 +18,35 @@
 from .stream import Stream
 import numpy as np
 
+## Generator class
+#
+# Generates synthetical waves
 class Generator(Stream):
+    
     def __init__(self, duration=float('inf'), chunk = None, samplerate = None, channels=None):
         if duration == None: duration = float('inf')
         self.duration = duration
         Stream.__init__(self, chunk, samplerate, channels)
+    
+    ## @var duration
+    # The duration of the wave
+    
+    
+    ## Generates an empty wave
+    #
+    # @param The size of the wave
     def _gen(self, size):
-        return np.zeros((self.chunk, self.channels))
+        return np.zeros((size, self.channels))
+    
+    
+    ## Iterate over the wave
+    #
     def __iter__(self):
         self._t = 0.0
         return self
+    
+    ## Extract the next chunk
+    #
     def __next__(self):
         if self.duration < float('inf'):
             if self._t > self.duration: raise StopIteration
@@ -38,16 +57,37 @@ class Generator(Stream):
         self.update_t()
         return self._gen(self.chunk)
 
+## Silent wave generator
+#
+# Generate a silent wave
 class Silence(Generator):
     pass
 
+## Sine wave generator
+#
+# Generate a sine wave
 class Sine(Generator):
     def __init__(self, freq=440, amplitude=1, duration=None, chunk = None, samplerate = None, channels=None):
         self._freq = freq
         self._amplitude = amplitude
         Generator.__init__(self, duration, chunk, samplerate, channels)
+    
+    ## @var _freq
+    # The frequency of the sine wave
+    
+    ## @var _amplitude
+    # The amplitude of the sine wave
+    
+    ## Sine wave generator
+    #
+    # @param The size of the wave
     def _gen(self, size):
         dt = float(self.chunk)/self.samplerate
         t = np.array([[self._t+i*dt]*self.channels for i in range(size)])
         return np.sin(2*np.pi*t*self._freq) * self._amplitude
         
+
+
+
+
+
