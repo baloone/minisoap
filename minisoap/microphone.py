@@ -17,25 +17,24 @@
 
 from .stream import Stream
 import soundcard as sc
+import numpy as np
 
 class Microphone(Stream):
-    def __init__(self, mic, chunk = None, samplerate = None, channels=None):
+    def __init__(self, mic=None, chunk = None, samplerate = None, channels=None):
+        if mic == None:
+            try: 
+                mic = sc.default_microphone()
+            except:
+                raise Exception("No microphones avalaible")
         Stream.__init__(self, chunk, samplerate, channels)
         if not mic.record : raise Exception("Not a microphone")
         self._mic = mic
-
+        
     def __str__(self):
         return 'Microphone('+self._mic.__str__()+')'
-    def __iter__(self):
-        with self._mic.recorder(self.samplerate, self.channels) as rec:
-            self._rec = rec
-        return self
     def __next__(self):
-        if self._rec._samplerate != self.samplerate:
-            with self._mic.recorder(self.samplerate, self.channels) as rec:
-                self._rec = rec
-        data = self._rec.record(self.chunk)
-        print(data)
+        with self._mic.recorder(self.samplerate, self.channels) as rec:
+            data = rec.record(self.chunk)
         return data
         
 
