@@ -53,23 +53,14 @@ class Player(Thread):
     ## Run the player
     #
     def run(self):
-        # this is improvised because of a bug in the library
-        if(self.is_mic):
-            with self.sp.player(samplerate=self.stream.samplerate, channels=self.stream.channels) as sp, \
-            self.stream._mic.recorder(samplerate=self.stream.samplerate, channels=self.stream.channels) as mic:
-                while not self._stop:
-                    if(self._play):
-                        data = mic.record(self.stream.chunk)
-                        sp.play(data)
-        else:
-            with self.sp.player(samplerate=self.stream.samplerate,
-                channels=self.stream.channels) as sp:
-                for block in self.stream:
-                    while not self._play:
-                        if self._stop: break
-                        time.sleep(0.1)
+        with self.sp.player(samplerate=self.stream.samplerate,
+            channels=self.stream.channels) as sp:
+            for block in self.stream:
+                while not self._play:
                     if self._stop: break
-                    sp.play(block)
+                    time.sleep(0.1)
+                if self._stop: break
+                sp.play(block)
         self._ended = True
 
     ## Pause the player

@@ -29,13 +29,17 @@ class Microphone(Stream):
         Stream.__init__(self, chunk, samplerate, channels)
         if not mic.record : raise Exception("Not a microphone")
         self._mic = mic
-        
+    def _gen(self):
+        with self._mic.recorder(self.samplerate, self.channels) as rec:
+            while True:
+                yield rec.record(self.chunk)
+    def __iter__(self):
+        self.__gen = self._gen()
+        return self
     def __str__(self):
         return 'Microphone('+self._mic.__str__()+')'
     def __next__(self):
-        with self._mic.recorder(self.samplerate, self.channels) as rec:
-            data = rec.record(self.chunk)
-        return data
+        return next(self.__gen)
         
 
 
