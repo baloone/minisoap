@@ -138,7 +138,7 @@ class Builtins:
         Open a playlist
         
         @param dir_path The directory path to the playlist
-        @param chunk The number of chunks (optional)
+        @param chunk The size of the chunk (optional)
         @param samplerate The sample rate of the wave (optional)
         @param channels The number of channels (optional)
         """
