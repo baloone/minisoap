@@ -37,14 +37,33 @@ def kbhit():
         dr,dw,de = select([sys.stdin], [], [], 0)
         return dr != []
 
-
+## Console
+#
+# This object is the console of the Minisoap that will take user's instructions
 class Console:
+    
     def __init__(self):
         init()
         self.cursor_pos = 0
         self.line = ''
         self.hist_up = []
         self.hist_down = []
+        
+    ## @var cursor_pos
+    #
+    
+    ## @var line
+    #
+    
+    ## @var hist_op
+    #
+    
+    ## @var hist_down
+    #
+    
+    ## Prints in stdout
+    #
+    # @param *args arguments to print
     def log(self, *args, end='\n'):
         """
         Equivalent to sys.stdout.write
@@ -57,6 +76,9 @@ class Console:
             sys.stdout.write(end)
             sys.stdout.flush()
 
+    ## Prints an info (in blue)
+    #
+    # @param *args arguments to print
     def info(self, *args):
         """
         Prints infos
@@ -64,6 +86,9 @@ class Console:
         sys.stdout.write(Back.BLUE + Fore.WHITE + 'INFO:' + Back.RESET + Fore.RESET + ' ')
         self.log(*args)
 
+    ## Prints warning (in yellow)
+    #
+    # @param *args arguments to print
     def warn(self, *args):
         """
         Prints warnings
@@ -71,6 +96,9 @@ class Console:
         sys.stdout.write(Back.YELLOW + Fore.BLACK + 'WARNING:' + Back.RESET + Fore.RESET + ' ')
         self.log(*args)
 
+    ## Prints an error (in red)
+    #
+    # @param *args arguments to print
     def error(self, *args):
         """
         Prints errors
@@ -78,6 +106,8 @@ class Console:
         sys.stdout.write(Back.RED + Fore.WHITE + 'ERROR:' + Back.RESET + Fore.RESET + ' ')
         self.log(*args)
     
+    ## Input function, listens to user's input
+    #
     def input(self):
         """
         Non blocking input listener
@@ -86,6 +116,8 @@ class Console:
         backspace = ord(b'\x08') if os.name == "nt" else [127]
         mod = [0,ord(b'\xe0')] if os.name == "nt" else [27]
         puts = lambda x : self.log(x, end='')
+        
+        
         def backspace_f(n=1):
             puts(Cursor.BACK(n)+self.line[self.cursor_pos:]+' '*n+Cursor.BACK(len(self.line)-self.cursor_pos+n))
             self.line = self.line[:self.cursor_pos-1] + self.line[self.cursor_pos:]

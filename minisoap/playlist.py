@@ -20,14 +20,43 @@ from .song import Song, extensions
 from pathlib import Path
 import numpy as np
 
+## Playlist class
+#
+# Reads and operates over Songs form a folder
 class Playlist(Stream):
+    
     def __init__(self, dir_path, chunk = None, samplerate = None, channels=None):
         super(Playlist, self).__init__(chunk, samplerate, channels)
         self.path = Path(dir_path).absolute()
         self.songs = []
         self.loop = True
+        self._index = 0
+        self._current = None
+        self._next = None
+        
         if not self.path.exists(): raise Exception("Directory not found")
         if not self.path.is_dir(): raise Exception("Not a directory")
+    
+    ## @var path
+    # Path to the playlist folder
+    
+    ## @var songs
+    # List containing the songs
+    
+    ## @var loop
+    # Boolean on whether to loop over the playlist when done reading it
+    
+    ## @var _current
+    # Current Song
+    
+    ## @var _next
+    # Next Song
+    
+    ## @var _index
+    # Index of current Song
+    
+    ## Shuffles songs in the playlist
+    #
     def shuffle(self):
         self.songs = np.random.shuffle(self.songs)
         if hasattr(self, '_index'):
@@ -35,6 +64,8 @@ class Playlist(Stream):
             self._current = iter(Song(self.songs[self._index]))
             self._next = iter(Song(self.songs[(self._index+1)%len(self.songs)]))
 
+    ## Iterates over the playlist
+    #
     def __iter__(self):
         for i in self.path.iterdir():
             if i.suffix[1:] in extensions: self.songs.append(i)
@@ -43,6 +74,9 @@ class Playlist(Stream):
         self._current = iter(Song(self.songs[self._index]))
         self._next = iter(Song(self.songs[(self._index+1)%len(self.songs)]))
         return self
+    
+    ## Get next song
+    #
     def __next__(self):
         if self.songs == []: raise StopIteration
         try:
@@ -55,3 +89,10 @@ class Playlist(Stream):
             self._current = iter(Song(self.songs[self._index]))
             self._next = iter(Song(self.songs[(self._index+1)%len(self.songs)]))
             return next(self._current)
+
+
+
+
+
+
+

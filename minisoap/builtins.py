@@ -23,6 +23,9 @@ from .microphone import Microphone
 from .generators import Silence, Sine
 from .playlist import Playlist
 
+## Builtins class
+#
+# Contains and execute all the language operations
 class Builtins:
     '''
     Write all builtins functions here
@@ -30,13 +33,32 @@ class Builtins:
     def __init__(self):
         self.clock = Clock()
     
+    ## @var clock
+    # A clock for handeling timeouts between calls in ms 
+    
     def log(self, *args):
+        """!
+        Print variables
+        
+        @param **args Any variable to print
+        """
         print(*args)
     
     def open(self, filepath):
+        """!
+        Open a song
+        
+        @param filepath The path to the song
+        """
         return Song(filepath)
     
+    
     def play(self, stream_or_player):
+        """!
+        Play a stream or a player
+        
+        @param stream_or_player The stream or the player
+        """
         if not isinstance(stream_or_player, (Stream, Player)):
             raise TypeError('Expected stream or player')
         if isinstance(stream_or_player, Stream):
@@ -48,28 +70,75 @@ class Builtins:
             pl.play()
         return pl
     
+    
     def pause(self, player):
+        """!
+        Pause a player
+        
+        @param player The player
+        """
         player.pause()
     
     def stop(self, player):
+        """!
+        Stop a player
+        
+        @param player The player
+        """
         player.stop()
     
     def all_mics(self):
+        """!
+        Transform all microphones to streams
+        
+        """
         from soundcard import all_microphones
         return [Microphone(mic) for mic in all_microphones()]
     
     def get(self, i, array):
+        """!
+        Get element from array
+        
+        @param array The array
+        """
         try:
             return array[int(i)]
         except:
             return None
     
-    def silence(self, *args):
-        return Silence(*args)
+    
+    def silence(self, duration=float('inf'), chunk = None, samplerate = None, channels=None):
+        """!
+        Generate a silent wave
+        
+        @param duration The duration of the wave in seconds (optional)
+        @param chunk The number of chunks (optional)
+        @param samplerate The sample rate of the wave (optional)
+        @param channels The number of channels (optional)
+        """
+        return Silence(duration=float('inf'), chunk = None, samplerate = None, channels=None)
 
     
-    def sine(self, *args):
-        return Sine(*args)
+    def sine(self, freq=440, amplitude=1, duration=None, chunk = None, samplerate = None, channels=None):
+        """!
+        Generate a sine wave
+        
+        @param freq The frequency of the wave (optional)
+        @param amplitude The wave amplitude (optional)
+        @param duration The duration of the wave in seconds (optional)
+        @param chunk The number of chunks (optional)
+        @param samplerate The sample rate of the wave (optional)
+        @param channels The number of channels (optional)
+        """
+        return Sine(freq=440, amplitude=1, duration=None, chunk = None, samplerate = None, channels=None)
 
-    def playlist(self, *args):
-        return Playlist(*args)
+    def playlist(self, dir_path, chunk = None, samplerate = None, channels=None):
+        """!
+        Open a playlist
+        
+        @param dir_path The directory path to the playlist
+        @param chunk The number of chunks (optional)
+        @param samplerate The sample rate of the wave (optional)
+        @param channels The number of channels (optional)
+        """
+        return Playlist(dir_path, chunk = None, samplerate = None, channels=None)

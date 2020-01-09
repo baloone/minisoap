@@ -30,7 +30,7 @@ class Interpreter:
     def run(self, seq):
         if seq == None: return
         if isinstance(seq, Help):
-            print(getattr(Builtins, seq.name).__doc__)
+            print(getattr(Builtins, seq.name).__doc__[1::])
         elif seq.type == 'assign':
             if seq.variable_name.val in self.builtins_names: raise InterpreterError('Variable name not allowed')
             if seq.variable_name.val in self.variables: raise InterpreterError('Variable already defined')
