@@ -19,25 +19,36 @@ from threading import Thread
 from .stream import Stream
 import soundcard as sc
 import time
+from .microphone import Microphone
 
 class Player(Thread):
     def __init__(self, stream):
         if not isinstance(stream, Stream): raise TypeError
         Thread.__init__(self)
         self.stream = stream
+        self.is_mic = isinstance(self.stream, Microphone)
         self._play = True
         self.sp = sc.default_speaker()
         self._stop = False
         self._ended = False
     def run(self):
-        with self.sp.player(samplerate=self.stream.samplerate,
-            channels=self.stream.channels) as sp:
-            for block in self.stream:
-                while not self._play:
+        # this is improvised because of a bug in the library
+        if(self.is_mic):
+            with self.sp.player(samplerate=self.stream.samplerate, channels=self.stream.channels) as sp, \
+            self.stream._mic.recorder(samplerate=self.stream.samplerate, channels=self.stream.channels) as mic:
+                while not self._stop:
+                    if(self._play):
+                        data = mic.record(self.stream.chunk)
+                        sp.play(data)
+        else:
+            with self.sp.player(samplerate=self.stream.samplerate,
+                channels=self.stream.channels) as sp:
+                for block in self.stream:
+                    while not self._play:
+                        if self._stop: break
+                        time.sleep(0.1)
                     if self._stop: break
-                    time.sleep(0.1)
-                if self._stop: break
-                sp.play(block)
+                    sp.play(block)
         self._ended = True
 
     def pause(self):
