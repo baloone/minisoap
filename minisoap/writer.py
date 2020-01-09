@@ -14,7 +14,7 @@ Created on Thu Jan  9 12:02:52 2020
 @author: nizar
 """
 from threading import Thread
-from stream import Stream
+from .stream import Stream
 import subprocess as sp
 from pathlib import Path
 
@@ -46,7 +46,6 @@ class Writer(Thread):
         for data in self.stream:
             self._pcmbuf.flush()
             self._pcmbuf.write(data.tobytes())
-            print(1)
             
             
     
