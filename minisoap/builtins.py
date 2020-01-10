@@ -17,7 +17,7 @@
 
 from .song import Song
 from .writer import Writer
-from .stream import Stream
+from .stream import Stream, Mix
 from .clock import Clock
 from .player import Player
 from .microphone import Microphone
@@ -141,3 +141,13 @@ class Builtins:
         @param dir_path The directory path to the playlist
         """
         return Playlist(dir_path) if transition == None else Playlist(dir_path, transition)
+
+    def mix(self, stream1, stream2, scalar=.5):
+        """!
+        Mixes between two streams
+        
+        @param stream1 A stream
+        @param stream2 A stream
+        @param dir_path The directory path to the playlist (optional)
+        """
+        return Mix(stream1, stream2, scalar)

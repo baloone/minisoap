@@ -43,7 +43,7 @@ class Writer(Thread):
                 '-i', '-', # The imput comes from a pipe
                 '-y', # (optional) overwrite output file if it exists,
                 self.path ]
-        pipe = sp.Popen( command, stdin=sp.PIPE, stderr=sp.STDOUT)
+        pipe = sp.Popen( command, stdin=sp.PIPE, stderr=sp.PIPE, stdout=sp.PIPE)
         self._pcmbuf = pipe.stdin
         for data in self.stream:
             self._pcmbuf.flush()

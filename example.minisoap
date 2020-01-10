@@ -15,16 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Minisoap.  If not, see <http://www.gnu.org/licenses/>.
 
-jingle = open "./songs/jingles/Squares.mp3"
+Squares = open "./songs/jingles/Squares.mp3"
 mics = all_mics ()
 mic = get 0 mics
 tr = {
     0s: 1;
-    500ms: 0.2;
+    500ms: 0.5;
     5s: 0
 }
 tr
 jingles = playlist "./songs/jingles/" tr
-player = play jingles
-
+podcasts = playlist "./songs/podcasts/" tr
+player = play (mix podcasts jingles .9)
+write mic "tst.wav"
 
