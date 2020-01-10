@@ -16,6 +16,8 @@
 # along with Minisoap.  If not, see <http://www.gnu.org/licenses/>.
 
 from .stream import Stream
+from .generators import Silence
+from .transition import TransitionStream, Transition
 from .song import Song, extensions
 from pathlib import Path
 import numpy as np
@@ -25,14 +27,16 @@ import numpy as np
 # Reads and operates over Songs form a folder
 class Playlist(Stream):
     
-    def __init__(self, dir_path, chunk = None, samplerate = None, channels=None):
-        super(Playlist, self).__init__(chunk, samplerate, channels)
+    def __init__(self, dir_path, transition=Transition()):
+        super(Playlist, self).__init__()
         self.path = Path(dir_path).absolute()
         self.songs = []
         self.loop = True
         self._index = 0
         self._current = None
         self._next = None
+        self._tr = transition
+        self._trstr = None
         
         if not self.path.exists(): raise Exception("Directory not found")
         if not self.path.is_dir(): raise Exception("Not a directory")
@@ -54,7 +58,14 @@ class Playlist(Stream):
     
     ## @var _index
     # Index of current Song
-    
+    def _charge_trstr(self):
+        snd = Silence(self._tr.duration)
+        if self._index+1 < len(self.songs):
+            snd = Song(self.songs[self._index+1])
+        elif self.loop:
+            snd = Song(self.songs[0])
+        if self._trstr == None: self._trstr = TransitionStream(Song(self.songs[self._index]), snd, self._tr)
+        else: self._trstr.add_stream(snd)
     ## Shuffles songs in the playlist
     #
     def shuffle(self):
@@ -62,7 +73,7 @@ class Playlist(Stream):
         if hasattr(self, '_index'):
             self._index = 0
             self._current = iter(Song(self.songs[self._index]))
-            self._next = iter(Song(self.songs[(self._index+1)%len(self.songs)]))
+            self._next = iter()
 
     ## Iterates over the playlist
     #
@@ -71,24 +82,16 @@ class Playlist(Stream):
             if i.suffix[1:] in extensions: self.songs.append(i)
         if self.songs == []: return self
         self._index = 0
-        self._current = iter(Song(self.songs[self._index]))
-        self._next = iter(Song(self.songs[(self._index+1)%len(self.songs)]))
+        self._charge_trstr()
+        self._iter = iter(self._trstr)
         return self
     
     ## Get next song
     #
     def __next__(self):
         if self.songs == []: raise StopIteration
-        try:
-            return next(self._current)
-        except:
-            self._index += 1
-            if self._index >= len(self.songs):
-                if self.loop: self._index = 0
-                else: raise StopIteration
-            self._current = iter(Song(self.songs[self._index]))
-            self._next = iter(Song(self.songs[(self._index+1)%len(self.songs)]))
-            return next(self._current)
+        if self._trstr._occured: self._charge_trstr()
+        return next(self._iter)
 
 
 

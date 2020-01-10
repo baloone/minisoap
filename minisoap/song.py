@@ -29,12 +29,18 @@ extensions = ["wav", "mp3", "flac", "aac", "m4a", "ogg"]
 # Wrapper of a Song
 class Song(Stream):
     
-    def __init__(self, filename, chunk = None, samplerate = None, channels=None):
+    def __init__(self, filename):
         self.path = Path(filename).absolute()
-        Stream.__init__(self, chunk, samplerate, channels)
+        Stream.__init__(self)
         if not self.path.suffix[1:] in extensions : raise Exception("Extension not supported")
         if not self.path.exists(): raise Exception("File not found")
-    
+        p = subprocess.Popen(["ffmpeg", "-i", self.path],
+            stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        info = p.stderr.read().decode("utf-8") 
+        duration = info[info.index('Duration')+10:]
+        duration = duration[:duration.index(',')].split(':')
+        self.duration = float(duration[-1]) + 60*float(duration[-2]) + 24*60*float(duration[-3])
+
     ## @var path
     # Path of the song
     
@@ -58,6 +64,7 @@ class Song(Stream):
     def __next__(self):
         a = self._pcmbuf.read(self.chunk*4*self.channels)
         if not len(a): raise StopIteration
+        self.update_t()
         return numpy.frombuffer(a, dtype=numpy.float32).reshape((-1,self.channels))
         
 

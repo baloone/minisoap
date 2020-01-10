@@ -64,7 +64,7 @@ class Transition(Expr):
     def __init__(self, table):
         self.table = table
     def __str__(self):
-        return 'Transition('+".\t".join([str(t[0])+" ->> "+str(t[1]) for t in self.table])+')'
+        return 'Transition('+"; ".join([str(t[0])+" ->> "+str(t[1]) for t in self.table])+')'
 
 class Number(Expr):
     def __init__(self, val):
@@ -113,7 +113,8 @@ class Parser:
                 try:
                     return Sequence(VariableName(name), self.parse_expr(l[cur+1:]))
                 except ContinueParsing as cp:
-                    raise ContinueParsing(vn=VariableName(name), pile=cp.pile, txt=cp.txt)
+                    cp.vn = VariableName(name)
+                    raise cp
             elif l[cur] == "?":
                 for i in l[cur+1:]:
                     if not i in self._wh:
@@ -128,6 +129,7 @@ class Parser:
         pile = []
         try:
             if continueparsing != None:
+                pile = continueparsing.pile
                 ep, cur = self.__get_brackets(t, cur, continueparsing)
                 pile.append(ep)
             while cur < len(t):
@@ -141,7 +143,8 @@ class Parser:
                 else:
                     raise LineParsingError('Unexpected character: '+t[cur], cur)
         except ContinueParsing as cp:
-            raise ContinueParsing(pile=pile,txt=cp.txt)
+            cp.pile = pile
+            raise cp
         if len(pile) > 1 and not isinstance(pile[0], VariableName):
             raise LineParsingError('Calling a non callable')
         if len(pile) < 1:
@@ -150,13 +153,16 @@ class Parser:
             return pile[0]
         return Expr(pile[0], *pile[1:])
     def parse_transition(self, txt):
-        table = []
-        for l in txt.split(";"):
-            if l.replace(' ', '').replace('\t', '') == "": continue
-            [time, amplitude] = [i.replace(' ', '').replace('\t', '') for i in l.split(':')]
-            if time[-2:] == "ms": table.append((int(time[:-2]), float(amplitude)))
-            else: table.append((int(float(time[:-1])*1000), float(amplitude)))
-        return Transition(table)
+        try:
+            table = []
+            for l in txt.split(";"):
+                if l.replace(' ', '').replace('\t', '') == "": continue
+                [time, amplitude] = [i.replace(' ', '').replace('\t', '') for i in l.split(':')]
+                if time[-2:] == "ms": table.append((float(time[:-2])/1000, float(amplitude)))
+                else: table.append((int(float(time[:-1])), float(amplitude)))
+            return Transition(table)
+        except:
+            raise LineParsingError("Syntax error in transition definition")
     def __skip_white_space(self, t, i):
         cur = i
         while t[cur] in self._wh and cur < len(t)-1:
@@ -210,7 +216,10 @@ class Parser:
                 brkts+=t[cur]
                 cur+=1
         except IndexError:
-            raise ContinueParsing(txt=brkts)
+            if continueparsing == None: raise ContinueParsing(txt=brkts)
+            else:
+                continueparsing.txt = brkts
+                raise continueparsing
         cur+=1
         return self.parse_transition(brkts),cur
     def __get_number(self, t, i):

@@ -20,10 +20,10 @@
 #
 # Represents a stream of samples as an Iterator
 class Stream:
-    def __init__(self, chunk = 4096, samplerate = 44100, channels=2):
-        self.chunk = chunk if chunk != None else 4096
-        self.samplerate = samplerate if samplerate != None else 44100
-        self.channels = channels if channels != None else 2
+    def __init__(self):
+        self.chunk = 4096
+        self.samplerate = 44100
+        self.channels = 2
         self.duration = float('inf')
         self._t = 0.0
         
@@ -51,7 +51,6 @@ class Stream:
     #
     def __next__(self):
         raise StopIteration
-    
     ## Update the number of seconds read from the stream
     #
     def update_t(self, chunk=None):

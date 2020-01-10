@@ -100,7 +100,7 @@ class Builtins:
             return None
     
     
-    def silence(self, duration=float('inf'), chunk = None, samplerate = None, channels=None):
+    def silence(self, duration=float('inf')):
         """!
         Generate a silent wave
         
@@ -109,29 +109,23 @@ class Builtins:
         @param samplerate The sample rate of the wave (optional)
         @param channels The number of channels (optional)
         """
-        return Silence(duration=float('inf'), chunk = None, samplerate = None, channels=None)
+        return Silence(duration=float('inf'))
 
     
-    def sine(self, freq=440, amplitude=1, duration=None, chunk = None, samplerate = None, channels=None):
+    def sine(self, freq=440, amplitude=1, duration=None):
         """!
         Generate a sine wave
         
         @param freq The frequency of the wave (optional)
         @param amplitude The wave amplitude (optional)
         @param duration The duration of the wave in seconds (optional)
-        @param chunk The number of chunks (optional)
-        @param samplerate The sample rate of the wave (optional)
-        @param channels The number of channels (optional)
         """
-        return Sine(freq=440, amplitude=1, duration=None, chunk = None, samplerate = None, channels=None)
+        return Sine(freq=440, amplitude=1, duration=None)
 
-    def playlist(self, dir_path, chunk = None, samplerate = None, channels=None):
+    def playlist(self, dir_path, transition=None):
         """!
         Open a playlist
         
         @param dir_path The directory path to the playlist
-        @param chunk The size of the chunk (optional)
-        @param samplerate The sample rate of the wave (optional)
-        @param channels The number of channels (optional)
         """
-        return Playlist(dir_path, chunk = None, samplerate = None, channels=None)
+        return Playlist(dir_path) if transition == None else Playlist(dir_path, transition)
