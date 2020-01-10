@@ -79,29 +79,29 @@ class Console:
     ## Prints an info (in blue)
     #
     # @param *args arguments to print
-    def info(self, *args):
+    def info(self, *args, **kw):
         """
         Prints infos
         """
-        self.log(*args, prefix=Back.BLUE + Fore.WHITE + 'INFO:' + Back.RESET + Fore.RESET + ' ')
+        self.log(*args, **kw, prefix=Back.BLUE + Fore.WHITE + 'INFO:' + Back.RESET + Fore.RESET + ' ')
 
     ## Prints warning (in yellow)
     #
     # @param *args arguments to print
-    def warn(self, *args):
+    def warn(self, *args, **kw):
         """
         Prints warnings
         """
-        self.log(*args, prefix=Back.YELLOW + Fore.BLACK + 'WARNING:' + Back.RESET + Fore.RESET + ' ')
+        self.log(*args, **kw, prefix=Back.YELLOW + Fore.BLACK + 'WARNING:' + Back.RESET + Fore.RESET + ' ')
 
     ## Prints an error (in red)
     #
     # @param *args arguments to print
-    def error(self, *args):
+    def error(self, *args, **kw):
         """
         Prints errors
         """
-        self.log(*args, prefix=Back.RED + Fore.WHITE + 'ERROR:' + Back.RESET + Fore.RESET + ' ')
+        self.log(*args, **kw, prefix=Back.RED + Fore.WHITE + 'ERROR:' + Back.RESET + Fore.RESET + ' ')
     
     ## Input function, listens to user's input
     #

@@ -50,7 +50,7 @@ def main(lines):
                 except ContinueParsing as e:
                     cp = e
                 except Exception as e:
-                    console.error(e)
+                    console.error(e.__class__.__name__, e, join="\n")
                     cp = None
             except LineParsingError as e:
                 console.error(e)
