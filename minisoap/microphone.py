@@ -20,13 +20,13 @@ import soundcard as sc
 import numpy as np
 
 class Microphone(Stream):
-    def __init__(self, mic=None, chunk = None, samplerate = None, channels=None):
+    def __init__(self, mic=None):
         if mic == None:
             try: 
                 mic = sc.default_microphone()
             except:
                 raise Exception("No microphones avalaible")
-        Stream.__init__(self, chunk, samplerate, channels)
+        Stream.__init__(self)
         if not mic.record : raise Exception("Not a microphone")
         self._mic = mic
     def _gen(self):

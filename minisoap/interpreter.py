@@ -15,7 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with Minisoap.  If not, see <http://www.gnu.org/licenses/>.
 
-from .parser import Sequence, Help, Expr, String, Number, VariableName
+from .parser import Sequence, Help, Expr, String, Number, VariableName, Transition
+from .transition import Transition as Tr
 from .builtins import Builtins
 class InterpreterError(Exception):
     pass
@@ -45,8 +46,10 @@ class Interpreter:
     def run_expr(self, expr):
         if isinstance(expr, String) or isinstance(expr, Number):
             return expr.val
+        elif isinstance(expr, Transition):
+            return Tr(expr.table)
         elif isinstance(expr, VariableName):
-            if not expr.val in self.variables: raise InterpreterError('Use of undefined variable')
+            if not expr.val in self.variables: raise InterpreterError('Use of undefined variable: '+expr.val)
             return self.variables[expr.val]
         elif isinstance(expr, Expr):
             if not isinstance(expr.val, VariableName): raise InterpreterError('Cannot call a non callable')

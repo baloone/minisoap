@@ -16,7 +16,7 @@
 # along with Minisoap.  If not, see <http://www.gnu.org/licenses/>.
 
 from .console import Console
-from .parser import parse_line, LineParsingError, Sequence, Expr, Number, String, VariableName
+from .parser import Parser, LineParsingError, Sequence, Expr, Number, String, VariableName, ContinueParsing
 from .song import Song
 from .interpreter import InterpreterError, Interpreter
 from .killable_thread import KillableThread

@@ -23,10 +23,10 @@ import numpy as np
 # Generates synthetical waves
 class Generator(Stream):
     
-    def __init__(self, duration=float('inf'), chunk = None, samplerate = None, channels=None):
+    def __init__(self, duration=float('inf')):
         if duration == None: duration = float('inf')
         self.duration = duration
-        Stream.__init__(self, chunk, samplerate, channels)
+        Stream.__init__(self)
     
     ## @var duration
     # The duration of the wave
@@ -54,7 +54,7 @@ class Generator(Stream):
             if a < self.chunk:
                 self.update_t(a)
                 return self._gen(a)
-        self.update_t()
+            self.update_t()
         return self._gen(self.chunk)
 
 ## Silent wave generator
@@ -67,11 +67,11 @@ class Silence(Generator):
 #
 # Generate a sine wave
 class Sine(Generator):
-    def __init__(self, freq=440, amplitude=1, duration=None, chunk = None, samplerate = None, channels=None):
+    def __init__(self, freq=440, amplitude=1, duration=None):
         self._freq = freq
         self._amplitude = amplitude
         self._i = 0
-        Generator.__init__(self, duration, chunk, samplerate, channels)
+        Generator.__init__(self, duration)
     
     ## @var _freq
     # The frequency of the sine wave
