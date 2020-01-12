@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with Minisoap.  If not, see <http://www.gnu.org/licenses/>.
 
+from functools import reduce
+
 
 ## Stream class
 #
@@ -96,5 +98,53 @@ class Mix(Stream):
             ret = self._p * n1 + (1-self._p) * n2
         except:
             ret = self._p * n1
+        self.update_t()
+        return ret
+
+## Fallback class
+#
+# 
+class Fallback(Stream):
+    def __init__(self, *streams):
+        super(Fallback, self).__init__()
+        self._streams = streams
+        self._streams_i = []
+        self._i = 0
+        self.duration = reduce(lambda x,y: x+y, [i.duration for i in self._streams])
+    ## @var _streams
+    # list of the streams
+    
+    ## @var _p
+    # Amplitude of first stream (second stream 1 - _p)
+
+    ## @var _i
+    # Current index
+    
+    
+    def _update_i(self):
+        for i in range(len(self._streams_i)):
+            try:
+                n = next(self._streams_i[i])
+                self._i = i
+                return n
+            except:
+                pass
+        raise StopIteration
+    
+    ## Iterate over the stream
+    #
+    def __iter__(self):
+        for s in self._streams:
+            self._streams_i.append(iter(s))
+        return self
+    
+    ## Next function of the stream iterator
+    #
+    def __next__(self):
+        ret = None
+        try: 
+            ret = next(self._streams_i[self._i])
+        except:
+            ret = self._update_i()
         self.update_t()
         return ret

@@ -17,7 +17,7 @@
 
 from .song import Song
 from .writer import Writer
-from .stream import Stream, Mix
+from .stream import Stream, Mix, Fallback
 from .clock import Clock
 from .player import Player
 from .microphone import Microphone
@@ -146,6 +146,13 @@ class Builtins:
         """
         playlist.shuffle()
         return playlist
+    def Fallback(self, *streams):
+        """!
+        Returns a Fallback
+        
+        @params ...streams The streams
+        """
+        return Fallback(*streams)
 
     def mix(self, stream, bgstream=None, scalar=.5):
         """!
