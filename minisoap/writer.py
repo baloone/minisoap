@@ -1,4 +1,4 @@
-# Copyright (C) 2020 Nizar
+# Copyright (C) 2020 Nizar, Mohamed H
 # 
 # This file is part of Minisoap.
 # 
@@ -15,39 +15,39 @@
 # You should have received a copy of the GNU General Public License
 # along with Minisoap.  If not, see <http://www.gnu.org/licenses/>.
 
-from threading import Thread
+from .listener import Listener
 from .stream import Stream
 import subprocess as sp
 from pathlib import Path
+import tempfile, time
 
-class Writer(Thread): 
+class Writer(Listener): 
     def __init__(self, stream, filename, chunk = None, samplerate = None, channels=None):
         if not isinstance(stream, Stream): raise TypeError
-        Thread.__init__(self)
+        Listener.__init__(self)
         self.path = Path(filename).absolute()
         self.stream = stream
-        self.chunk = chunk if chunk != None else 4096
-        self.samplerate = samplerate if samplerate != None else 44100
-        self.channels = channels if channels != None else 2
-        self.stream = stream
 
 
-    def run(self):    
+    def run(self):
         command = [ "ffmpeg",
                 "-f", 
                 "f32le", 
                 "-acodec", 
                 "pcm_f32le",
-                "-ac", str(self.channels), 
-                "-ar", str(self.samplerate),
+                "-ac", str(self.stream.channels), 
+                "-ar", str(self.stream.samplerate),
                 '-i', '-', # The imput comes from a pipe
                 '-y', # (optional) overwrite output file if it exists,
                 self.path ]
+        #tmp_fd, _ = tempfile.mkstemp('minisoapcm')
+        #tmp = open(tmp_fd, "wb")
+
+
         pipe = sp.Popen( command, stdin=sp.PIPE, stderr=sp.PIPE, stdout=sp.PIPE)
-        self._pcmbuf = pipe.stdin
+        _pcmbuf = pipe.stdin
         for data in self.stream:
-            self._pcmbuf.flush()
-            self._pcmbuf.write(data.tobytes())
-            
-            
-    
+            time.sleep(0.01)
+            if self.killed():break
+            _pcmbuf.write(data.tobytes())
+            _pcmbuf.flush()

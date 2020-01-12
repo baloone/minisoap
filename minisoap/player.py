@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Minisoap.  If not, see <http://www.gnu.org/licenses/>.
 
-from .killable_thread import KillableThread
+from .listener import Listener
 from .stream import Stream
 import soundcard as sc
 import time
@@ -24,10 +24,10 @@ from .microphone import Microphone
 ## Player class
 #
 # A stream player
-class Player(KillableThread):
+class Player(Listener):
     def __init__(self, stream):
         if not isinstance(stream, Stream): raise TypeError
-        KillableThread.__init__(self)
+        Listener.__init__(self)
         self.stream = stream
         self.is_mic = isinstance(self.stream, Microphone)
         self._play = True
@@ -51,12 +51,16 @@ class Player(KillableThread):
     def run(self):
         with self.sp.player(samplerate=self.stream.samplerate,
             channels=self.stream.channels) as sp:
+            
             for block in self.stream:
                 while not self._play:
-                    if self.killed(): return
+                    self._listening = False
+                    if self.killed():return
                     time.sleep(0.1)
-                if self.killed(): break
+                self._listening = True
+                if self.killed(): self._listening = False;break
                 sp.play(block)
+        self._listening = False
 
     ## Pause the player
     #

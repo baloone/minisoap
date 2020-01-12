@@ -18,8 +18,6 @@
 from .stream import Stream
 import numpy as np
 
-def bar(p1, p2, t):
-    return t*p1+(1-t)*p2
 
 class Transition:
     def __init__(self, table=[]):
@@ -43,38 +41,3 @@ class Transition:
     def __str__(self):
         return 'Transition(\n.     '+"\n.     ".join([str(t[0])+"s ->> "+str(t[1]) for t in self._table])+'\n)'
 
-
-class TransitionStream(Stream):
-    def __init__(self, stream1, stream2, transition=Transition()):
-        super(TransitionStream, self).__init__()
-        self._s1 = stream1
-        self._s2 = stream2
-        self._tr = transition
-        self._occured = False
-        self.duration = self._s1.duration + self._s2.duration - self._tr.duration
-    def __iter__(self):
-        self._is1 = iter(self._s1)
-        self._is2 = iter(self._s2)
-        self._c1 = None
-        self._c2 = None
-        return self
-    def add_stream(self, stream):
-        if not self._occured: raise Exception('Cannot add a stream')
-        self._s1, self._s2 = self._s2, stream
-        self._is1, self._is2 = self._is2, iter(self._s2)
-        self._occured = False
-        self.duration = self._s1.duration + self._s2.duration - self._tr.duration
-    def __next__(self):
-        t = self._s1.duration - self._s1._t
-        if t <= 0:
-            self._occured = True
-            return next(self._is2)
-        if t <= self._tr.duration:
-            dt = 1.0/self.samplerate
-            n1 = next(self._is1)
-            n1 = np.concatenate((n1, np.zeros((self.chunk-len(n1), self.channels))))
-            n2 = next(self._is2)
-            n2 = np.concatenate((np.zeros((self.chunk-len(n2), self.channels)), n2))
-            f = [np.vectorize(lambda i: bar(n1[i][j], n2[i][j], self._tr.amplitude(t+i*dt))) for j in range(self.channels)]
-            return np.transpose(np.array([f[i](np.arange(self.chunk)) for i in range(self.channels)]))
-        else: return next(self._is1)

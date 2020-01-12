@@ -19,7 +19,7 @@
 ## Stream class
 #
 # Represents a stream of samples as an Iterator
-class Stream:
+class Stream(object):
     def __init__(self):
         self.chunk = 4096
         self.samplerate = 44100
@@ -61,8 +61,8 @@ class Stream:
 class Mix(Stream):
     def __init__(self, mainstream, bgstream, p=.5):
         super(Mix, self).__init__()
-        self._s1 = mainstream
-        self._s2 = bgstream
+        self._s1 = mainstream if mainstream!=None else Stream()
+        self._s2 = bgstream if bgstream!=None else Stream()
         self._p = p
         self.duration = max(self._s1.duration, self._s2.duration)
     def __iter__(self):
