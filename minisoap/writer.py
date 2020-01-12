@@ -63,7 +63,7 @@ class Writer(Listener):
         pipe = sp.Popen( command, stdin=sp.PIPE, stderr=sp.PIPE, stdout=sp.PIPE)
         _pcmbuf = pipe.stdin
         for data in self.stream:
-            time.sleep(0.01)
+            if data is None: continue
             if self.killed():break
             _pcmbuf.write(data.tobytes())
             _pcmbuf.flush()

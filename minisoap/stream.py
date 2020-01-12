@@ -40,6 +40,9 @@ class Stream(object):
     
     ## @var duration
     # The duration of the stream (inf)
+
+    ## @var track
+    # The track number
     
     ## @var _t
     # The number of seconds read from the stream
@@ -50,7 +53,7 @@ class Stream(object):
         return self
     
     ## Next function of the stream iterator
-    #
+    # Should return None at the end of each track
     def __next__(self):
         raise StopIteration
     
@@ -147,4 +150,62 @@ class Fallback(Stream):
         except:
             ret = self._update_i()
         self.update_t()
+        return ret
+
+
+## Rotation class
+#
+# 
+class Rotation(Stream):
+    def __init__(self, *streams):
+        super(Rotation, self).__init__()
+        self._streams = streams
+        self._streams_i = []
+        self._i = 0
+        self.duration = reduce(lambda x,y: x+y, [i.duration for i in self._streams])
+        self._remainder = False
+        print(self.duration)
+    ## @var _streams
+    # list of the streams
+    
+    ## @var _p
+    # Amplitude of first stream (second stream 1 - _p)
+
+    ## @var _i
+    # Current index
+    
+    
+    def _update_i(self):
+        ls = len(self._streams_i)
+        for i in range(1,ls+1):
+            try:
+                j = (self._i+i)%ls
+                n = next(self._streams_i[j])
+                self._i = j
+                return n
+            except:
+                pass
+        raise StopIteration
+    
+    ## Iterate over the stream
+    #
+    def __iter__(self):
+        for s in self._streams:
+            self._streams_i.append(iter(s))
+        return self
+    
+    ## Next function of the stream iterator
+    #
+    def __next__(self):
+        if self._remainder:
+            self._remainder = False
+            return self._update_i()
+        ret = None
+        try: 
+            ret = next(self._streams_i[self._i])
+            if ret is None:
+                self._remainder = True
+                
+        except:
+            self._update_i()
         return ret

@@ -103,7 +103,7 @@ class Playlist(Stream):
             ret = None
             if t <= 0:
                 self._charge()
-                ret = next(self._ic)
+                ret = None
             elif t <= self._tr.duration:
                 dt = 1.0/self.samplerate
                 n1 = next(self._ic)
@@ -117,4 +117,4 @@ class Playlist(Stream):
             return ret
         except StopIteration:
             self._charge()
-            return self.__next__()
+            return None

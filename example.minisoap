@@ -34,7 +34,8 @@ $_$ = {
 jingles = playlist "./songs/jingles/" 1 '$' // Playlist of jingles (loop activated)
 podcasts = playlist "./songs/podcasts/" 0 $_$ // Playlist of podcasts (no loop)
 '_' = mix podcasts (shuffle jingles) .7 // Mix the two streams in one stream that will end with podcasts
-player = play (mix '_' mic)// "tst.mp3" // Mix microphone (if there is one) with it (will end with '_')
- 
+//player = play (mix '_' mic) // Mix microphone (if there is one) with it (will end with '_')
+player = play (fallback (rotation jingles podcasts) mic)
+
 
 //all_functions () // Prints all available functions

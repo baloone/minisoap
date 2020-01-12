@@ -53,6 +53,7 @@ class Player(Listener):
             channels=self.stream.channels) as sp:
             
             for block in self.stream:
+                if block is None: continue # End of track
                 while not self._play:
                     self._listening = False
                     if self.killed():return
