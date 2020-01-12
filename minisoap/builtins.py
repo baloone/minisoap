@@ -127,7 +127,7 @@ class Builtins:
         """
         return Sine(freq=440, amplitude=1, duration=None)
 
-    def playlist(self, dir_path, loop=False, transition = None):
+    def playlist(self, dir_path, loop=0.0, transition = None):
         """!
         Opens a playlist
         
@@ -135,18 +135,18 @@ class Builtins:
         @param loop 0 if the playlist doesn't loop 
         @param dir_path The directory path to the playlist
         """
-        Playlist(dir_path).loop = loop > 0
-        return Playlist(dir_path) if transition == None else Playlist(dir_path, transition)
+        print(loop > 0)
+        return Playlist(dir_path, loop > 0, transition)
     
     def shuffle(self, playlist):
         """!
         Shuffles a playlist
         
-        @param dir_path The directory path to the playlist
+        @param playlist The playlist to shuffle
         """
         playlist.shuffle()
         return playlist
-        
+
     def mix(self, stream, bgstream=None, scalar=.5):
         """!
         Mixes between two streams

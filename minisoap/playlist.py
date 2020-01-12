@@ -31,11 +31,11 @@ def bar(p1, p2, t):
 # Reads and operates over Songs form a folder
 class Playlist(Stream):
     
-    def __init__(self, dir_path, transition=Transition()):
+    def __init__(self, dir_path, loop=False, transition=Transition()):
         super(Playlist, self).__init__()
         self.path = Path(dir_path).absolute()
         self.songs = []
-        self.loop = False
+        self.loop = loop
         self._index = 0
         self._tr = transition
         self._current = None
@@ -43,7 +43,6 @@ class Playlist(Stream):
         self._ic = None
         self._in = None
         self._trstr = None
-        
         if not self.path.exists(): raise Exception("Directory not found")
         if not self.path.is_dir(): raise Exception("Not a directory")
         for i in self.path.iterdir():
@@ -68,7 +67,10 @@ class Playlist(Stream):
     ## @var _index
     # Index of current Song
 
-    def _charge(self):
+    def _charge(self, initial_call=False):
+        if self._next == None and not initial_call: raise StopIteration
+        if not initial_call:
+            self._index += 1
         snd = None
         if self._index+1 < len(self.songs):
             snd = Song(self.songs[self._index+1])
@@ -89,7 +91,7 @@ class Playlist(Stream):
     def __iter__(self):
         if self.songs == []: return self
         self._index = 0
-        self._charge()
+        self._charge(True)
         return self
     
     ## Get next song
@@ -98,18 +100,21 @@ class Playlist(Stream):
         if self.songs == [] or self._ic == None: raise StopIteration
         try:
             t = self._current.duration - self._current._t
+            ret = None
             if t <= 0:
                 self._charge()
-                return next(self._ic)
-            if t <= self._tr.duration:
+                ret = next(self._ic)
+            elif t <= self._tr.duration:
                 dt = 1.0/self.samplerate
                 n1 = next(self._ic)
                 n1 = np.concatenate((n1, np.zeros((self.chunk-len(n1), self.channels))))
                 n2 = next(self._in) if self._in != None else np.zeros((self.chunk, self.channels))
                 n2 = np.concatenate((np.zeros((self.chunk-len(n2), self.channels)), n2))
                 f = [np.vectorize(lambda i: bar(n1[i][j], n2[i][j], self._tr.amplitude(t+i*dt))) for j in range(self.channels)]
-                return np.transpose(np.array([f[i](np.arange(self.chunk)) for i in range(self.channels)]))
-            else: return next(self._ic)
+                ret = np.transpose(np.array([f[i](np.arange(self.chunk)) for i in range(self.channels)]))
+            else: ret = next(self._ic)
+            self.update_t()
+            return ret
         except StopIteration:
             self._charge()
             return self.__next__()
