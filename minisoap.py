@@ -14,7 +14,7 @@
 # 
 # You should have received a copy of the GNU General Public License
 # along with Minisoap.  If not, see <http://www.gnu.org/licenses/>.
-DEBUG = True
+DEBUG = False
 
 import sys, os, signal, threading, traceback
 from minisoap import Console, Parser, LineParsingError, InterpreterError, Interpreter, Listener, ContinueParsing

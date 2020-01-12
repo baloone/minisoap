@@ -135,7 +135,6 @@ class Builtins:
         @param loop 0 if the playlist doesn't loop 
         @param dir_path The directory path to the playlist
         """
-        print(loop > 0)
         return Playlist(dir_path, loop > 0, transition)
     
     def shuffle(self, playlist):

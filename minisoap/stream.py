@@ -164,7 +164,6 @@ class Rotation(Stream):
         self._i = 0
         self.duration = reduce(lambda x,y: x+y, [i.duration for i in self._streams])
         self._remainder = False
-        print(self.duration)
     ## @var _streams
     # list of the streams
     
