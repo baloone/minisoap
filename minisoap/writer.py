@@ -20,6 +20,9 @@ from .stream import Stream
 import subprocess as sp
 from pathlib import Path
 
+## Stream writer
+#
+# Writes a stream on hard drive
 class Writer(Thread): 
     def __init__(self, stream, filename, chunk = None, samplerate = None, channels=None):
         if not isinstance(stream, Stream): raise TypeError
@@ -29,9 +32,25 @@ class Writer(Thread):
         self.chunk = chunk if chunk != None else 4096
         self.samplerate = samplerate if samplerate != None else 44100
         self.channels = channels if channels != None else 2
-        self.stream = stream
+        
+    ## @var path
+    # Path for the file
+    
+    ## @var stream
+    # Stream to write
+    
+    ## @var chunk
+    # Chunk size
+    
+    ## @var samplerate
+    # Sampling rate
+    
+    ## @var Channels
+    # Number of channels
+    
 
-
+    ## Run function of the thread, writes the stream to path
+    #
     def run(self):    
         command = [ "ffmpeg",
                 "-f", 

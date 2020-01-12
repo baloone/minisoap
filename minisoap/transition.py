@@ -18,14 +18,31 @@
 from .stream import Stream
 import numpy as np
 
+## Add to values with scaling
+#
+# @param p1 First value
+# @param p2 Second value
+# @param t Third value
 def bar(p1, p2, t):
     return t*p1+(1-t)*p2
 
+## Transition class
+#
+# Realize transition between two streams
 class Transition:
     def __init__(self, table=[]):
         self.duration = 0 if table == [] else max([i[0] for i in table])
         self._table = sorted(table)
     
+    ## @var duration
+    # Duration of the transition
+    
+    ## @var _table
+    # Next values (transition table)
+    
+    ## Makes the transition between of samples in _table
+    #
+    # @param t Time of transition
     def amplitude(self, t):
         """
         Linear approximation of the transition table
@@ -40,11 +57,17 @@ class Transition:
             return (a2-a1)/(t2-t1)*(t-t1)           
         except:
             return 0
+    
+    ## String representation of transition objects
+    #
     def __str__(self):
         return 'Transition(\n.     '+"\n.     ".join([str(t[0])+"s ->> "+str(t[1]) for t in self._table])+'\n)'
 
-
+## Transition stream class
+#
+# Realize transition between two streams
 class TransitionStream(Stream):
+    
     def __init__(self, stream1, stream2, transition=Transition()):
         super(TransitionStream, self).__init__()
         self._s1 = stream1
@@ -52,18 +75,40 @@ class TransitionStream(Stream):
         self._tr = transition
         self._occured = False
         self.duration = self._s1.duration + self._s2.duration - self._tr.duration
+    
+    ## @var _s1
+    # First stream
+    
+    ## @var _s2
+    # Second stream
+    
+    ## @var _tr
+    # Transition object
+    
+    ## @var _occured
+    # Boolean if transition occured and is finished
+    
+    ## Iterate over both streams
+    #
     def __iter__(self):
         self._is1 = iter(self._s1)
         self._is2 = iter(self._s2)
         self._c1 = None
         self._c2 = None
         return self
+    
+    ## Add stream to transition stream (to do another transition)
+    #
+    # @param stream The new stream to add
     def add_stream(self, stream):
         if not self._occured: raise Exception('Cannot add a stream')
         self._s1, self._s2 = self._s2, stream
         self._is1, self._is2 = self._is2, iter(self._s2)
         self._occured = False
         self.duration = self._s1.duration + self._s2.duration - self._tr.duration
+    
+    ## makes transition between two streams
+    #
     def __next__(self):
         t = self._s1.duration - self._s1._t
         if t <= 0:
@@ -78,3 +123,5 @@ class TransitionStream(Stream):
             f = [np.vectorize(lambda i: bar(n1[i][j], n2[i][j], self._tr.amplitude(t+i*dt))) for j in range(self.channels)]
             return np.transpose(np.array([f[i](np.arange(self.chunk)) for i in range(self.channels)]))
         else: return next(self._is1)
+
+

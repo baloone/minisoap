@@ -19,7 +19,8 @@
 from colorama import init, Cursor, Fore, Back, Style
 import os, sys
 
-
+## Get character from stdin
+#
 def getch():
     if os.name == 'nt':
         import msvcrt
@@ -28,6 +29,8 @@ def getch():
         s = str.encode(sys.stdin.read(1))
         return ord(s) if len(s) > 0 else None
 
+## Detect Kb hit (return boolean)
+#
 def kbhit():
     if os.name == 'nt':
         import msvcrt
@@ -50,16 +53,16 @@ class Console:
         self.hist_down = []
         
     ## @var cursor_pos
-    #
+    # Position of the cursor
     
     ## @var line
-    #
+    # Current line
     
     ## @var hist_op
-    #
+    # History of previous op
     
     ## @var hist_down
-    #
+    # History of next op
     
     ## Prints in stdout
     #
