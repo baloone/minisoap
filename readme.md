@@ -25,7 +25,26 @@ Then it should display:
 
 ## Documentation
 ### Get the list of available functions
-### Get the descriptions of a function
+```
+> all_functions ()
+INFO: all_functions: Prints all available functions
+INFO: 
+INFO: all_mics: Transform all microphones to streams
+INFO: 
+INFO: get: Get element from array
+INFO:         
+INFO:         @param i Index of element
+INFO:         @param array The array
+INFO: 
+INFO: mix: Mixes between two streams
+INFO:         
+INFO:         @param stream The main stream
+INFO:         @param bgstream The background stream (optional)
+INFO:         @param scalar The multiplier (default value : .5)
+INFO: 
+etc.
+```
+### Get the descriptions of a particular function
 
 ```
 
