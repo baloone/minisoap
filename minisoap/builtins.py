@@ -32,10 +32,7 @@ class Builtins:
     Write all builtins functions here
     '''
     def __init__(self):
-        self.clock = Clock()
-    
-    ## @var clock
-    # A clock for handeling timeouts between calls in ms 
+        pass
     
     def log(self, *args):
         """!
@@ -44,6 +41,12 @@ class Builtins:
         @param **args Any variable to print
         """
         print(*args)
+    
+    def all_functions(self):
+        """!
+        Prints all available functions
+        """
+        return "\n\n".join([i+": "+getattr(Builtins, i).__doc__[2:].strip() for i in dir(self) if i[0]!="_"])
     
     def open(self, filepath):
         """!
@@ -142,12 +145,12 @@ class Builtins:
         """
         return Playlist(dir_path) if transition == None else Playlist(dir_path, transition)
 
-    def mix(self, stream1, stream2, scalar=.5):
+    def mix(self, stream, bgstream, scalar=.5):
         """!
         Mixes between two streams
         
-        @param stream1 A stream
-        @param stream2 A stream
-        @param dir_path The directory path to the playlist (optional)
+        @param stream The main stream
+        @param bgstream The background stream
+        @param scalar The multiplier (default value : .5)
         """
-        return Mix(stream1, stream2, scalar)
+        return Mix(stream, bgstream, scalar)

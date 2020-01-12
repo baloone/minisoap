@@ -16,16 +16,19 @@
 // along with Minisoap.  If not, see <http://www.gnu.org/licenses/>.
 
 Squares = open "./songs/jingles/Squares.mp3"
-mics = all_mics ()
-mic = get 0 mics
+mics = all_mics () // list of all available mics
+mic = get 0 mics // the first available mic or None
+
+// A transition definition
 tr = {
     0s: 1;
     500ms: 0.5;
     5s: 0
 }
-tr
+
 jingles = playlist "./songs/jingles/" tr
 podcasts = playlist "./songs/podcasts/" tr
 player = play (mix podcasts jingles .9)
-write mic "tst.wav"
 
+
+all_functions ()

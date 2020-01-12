@@ -59,10 +59,10 @@ class Stream:
 
 
 class Mix(Stream):
-    def __init__(self, stream1, stream2, p=.5):
+    def __init__(self, mainstream, bgstream, p=.5):
         super(Mix, self).__init__()
-        self._s1 = stream1
-        self._s2 = stream2
+        self._s1 = mainstream
+        self._s2 = bgstream
         self._p = p
         self.duration = max(self._s1.duration, self._s2.duration)
     def __iter__(self):
@@ -71,14 +71,11 @@ class Mix(Stream):
         return self
     def __next__(self):
         ret = None
+        n1 = next(self._s1)
         try:
-            n1 = next(self._s1)
-            try:
-                n2 = next(self._s2)
-                ret = self._p * n1 + (1-self._p) * n2
-            except:
-                ret = self._p * n1
+            n2 = next(self._s2)
+            ret = self._p * n1 + (1-self._p) * n2
         except:
-            ret = (1-self._p)*next(self._s2)
+            ret = self._p * n1
         self.update_t()
         return ret

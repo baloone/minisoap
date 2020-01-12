@@ -31,7 +31,7 @@ class Playlist(Stream):
         super(Playlist, self).__init__()
         self.path = Path(dir_path).absolute()
         self.songs = []
-        self.loop = True
+        self.loop = False
         self._index = 0
         self._current = None
         self._next = None

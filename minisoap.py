@@ -55,8 +55,7 @@ def main(lines):
             except LineParsingError as e:
                 console.error(e)
 
-            if not b : console.log(bg(cp), end="")
-        interpreter.step()
+            if not b or (b and len(lines) == 0) : console.log(bg(cp), end="")
 st = None
 def ctrlc(sig, frame):
     print ('\nExiting...')
