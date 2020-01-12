@@ -18,7 +18,7 @@
 
 ## Stream class
 #
-# Represents a stream of samples as an Iterator
+# Represents a stream
 class Stream(object):
     def __init__(self):
         self.chunk = 4096
@@ -47,17 +47,20 @@ class Stream(object):
     def __iter__(self):
         return self
     
-    ## Go to next track
+    ## Next function of the stream iterator
     #
     def __next__(self):
         raise StopIteration
+    
     ## Update the number of seconds read from the stream
     #
     def update_t(self, chunk=None):
         c = self.chunk if chunk==None else chunk
         self._t += float(c)/self.samplerate
 
-
+## Mix class
+#
+# Mix two streams
 class Mix(Stream):
     def __init__(self, mainstream, bgstream, p=.5):
         super(Mix, self).__init__()
@@ -65,10 +68,26 @@ class Mix(Stream):
         self._s2 = bgstream if bgstream!=None else Stream()
         self._p = p
         self.duration = max(self._s1.duration, self._s2.duration)
+    
+    ## @var _s2
+    # Second stream
+    
+    ## @var _s1
+    # First stream
+    
+    ## @var _p
+    # Amplitude of first stream (second stream 1 - _p)
+    
+    
+    ## Iterate over the stream
+    #
     def __iter__(self):
         self._s1 = iter(self._s1)
         self._s2 = iter(self._s2)
         return self
+    
+    ## Next function of the stream iterator, mixes the two streams
+    #
     def __next__(self):
         ret = None
         n1 = next(self._s1)

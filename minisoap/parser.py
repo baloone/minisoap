@@ -82,6 +82,7 @@ class VariableName(Expr):
 
 
 class Parser:
+    
     def __init__(self):
         self._w = [chr(i) for i in range(65,91)] + [chr(i) for i in range(97,123)] + ['\'', '_', "$"]
         self._n = [chr(i) for i in range(48, 58)]
@@ -90,6 +91,7 @@ class Parser:
         self._pile = []
         self._brkts = ''
         self._f = ''
+    
     def parse_line(self, line, continueparsing=None):
         if continueparsing!=None:
             vn = continueparsing.vn 
@@ -125,6 +127,7 @@ class Parser:
                     return Help(name)
         e = self.parse_expr(l)
         return Sequence(e) if e != None else None
+    
     def parse_expr(self, t, continueparsing=None):
         cur = 0
         funcs = [getattr(self, f) for f in dir(Parser) if f.startswith("_"+self.__class__.__name__)]
@@ -155,6 +158,7 @@ class Parser:
         if len(pile) == 1:
             return pile[0]
         return Expr(pile[0], *pile[1:])
+    
     def parse_transition(self, txt):
         try:
             table = []
@@ -166,11 +170,13 @@ class Parser:
             return Transition(table)
         except:
             raise LineParsingError("Syntax error in transition definition")
+
     def _skip_white_space(self, t, i):
         cur = i
         while cur < len(t) and t[cur] in self._wh :
             cur+=1
         return cur
+    
     def __get_string(self, t, i):
         cur = i
         if t[cur] != '"' : return None
@@ -181,6 +187,7 @@ class Parser:
         cur+=2
         if cur < len(t) and not t[cur] in self._wh : raise LineParsingError('Expected whitespace after string', cur)
         return String(s),cur
+    
     def __get_variable_name(self, t, i):
         cur = i
         if not t[cur] in self._w : return None
@@ -191,6 +198,7 @@ class Parser:
         cur+=1
         if cur < len(t) and not t[cur] in self._wh : raise LineParsingError('Expected whitespace after variable name', cur)
         return VariableName(vn),cur
+    
     def __get_parenthesis(self, t, i):
         cur = i
         if t[cur] != '(': return None
@@ -208,6 +216,7 @@ class Parser:
             raise LineParsingError('Parenthesis not closed', cur)
         cur+=2
         return self.parse_expr(t[d:cur-1]),cur
+    
     def __get_brackets(self, t, i, continueparsing=None):
         brkts='' if continueparsing==None else continueparsing.txt+' '
         cur = i
@@ -225,6 +234,7 @@ class Parser:
                 raise continueparsing
         cur+=1
         return self.parse_transition(brkts),cur
+    
     def __get_number(self, t, i):
         cur = i
         comma = False

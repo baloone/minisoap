@@ -22,10 +22,25 @@ class InterpreterError(Exception):
     pass
 
 class Interpreter:
+    
     def __init__(self):
         self.builtins = Builtins()
         self.builtins_names = [f for f in dir(Builtins) if callable(getattr(Builtins, f)) and not f.startswith("__")]
         self.variables = {}
+
+    ## @var builtins
+    # Builtins of the Minisoap
+    
+    ## @var builtins_names
+    # Names of Minisoap builtins
+    
+    ## @var variables
+    # User variables definitions
+    
+    
+    ## Applies a sequence of instructions
+    #
+    # @param seq The sequence
     def run(self, seq):
         if seq == None: return
         if isinstance(seq, Help):
@@ -41,6 +56,11 @@ class Interpreter:
             return 'Variable ' + seq.variable_name.val + ' defined'
         else:
             return self.run_expr(seq.expr).__str__()
+    
+    
+    ## Runs an expression
+    #
+    # @param expr The expression
     def run_expr(self, expr):
         if isinstance(expr, String) or isinstance(expr, Number):
             return expr.val
