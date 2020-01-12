@@ -27,7 +27,7 @@ class Interpreter:
         self.builtins = Builtins()
         self.builtins_names = [f for f in dir(Builtins) if callable(getattr(Builtins, f)) and not f.startswith("__")]
         self.variables = {}
-    
+
     ## @var builtins
     # Builtins of the Minisoap
     
@@ -37,20 +37,15 @@ class Interpreter:
     ## @var variables
     # User variables definitions
     
-    ## Call step function of builtins clock
-    #
-    def step(self):
-        self.builtins.clock.step()
     
-    
-    ## Decoder of a sequence
+    ## Applies a sequence of instructions
     #
     # @param seq The sequence
     def run(self, seq):
         if seq == None: return
         if isinstance(seq, Help):
             try:
-                s = getattr(Builtins, seq.name).__doc__[1::]
+                s = getattr(Builtins, seq.name).__doc__[2:]
                 return '\n'.join([line.strip() for line in s.split('\n')])
             except AttributeError:
                 raise InterpreterError('Unknown function')
@@ -60,10 +55,10 @@ class Interpreter:
             self.variables[seq.variable_name.val] = self.run_expr(seq.expr)
             return 'Variable ' + seq.variable_name.val + ' defined'
         else:
-            return 'Value : ' + self.run_expr(seq.expr).__str__()
+            return self.run_expr(seq.expr).__str__()
     
     
-    ## Decoder of an expression
+    ## Runs an expression
     #
     # @param expr The expression
     def run_expr(self, expr):

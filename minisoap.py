@@ -14,16 +14,17 @@
 # 
 # You should have received a copy of the GNU General Public License
 # along with Minisoap.  If not, see <http://www.gnu.org/licenses/>.
+DEBUG = True
 
-import sys, os, signal, threading
-from minisoap import Console, Parser, LineParsingError, InterpreterError, Interpreter, KillableThread, ContinueParsing
+import sys, os, signal, threading, traceback
+from minisoap import Console, Parser, LineParsingError, InterpreterError, Interpreter, Listener, ContinueParsing
 from pathlib import Path
 if os.name != "nt":
     import termios, tty
 
 logo ="""                                                                                                                                
 ╔╦╗ ╦ ╔╗╔ ╦ ╔═╗ ╔═╗ ╔═╗ ╔═╗
-║║║ ║ ║║║ ║ ╚═╗ ║ ║ ╠═╣ ╠═╝  0.1a
+║║║ ║ ║║║ ║ ╚═╗ ║ ║ ╠═╣ ╠═╝  0.1a  """+('debugging' if DEBUG else '')+"""
 ╩ ╩ ╩ ╝╚╝ ╩ ╚═╝ ╚═╝ ╩ ╩ ╩  
 """
 
@@ -51,16 +52,17 @@ def main(lines):
                     cp = e
                 except Exception as e:
                     console.error(e.__class__.__name__, e, join="\n")
+                    if DEBUG:
+                        console.error(traceback.format_exc())
                     cp = None
             except LineParsingError as e:
                 console.error(e)
 
-            if not b : console.log(bg(cp), end="")
-        interpreter.step()
+            if not b or (b and len(lines) == 0) : console.log(bg(cp), end="")
 st = None
 def ctrlc(sig, frame):
     print ('\nExiting...')
-    [thread.kill() for thread in threading.enumerate()[1:] if isinstance(thread, KillableThread)]
+    [thread.kill() for thread in threading.enumerate()[1:] if isinstance(thread, Listener)]
     if os.name != "nt":
         termios.tcsetattr(sys.stdin, termios.TCSADRAIN, st)
     sys.exit(1)

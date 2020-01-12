@@ -22,6 +22,8 @@ Expression' = Expression' Expression | Expression
 E = Name Expression' | '.*' | [0-9]+ | (Expression)
 """
 
+
+
 class LineParsingError(Exception):
     pass
 
@@ -128,7 +130,7 @@ class Parser:
     
     def parse_expr(self, t, continueparsing=None):
         cur = 0
-        funcs = [getattr(self, f) for f in dir(Parser) if f.startswith("_Parser")]
+        funcs = [getattr(self, f) for f in dir(Parser) if f.startswith("_"+self.__class__.__name__)]
         pile = []
         try:
             if continueparsing != None:
@@ -136,7 +138,7 @@ class Parser:
                 ep, cur = self.__get_brackets(t, cur, continueparsing)
                 pile.append(ep)
             while cur < len(t):
-                cur = self.__skip_white_space(t, cur)
+                cur = self._skip_white_space(t, cur)
                 for f in funcs:
                     e = f (t, cur)
                     if e != None:
@@ -144,7 +146,8 @@ class Parser:
                         pile.append(ep)
                         break
                 else:
-                    raise LineParsingError('Unexpected character: '+t[cur], cur)
+                    raise LineParsingError('Unexpected character: '+t[cur-1:cur+1], cur)
+                cur = self._skip_white_space(t, cur)
         except ContinueParsing as cp:
             cp.pile = pile
             raise cp
@@ -167,10 +170,10 @@ class Parser:
             return Transition(table)
         except:
             raise LineParsingError("Syntax error in transition definition")
-    
-    def __skip_white_space(self, t, i):
+
+    def _skip_white_space(self, t, i):
         cur = i
-        while t[cur] in self._wh and cur < len(t)-1:
+        while cur < len(t) and t[cur] in self._wh :
             cur+=1
         return cur
     

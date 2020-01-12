@@ -27,7 +27,7 @@ Then it should display:
 ### Get the list of available functions
 ### Get the descriptions of a function
 
-```ansi
+```
 
 > sine ?
 INFO: 
@@ -36,9 +36,6 @@ INFO:
 INFO: @param freq The frequency of the wave (optional)
 INFO: @param amplitude The wave amplitude (optional)
 INFO: @param duration The duration of the wave in seconds (optional)
-INFO: @param chunk The size of the chunk (optional)
-INFO: @param samplerate The sample rate of the wave (optional)
-INFO: @param channels The number of channels (optional)
-INFO: 
+INFO:
 
 ```

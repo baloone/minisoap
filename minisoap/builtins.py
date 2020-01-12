@@ -32,22 +32,18 @@ class Builtins:
     Write all builtins functions here
     '''
     def __init__(self):
-        self.clock = Clock()
+        pass
+
     
-    ## @var clock
-    # A clock for handeling timeouts between calls in ms 
-    
-    def log(self, *args):
+    def all_functions(self):
         """!
-        Print variables
-        
-        @param **args Any variable to print
+        Prints all available functions
         """
-        print(*args)
+        return "\n\n".join([i+": "+getattr(Builtins, i).__doc__[2:].strip() for i in dir(self) if i[0]!="_"])
     
     def open(self, filepath):
         """!
-        Open a song
+        Opens a song
         
         @param filepath The path to the song
         """
@@ -61,13 +57,13 @@ class Builtins:
         @param output_path The path to the output
         """
         w = Writer(stream, output_path)
-        w.run()
+        w.start()
         return w
     
     
     def play(self, stream_or_player):
         """!
-        Play a stream or a player
+        Plays a stream or a player
         
         @param stream_or_player The stream or the player
         """
@@ -85,7 +81,7 @@ class Builtins:
     
     def pause(self, player):
         """!
-        Pause a player
+        Pauses a player
         
         @param player The player
         """
@@ -114,19 +110,16 @@ class Builtins:
     
     def silence(self, duration=float('inf')):
         """!
-        Generate a silent wave
+        Generates a silent wave
         
         @param duration The duration of the wave in seconds (optional)
-        @param chunk The number of chunks (optional)
-        @param samplerate The sample rate of the wave (optional)
-        @param channels The number of channels (optional)
         """
         return Silence(duration=float('inf'))
 
     
     def sine(self, freq=440, amplitude=1, duration=None):
         """!
-        Generate a sine wave
+        Generates a sine wave
         
         @param freq The frequency of the wave (optional)
         @param amplitude The wave amplitude (optional)
@@ -134,20 +127,32 @@ class Builtins:
         """
         return Sine(freq=440, amplitude=1, duration=None)
 
-    def playlist(self, dir_path, transition=None):
+    def playlist(self, dir_path, loop=False, transition = None):
         """!
-        Open a playlist
+        Opens a playlist
+        
+        @param dir_path The directory path to the playlist
+        @param loop 0 if the playlist doesn't loop 
+        @param dir_path The directory path to the playlist
+        """
+        Playlist(dir_path).loop = loop > 0
+        return Playlist(dir_path) if transition == None else Playlist(dir_path, transition)
+    
+    def shuffle(self, playlist):
+        """!
+        Shuffles a playlist
         
         @param dir_path The directory path to the playlist
         """
-        return Playlist(dir_path) if transition == None else Playlist(dir_path, transition)
-
-    def mix(self, stream1, stream2, scalar=.5):
+        playlist.shuffle()
+        return playlist
+        
+    def mix(self, stream, bgstream=None, scalar=.5):
         """!
         Mixes between two streams
         
-        @param stream1 A stream
-        @param stream2 A stream
-        @param dir_path The directory path to the playlist (optional)
+        @param stream The main stream
+        @param bgstream The background stream (optional)
+        @param scalar The multiplier (default value : .5)
         """
-        return Mix(stream1, stream2, scalar)
+        return Mix(stream, bgstream, scalar)
