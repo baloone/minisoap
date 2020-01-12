@@ -23,10 +23,15 @@ mic = get 0 mics // the first available mic or None
 $_$ = {
     0s: 1;
     500ms: 0.9;
-    10s: 0
+    5s: 0
+}
+$'$ = {
+    0s: 1;
+    500ms: 0.9;
+    1s: 0
 }
 
-jingles = playlist "./songs/jingles/" 1 $_$
+jingles = playlist "./songs/jingles/" 1 $'$
 podcasts = playlist "./songs/podcasts/" 0 $_$
 '_' = mix podcasts (shuffle jingles) .7
 player = play (mix '_' mic)// "tst.mp3"

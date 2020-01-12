@@ -26,7 +26,7 @@ E = Name Expression' | '.*' | [0-9]+ | (Expression)
 
 class LineParsingError(Exception):
     pass
-
+# Exception used to tell minisoap that we need more lines to parse the sequence
 class ContinueParsing(Exception):
     def __init__(self, vn=None, pile = None, txt = None):
         Exception.__init__(self)
@@ -34,6 +34,8 @@ class ContinueParsing(Exception):
         self.pile = pile
         self.txt = txt
 
+## These are the classes used to construct the parsing tree
+#
 class Sequence:
     def __init__(self, a1, a2=None):
         self.type = 'assign' if a2!=None else 'call'
@@ -80,7 +82,8 @@ class VariableName(Expr):
     def __str__(self):
         return 'VariableName('+self.val+')'
 
-
+## The Parser class
+#
 class Parser:
     
     def __init__(self):
@@ -88,10 +91,23 @@ class Parser:
         self._n = [chr(i) for i in range(48, 58)]
         self._wn = self._w + self._n
         self._wh = [' ', '\t']
-        self._pile = []
-        self._brkts = ''
-        self._f = ''
-    
+
+        ## @var _w
+        # Contains all accepted caracters for variable naming except numbers
+        ## @var _n
+        # Contains numbers
+        ## @var _wn
+        # Contains all accepted caracters for variable naming
+        ## @var _wh
+        # Contains caraters considered as whitespace
+        
+        
+    # Parses a line 
+    # It checks if the line is looking like these three possible types:
+    #  - vn = expr
+    #  - expr
+    #  - vn ?
+    # Or continues parsing expression if it is needed
     def parse_line(self, line, continueparsing=None):
         if continueparsing!=None:
             vn = continueparsing.vn 
@@ -128,6 +144,10 @@ class Parser:
         e = self.parse_expr(l)
         return Sequence(e) if e != None else None
     
+    ## Parses an expression
+    # It launches sequentially the methods beginning with __
+    # And save the result of the first one whitch does not return None
+    # on a stack and updates cursor position
     def parse_expr(self, t, continueparsing=None):
         cur = 0
         funcs = [getattr(self, f) for f in dir(Parser) if f.startswith("_"+self.__class__.__name__)]
@@ -159,6 +179,7 @@ class Parser:
             return pile[0]
         return Expr(pile[0], *pile[1:])
     
+    # Parses a transition (the text between two brackets)
     def parse_transition(self, txt):
         try:
             table = []
@@ -171,12 +192,14 @@ class Parser:
         except:
             raise LineParsingError("Syntax error in transition definition")
 
+    # Skips white space
     def _skip_white_space(self, t, i):
         cur = i
         while cur < len(t) and t[cur] in self._wh :
             cur+=1
         return cur
     
+    # Parses a string and returns the new cursor position
     def __get_string(self, t, i):
         cur = i
         if t[cur] != '"' : return None
@@ -188,6 +211,7 @@ class Parser:
         if cur < len(t) and not t[cur] in self._wh : raise LineParsingError('Expected whitespace after string', cur)
         return String(s),cur
     
+    # Parses a variable name and returns the new cursor position
     def __get_variable_name(self, t, i):
         cur = i
         if not t[cur] in self._w : return None
@@ -199,6 +223,7 @@ class Parser:
         if cur < len(t) and not t[cur] in self._wh : raise LineParsingError('Expected whitespace after variable name', cur)
         return VariableName(vn),cur
     
+    # Parses a parenthesis and returns the new cursor position
     def __get_parenthesis(self, t, i):
         cur = i
         if t[cur] != '(': return None
@@ -217,6 +242,8 @@ class Parser:
         cur+=2
         return self.parse_expr(t[d:cur-1]),cur
     
+    # Parses a parenthesis and returns the new cursor position
+    # or raises ContinueParsing exception if more lines are needed 
     def __get_brackets(self, t, i, continueparsing=None):
         brkts='' if continueparsing==None else continueparsing.txt+' '
         cur = i
@@ -235,6 +262,7 @@ class Parser:
         cur+=1
         return self.parse_transition(brkts),cur
     
+    # Parses a number and returns the new cursor position
     def __get_number(self, t, i):
         cur = i
         comma = False
