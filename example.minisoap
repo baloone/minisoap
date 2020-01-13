@@ -19,7 +19,7 @@ Squares = open "./songs/jingles/Squares.mp3"
 mics = all_mics () // list of all available mics
 mic = get 0 mics // the first available mic or None
 
-// A transition definition
+// A cross-fade transition definition
 $_$ = {
     0s: 1;
     500ms: 0.9;

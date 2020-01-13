@@ -24,9 +24,9 @@ import numpy as np
 class Generator(Stream):
     
     def __init__(self, duration=float('inf')):
-        if duration == None: duration = float('inf')
-        self.duration = duration
         Stream.__init__(self)
+        self.duration = duration if duration != None else float('inf')
+
     
     ## @var duration
     # The duration of the wave
@@ -48,13 +48,15 @@ class Generator(Stream):
     ## Extract the next chunk
     #
     def __next__(self):
+        
         if self.duration < float('inf'):
             if self._t > self.duration: raise StopIteration
-            a = int(self.duration-self._t)*self.samplerate
+            a = int((self.duration-self._t)*self.samplerate)
+            if a == 0: raise StopIteration
             if a < self.chunk:
                 self.update_t(a)
                 return self._gen(a)
-            self.update_t()
+        self.update_t()
         return self._gen(self.chunk)
 
 ## Silent wave generator

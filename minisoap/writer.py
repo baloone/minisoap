@@ -25,7 +25,7 @@ import tempfile, time
 #
 # Writes a stream on hard drive
 class Writer(Listener): 
-    def __init__(self, stream, filename, chunk = None, samplerate = None, channels=None):
+    def __init__(self, stream, filename):
         if not isinstance(stream, Stream): raise TypeError
         Listener.__init__(self)
         self.path = Path(filename).absolute()
@@ -67,3 +67,4 @@ class Writer(Listener):
             if self.killed():break
             _pcmbuf.write(data.tobytes())
             _pcmbuf.flush()
+        self.kill()
