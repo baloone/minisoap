@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['variablename',['VariableName',['../classminisoap_1_1parser_1_1VariableName.html',1,'minisoap::parser']]]
+  ['rotation',['Rotation',['../classminisoap_1_1stream_1_1Rotation.html',1,'minisoap::stream']]]
 ];

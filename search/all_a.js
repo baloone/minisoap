@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['minisoap',['Minisoap',['../index.html',1,'']]],
-  ['microphone',['Microphone',['../classminisoap_1_1microphone_1_1Microphone.html',1,'minisoap::microphone']]]
+  ['kill',['kill',['../classminisoap_1_1listener_1_1Listener.html#a749705a9694af9c44925adeff83a4575',1,'minisoap::listener::Listener']]]
 ];

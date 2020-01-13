@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['open',['open',['../classminisoap_1_1builtins_1_1Builtins.html#acd40e55c2c6b59a8b42d08da1e67f9c5',1,'minisoap::builtins::Builtins']]]
+  ['kill',['kill',['../classminisoap_1_1listener_1_1Listener.html#a749705a9694af9c44925adeff83a4575',1,'minisoap::listener::Listener']]]
 ];

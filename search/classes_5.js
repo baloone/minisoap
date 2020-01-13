@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['interpreter',['Interpreter',['../classminisoap_1_1interpreter_1_1Interpreter.html',1,'minisoap::interpreter']]],
-  ['interpretererror',['InterpreterError',['../classminisoap_1_1interpreter_1_1InterpreterError.html',1,'minisoap::interpreter']]]
+  ['help',['Help',['../classminisoap_1_1parser_1_1Help.html',1,'minisoap::parser']]]
 ];

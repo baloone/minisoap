@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['generator',['Generator',['../classminisoap_1_1generators_1_1Generator.html',1,'minisoap::generators']]]
+  ['fallback',['Fallback',['../classminisoap_1_1stream_1_1Fallback.html',1,'minisoap::stream']]]
 ];

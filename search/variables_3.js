@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['loop',['loop',['../classminisoap_1_1playlist_1_1Playlist.html#a8297caa2541b6815cdf7b50bcca218b2',1,'minisoap::playlist::Playlist']]]
+  ['exs',['exs',['../classminisoap_1_1clock_1_1Clock.html#a1579c9d1da858bb5f575deaccb13b919',1,'minisoap::clock::Clock']]]
 ];

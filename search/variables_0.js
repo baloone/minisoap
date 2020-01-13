@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['channels',['channels',['../classminisoap_1_1stream_1_1Stream.html#aaa177a292d358d0a3e68eb1f871957ba',1,'minisoap::stream::Stream']]],
-  ['chunk',['chunk',['../classminisoap_1_1stream_1_1Stream.html#a1ddd2790425375144844bba70d7564d2',1,'minisoap::stream::Stream']]],
-  ['clock',['clock',['../classminisoap_1_1builtins_1_1Builtins.html#af1d068cabccedc4d92362da8daa3b7ac',1,'minisoap::builtins::Builtins']]]
+  ['builtins',['builtins',['../classminisoap_1_1interpreter_1_1Interpreter.html#a66dfdc2082037ee08777651d3cee00a0',1,'minisoap::interpreter::Interpreter']]],
+  ['builtins_5fnames',['builtins_names',['../classminisoap_1_1interpreter_1_1Interpreter.html#ab64f4800198a0f8de5eaff2be83ac6a3',1,'minisoap::interpreter::Interpreter']]]
 ];

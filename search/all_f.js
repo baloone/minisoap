@@ -1,15 +1,10 @@
 var searchData=
 [
-  ['samplerate',['samplerate',['../classminisoap_1_1stream_1_1Stream.html#af2254e8a2e06b138d55ae7b1f7b4439f',1,'minisoap::stream::Stream']]],
-  ['sequence',['Sequence',['../classminisoap_1_1parser_1_1Sequence.html',1,'minisoap::parser']]],
-  ['shuffle',['shuffle',['../classminisoap_1_1playlist_1_1Playlist.html#a7a2db00ec6e8f47368cfbefbe7d80035',1,'minisoap::playlist::Playlist']]],
-  ['silence',['Silence',['../classminisoap_1_1generators_1_1Silence.html',1,'minisoap.generators.Silence'],['../classminisoap_1_1builtins_1_1Builtins.html#a0557955f44c13535897aac436277c854',1,'minisoap.builtins.Builtins.silence()']]],
-  ['sine',['Sine',['../classminisoap_1_1generators_1_1Sine.html',1,'minisoap.generators.Sine'],['../classminisoap_1_1builtins_1_1Builtins.html#a2df71fcbb5127400aa6799cc32ea3f2a',1,'minisoap.builtins.Builtins.sine()']]],
-  ['song',['Song',['../classminisoap_1_1song_1_1Song.html',1,'minisoap::song']]],
-  ['songs',['songs',['../classminisoap_1_1playlist_1_1Playlist.html#ae1905589a0cba6a6d677dffa97f11556',1,'minisoap::playlist::Playlist']]],
-  ['sp',['sp',['../classminisoap_1_1player_1_1Player.html#a5d411629d23c50a49bd1ac883d574fa3',1,'minisoap::player::Player']]],
-  ['step',['step',['../classminisoap_1_1clock_1_1Clock.html#a8b98cf85f777f9f186a71ded216cf146',1,'minisoap::clock::Clock']]],
-  ['stop',['stop',['../classminisoap_1_1builtins_1_1Builtins.html#a47138aa59d576a520785f0342e0f7b97',1,'minisoap.builtins.Builtins.stop()'],['../classminisoap_1_1player_1_1Player.html#a2f98cd7d406ac1a667233f5273d8927b',1,'minisoap.player.Player.stop()']]],
-  ['stream',['Stream',['../classminisoap_1_1stream_1_1Stream.html',1,'minisoap.stream.Stream'],['../classminisoap_1_1player_1_1Player.html#a38f3c94170fb7a3f3dc2fb7c30c406a1',1,'minisoap.player.Player.stream()']]],
-  ['string',['String',['../classminisoap_1_1parser_1_1String.html',1,'minisoap::parser']]]
+  ['parse_5fexpr',['parse_expr',['../classminisoap_1_1parser_1_1Parser.html#a0912326cea9220a8bb5c3173ad290103',1,'minisoap::parser::Parser']]],
+  ['parser',['Parser',['../classminisoap_1_1parser_1_1Parser.html',1,'minisoap::parser']]],
+  ['path',['path',['../classminisoap_1_1playlist_1_1Playlist.html#abb4907aad63cb8fa16cb4cd2b06e28bf',1,'minisoap.playlist.Playlist.path()'],['../classminisoap_1_1song_1_1Song.html#a44755902a6c19289c3156c444e05fcf6',1,'minisoap.song.Song.path()'],['../classminisoap_1_1writer_1_1Writer.html#a93f9d629b9b1265766e85757ada45db2',1,'minisoap.writer.Writer.path()']]],
+  ['pause',['pause',['../classminisoap_1_1builtins_1_1Builtins.html#aee13e230c045651148becb245655213f',1,'minisoap.builtins.Builtins.pause()'],['../classminisoap_1_1player_1_1Player.html#a2070aa5ec554a7588cad6b345b779a2b',1,'minisoap.player.Player.pause()']]],
+  ['play',['play',['../classminisoap_1_1builtins_1_1Builtins.html#abab15ac9da3e62962c39088c1daaf217',1,'minisoap.builtins.Builtins.play()'],['../classminisoap_1_1player_1_1Player.html#ae2f285ba35a6c25dc0bd4b9596ff8562',1,'minisoap.player.Player.play()']]],
+  ['player',['Player',['../classminisoap_1_1player_1_1Player.html',1,'minisoap::player']]],
+  ['playlist',['Playlist',['../classminisoap_1_1playlist_1_1Playlist.html',1,'minisoap.playlist.Playlist'],['../classminisoap_1_1builtins_1_1Builtins.html#a4591a9a89cdf49e96215bf252a2aefd7',1,'minisoap.builtins.Builtins.playlist()']]]
 ];

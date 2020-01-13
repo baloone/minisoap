@@ -70,7 +70,31 @@ $(function() {
 <p>To launch the interpreter you need to run <code>python minisoap.py</code></p>
 <p>Then it should display:</p>
 <div class="fragment"><div class="line">╔╦╗ ╦ ╔╗╔ ╦ ╔═╗ ╔═╗ ╔═╗ ╔═╗</div><div class="line">║║║ ║ ║║║ ║ ╚═╗ ║ ║ ╠═╣ ╠═╝  0.1a</div><div class="line">╩ ╩ ╩ ╝╚╝ ╩ ╚═╝ ╚═╝ ╩ ╩ ╩</div><div class="line"></div><div class="line">&gt;</div></div><!-- fragment --><h2>Running a minisoap file</h2>
-<p><code>python minisoap.py example.minisoap</code> </p>
+<div class="fragment"><div class="line">## Documentation</div><div class="line">### Get the list of available functions</div></div><!-- fragment --> <blockquote class="doxtable">
+<p>all_functions () </p>
+</blockquote>
+<p>INFO: all_functions: Prints all available functions INFO: INFO: all_mics: Transform all microphones to streams INFO: INFO: get: Get element from array INFO: INFO: </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td>Index of element INFO: </td></tr>
+    <tr><td class="paramname">array</td><td>The array INFO: INFO: mix: Mixes between two streams INFO: INFO: </td></tr>
+    <tr><td class="paramname">stream</td><td>The main stream INFO: </td></tr>
+    <tr><td class="paramname">bgstream</td><td>The background stream (optional) INFO: </td></tr>
+    <tr><td class="paramname">scalar</td><td>The multiplier (default value : .5) INFO: etc. <div class="fragment"><div class="line">### Get the descriptions of a particular function</div></div><!-- fragment --></td></tr>
+  </table>
+  </dd>
+</dl>
+<blockquote class="doxtable">
+<p>sine ? </p>
+</blockquote>
+<p>INFO: INFO: Generate a sine wave INFO: INFO: </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">freq</td><td>The frequency of the wave (optional) INFO: </td></tr>
+    <tr><td class="paramname">amplitude</td><td>The wave amplitude (optional) INFO: </td></tr>
+    <tr><td class="paramname">duration</td><td>The duration of the wave in seconds (optional) INFO:</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>``` </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

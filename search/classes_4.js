@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['help',['Help',['../classminisoap_1_1parser_1_1Help.html',1,'minisoap::parser']]]
+  ['generator',['Generator',['../classminisoap_1_1generators_1_1Generator.html',1,'minisoap::generators']]]
 ];

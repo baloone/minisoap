@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['lineparsingerror',['LineParsingError',['../classminisoap_1_1parser_1_1LineParsingError.html',1,'minisoap::parser']]]
+  ['interpreter',['Interpreter',['../classminisoap_1_1interpreter_1_1Interpreter.html',1,'minisoap::interpreter']]],
+  ['interpretererror',['InterpreterError',['../classminisoap_1_1interpreter_1_1InterpreterError.html',1,'minisoap::interpreter']]]
 ];
