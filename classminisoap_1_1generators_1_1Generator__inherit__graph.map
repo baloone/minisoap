@@ -1,0 +1,6 @@
+<map id="minisoap.generators.Generator" name="minisoap.generators.Generator">
+<area shape="rect" id="node4" href="$classminisoap_1_1generators_1_1Constant.html" title="Constant stream generator. " alt="" coords="5,229,201,256"/>
+<area shape="rect" id="node5" href="$classminisoap_1_1generators_1_1Silence.html" title="Silent stream generator. " alt="" coords="226,229,413,256"/>
+<area shape="rect" id="node6" href="$classminisoap_1_1generators_1_1Sine.html" title="Sine wave generator. " alt="" coords="437,229,607,256"/>
+<area shape="rect" id="node2" href="$classminisoap_1_1stream_1_1Stream.html" title="Stream class. " alt="" coords="237,80,401,107"/>
+</map>

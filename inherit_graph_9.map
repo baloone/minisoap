@@ -1,0 +1,13 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classminisoap_1_1generators_1_1Sine.html" title="Sine wave generator. " alt="" coords="5,107,175,133"/>
+<area shape="rect" id="node2" href="$classminisoap_1_1stream_1_1Stream.html" title="Stream class. " alt="" coords="223,157,387,184"/>
+<area shape="rect" id="node3" href="$classminisoap_1_1generators_1_1Generator.html" title="Generator class. " alt="" coords="443,31,643,57"/>
+<area shape="rect" id="node6" href="$classminisoap_1_1microphone_1_1Microphone.html" title="Microphone Stream. " alt="" coords="435,81,651,108"/>
+<area shape="rect" id="node7" href="$classminisoap_1_1playlist_1_1Playlist.html" title="Playlist class. " alt="" coords="459,132,626,159"/>
+<area shape="rect" id="node8" href="$classminisoap_1_1song_1_1Song.html" title="Song class. " alt="" coords="473,183,613,209"/>
+<area shape="rect" id="node9" href="$classminisoap_1_1stream_1_1Fallback.html" title="Fallback class. " alt="" coords="457,233,628,260"/>
+<area shape="rect" id="node10" href="$classminisoap_1_1stream_1_1Mix.html" title="Mix class. " alt="" coords="471,284,614,311"/>
+<area shape="rect" id="node11" href="$classminisoap_1_1stream_1_1Rotation.html" title="Rotation class. " alt="" coords="457,335,628,361"/>
+<area shape="rect" id="node4" href="$classminisoap_1_1generators_1_1Constant.html" title="Constant stream generator. " alt="" coords="699,5,895,32"/>
+<area shape="rect" id="node5" href="$classminisoap_1_1generators_1_1Silence.html" title="Silent stream generator. " alt="" coords="703,56,890,83"/>
+</map>
