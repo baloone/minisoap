@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # Copyright (C) 2020 Mohamed H
 # 
 # This file is part of Minisoap.
@@ -15,14 +16,15 @@
 # You should have received a copy of the GNU General Public License
 # along with Minisoap.  If not, see <http://www.gnu.org/licenses/>.
 
-from minisoap.interpreter import Interpreter
-from minisoap.parser import Parser
-# TODO add more tests
-p = Parser()
 
-parse_line = p.parse_line
+from setuptools import setup, find_packages
 
-def test_variable_assign():
-    interpreter = Interpreter()
-    interpreter.run(parse_line('a=5'))
-    assert interpreter.run_expr(parse_line('a').expr) == 5.0
+setup(name='minisoap',
+    version='0.1b',
+    install_requires=['colorama', 'numpy', 'SoundCard'],
+    license='GPL 3',
+    author='Mohamed H',
+    packages=['minisoap'],
+    entry_points={'console_scripts': ['minisoap = minisoap.minisoap:wrapper']},
+    setup_requires=['wheel']
+)

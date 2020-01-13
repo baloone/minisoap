@@ -1,6 +1,3 @@
-# testing lib
-pytest==5.3.1
-
 # allowes us to print colored strings (and allows ansi sequences on win)
 colorama==0.4.3
 
