@@ -112,8 +112,8 @@ class Console:
         """
         Non blocking input listener
         """
-        ret = ord(b'\r') if os.name == "nt" else [10,13]
-        backspace = ord(b'\x08') if os.name == "nt" else [127]
+        ret = [ord(b'\r')] if os.name == "nt" else [10,13]
+        backspace = [ord(b'\x08')] if os.name == "nt" else [127]
         mod = [0,ord(b'\xe0')] if os.name == "nt" else [27]
         puts = lambda x : self.log(x, end='')
         
