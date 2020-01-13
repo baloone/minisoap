@@ -63,39 +63,57 @@ $(function() {
 <div class="title">Minisoap </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h2>Install dependecies</h2>
-<p>First you need to have python 3 and pip installed on your computer. You also will have to install ffmpeg on your computer. This can be done for instance on ubuntu just by running <code>sudo apt install ffmpeg</code>.</p>
-<p>Then you will have to install the requirements by typing <code>pip install -r requirements.tst</code></p>
-<h2>Launching the interpreter</h2>
-<p>To launch the interpreter you need to run <code>python minisoap.py</code></p>
-<p>Then it should display:</p>
-<div class="fragment"><div class="line">╔╦╗ ╦ ╔╗╔ ╦ ╔═╗ ╔═╗ ╔═╗ ╔═╗</div><div class="line">║║║ ║ ║║║ ║ ╚═╗ ║ ║ ╠═╣ ╠═╝  0.1a</div><div class="line">╩ ╩ ╩ ╝╚╝ ╩ ╚═╝ ╚═╝ ╩ ╩ ╩</div><div class="line"></div><div class="line">&gt;</div></div><!-- fragment --><h2>Running a minisoap file</h2>
-<div class="fragment"><div class="line">## Documentation</div><div class="line">### Get the list of available functions</div></div><!-- fragment --> <blockquote class="doxtable">
-<p>all_functions () </p>
-</blockquote>
-<p>INFO: all_functions: Prints all available functions INFO: INFO: all_mics: Transform all microphones to streams INFO: INFO: get: Get element from array INFO: INFO: </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">i</td><td>Index of element INFO: </td></tr>
-    <tr><td class="paramname">array</td><td>The array INFO: INFO: mix: Mixes between two streams INFO: INFO: </td></tr>
-    <tr><td class="paramname">stream</td><td>The main stream INFO: </td></tr>
-    <tr><td class="paramname">bgstream</td><td>The background stream (optional) INFO: </td></tr>
-    <tr><td class="paramname">scalar</td><td>The multiplier (default value : .5) INFO: etc. <div class="fragment"><div class="line">### Get the descriptions of a particular function</div></div><!-- fragment --></td></tr>
-  </table>
-  </dd>
-</dl>
-<blockquote class="doxtable">
-<p>sine ? </p>
-</blockquote>
-<p>INFO: INFO: Generate a sine wave INFO: INFO: </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">freq</td><td>The frequency of the wave (optional) INFO: </td></tr>
-    <tr><td class="paramname">amplitude</td><td>The wave amplitude (optional) INFO: </td></tr>
-    <tr><td class="paramname">duration</td><td>The duration of the wave in seconds (optional) INFO:</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>``` </p>
-</div></div><!-- contents -->
+  <article class="markdown-body entry-content p-5" itemprop="text"><h1>Minisoap</h1>
+    <h2>Install dependecies</h2>
+    <p>First you need to have python 3 and pip installed on your computer.
+    You also will have to install ffmpeg on your computer. This can be done for instance on ubuntu just by running <code>sudo apt install ffmpeg</code>.</p>
+    <p>Then you will have to install the requirements by typing <code>pip install -r requirements.tst</code></p>
+    <h2>Launching the interpreter</h2>
+    <p>To launch the interpreter you need to run <code>python minisoap.py</code></p>
+    <p>Then it should display:</p>
+    <pre style="background:#333; color:white; width: 800px;"><code>
+    ╔╦╗ ╦ ╔╗╔ ╦ ╔═╗ ╔═╗ ╔═╗ ╔═╗
+    ║║║ ║ ║║║ ║ ╚═╗ ║ ║ ╠═╣ ╠═╝  0.1a
+    ╩ ╩ ╩ ╝╚╝ ╩ ╚═╝ ╚═╝ ╩ ╩ ╩
+    
+    &gt;
+    </code></pre>
+    <h2>Running a minisoap file</h2>
+    <p><code style="background:#333; color:white; width: 800px;">python minisoap.py example.minisoap</code></p>
+    <h2>Documentation</h2>
+    <h3>Get the list of available functions</h3>
+<pre style="background:#333; color:white; width: 800px;"><code>
+    &gt; all_functions ()
+    <span style="background-color: #3064a7;">INFO:</span> all_functions: Prints all available functions
+    <span style="background-color: #3064a7;">INFO:</span> 
+    <span style="background-color: #3064a7;">INFO:</span> all_mics: Transform all microphones to streams
+    <span style="background-color: #3064a7;">INFO:</span> 
+    <span style="background-color: #3064a7;">INFO:</span> get: Get element from array
+    <span style="background-color: #3064a7;">INFO:</span>         
+    <span style="background-color: #3064a7;">INFO:</span>         @param i Index of element
+    <span style="background-color: #3064a7;">INFO:</span>         @param array The array
+    <span style="background-color: #3064a7;">INFO:</span> 
+    <span style="background-color: #3064a7;">INFO:</span> mix: Mixes between two streams
+    <span style="background-color: #3064a7;">INFO:</span>         
+    <span style="background-color: #3064a7;">INFO:</span>         @param stream The main stream
+    <span style="background-color: #3064a7;">INFO:</span>         @param bgstream The background stream (optional)
+    <span style="background-color: #3064a7;">INFO:</span>         @param scalar The multiplier (default value : .5)
+    <span style="background-color: #3064a7;">INFO:</span> 
+      etc.
+    </code></pre>
+    <h3>Get the descriptions of a particular function</h3>
+<pre style="background:#333; color:white; width: 800px;"><code>
+    &gt; sine ?
+    <span style="background-color: #3064a7;">INFO:</span> 
+    <span style="background-color: #3064a7;">INFO:</span> Generate a sine wave
+    <span style="background-color: #3064a7;">INFO:</span> 
+    <span style="background-color: #3064a7;">INFO:</span> @param freq The frequency of the wave (optional)
+    <span style="background-color: #3064a7;">INFO:</span> @param amplitude The wave amplitude (optional)
+    <span style="background-color: #3064a7;">INFO:</span> @param duration The duration of the wave in seconds (optional)
+    <span style="background-color: #3064a7;">INFO:</span>
+    
+    </code></pre>
+    </article></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">
