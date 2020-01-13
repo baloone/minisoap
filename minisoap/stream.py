@@ -114,6 +114,7 @@ class Fallback(Stream):
         self._streams_i = []
         self._i = 0
         self.duration = reduce(lambda x,y: x+y, [i.duration for i in self._streams])
+        self._remainder = False
     ## @var _streams
     # list of the streams
     
@@ -145,10 +146,14 @@ class Fallback(Stream):
     #
     def __next__(self):
         ret = None
+        if self._remainder:
+            self._remainder = False
+            self.update_t()
+            return self._update_i()
         try: 
             ret = next(self._streams_i[self._i])
         except:
-            ret = self._update_i()
+            self._remainder = True
         self.update_t()
         return ret
 
@@ -198,6 +203,7 @@ class Rotation(Stream):
     def __next__(self):
         if self._remainder:
             self._remainder = False
+            self.update_t()
             return self._update_i()
         ret = None
         try: 
@@ -207,4 +213,5 @@ class Rotation(Stream):
                 
         except:
             self._update_i()
+        self.update_t()
         return ret
