@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Minisoap.  If not, see <http://www.gnu.org/licenses/>.
 
-from minisoap.parser import Parser, Sequence, Expr, Number, String, VariableName, Help
+from minisoap.parser import Parser, Sequence, Expr, Number, String, VariableName, Help, Transition
 p = Parser()
 
 parse_line = p.parse_line
@@ -60,3 +60,12 @@ def test_comment1():
 
 def test_comment2():
     assert parse_line('a=5//lives').__str__() == Sequence(VariableName("a"), Number(5)).__str__()
+
+def test_transition_multiline():
+    try:
+        parse_line('{')
+    except Exception as e:
+        assert parse_line('}', e).__str__() == Sequence(Transition([])).__str__()
+
+def test_transition():
+    assert parse_line('{0s:1; 50ms: 0;;0.5s: 1;}').__str__() == Sequence(Transition([(0.0,1.0),(0.05,0.0), (0.5, 1.0)])).__str__()

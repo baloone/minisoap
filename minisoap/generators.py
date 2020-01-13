@@ -59,11 +59,21 @@ class Generator(Stream):
         self.update_t()
         return self._gen(self.chunk)
 
-## Silent wave generator
+## Silent stream generator
 #
-# Generate a silent wave
+# Generate a silent stream
 class Silence(Generator):
     pass
+
+## Constant stream generator
+#
+# Generate a silent stream
+class Constant(Generator):
+    def __init__(self, constant=1, duration=float('inf')):
+        super(Constant, self).__init__(duration)
+        self._c = constant
+    def _gen(self, size):
+        return self._c*np.exp(np.zeros((size, self.channels)))
 
 ## Sine wave generator
 #

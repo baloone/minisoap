@@ -187,7 +187,7 @@ class Parser:
                 if l.replace(' ', '').replace('\t', '') == "": continue
                 [time, amplitude] = [i.replace(' ', '').replace('\t', '') for i in l.split(':')]
                 if time[-2:] == "ms": table.append((float(time[:-2])/1000, float(amplitude)))
-                else: table.append((int(float(time[:-1])), float(amplitude)))
+                else: table.append((float(time[:-1]), float(amplitude)))
             return Transition(table)
         except:
             raise LineParsingError("Syntax error in transition definition")

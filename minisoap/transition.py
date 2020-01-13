@@ -39,7 +39,7 @@ class Transition:
     # Duration of the transition
     
     ## @var _table
-    # Next values (transition table)
+    # table of (time, amplitude) elements
     
     ## Makes the transition between of samples in _table
     #
@@ -55,7 +55,7 @@ class Transition:
             while self._table[i][0] > t: i-=1
             t1,a1=self._table[i]
             t2,a2=self._table[i+1]
-            return (a2-a1)/(t2-t1)*(t-t1)           
+            return (a2-a1)/(t2-t1)*(t-t1)+a1         
         except:
             return 0
     
