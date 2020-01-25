@@ -1,26 +1,30 @@
 # Copyright (C) 2020 Mohamed H
-# 
+#
 # This file is part of Minisoap.
-# 
+#
 # Minisoap is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # Minisoap is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with Minisoap.  If not, see <http://www.gnu.org/licenses/>.
 
+"""These tests works only locally
 from minisoap.writer import Writer
 from minisoap.generators import Silence, Sine
-import time, wave, os, tempfile
+import time
+import wave
+import os
+import tempfile
 from functools import reduce
 import numpy as np
-""" These tests works only locally
+
 def round(t):
     return int(1000*t+.5)/1000.0
 
@@ -40,7 +44,8 @@ def test_duration():
     while not w.killed():
         time.sleep(0.1)
     wav = wave.open(tmpf, 'r')
-    assert .5 == round(wav.getnframes()/float(wav.getframerate())/float(wav.getsampwidth()))
+    d = round(wav.getnframes()/float(wav.getframerate()*wav.getsampwidth()))
+    assert .5 == d
 
 def test_channels():
     st = Silence(.5)
